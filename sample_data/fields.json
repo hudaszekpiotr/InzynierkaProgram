@@ -1,0 +1,12 @@
+[
+  {
+    "name": "field_1",
+    "area": 10,
+    "water": 2
+  },
+  {
+    "name": "field_2",
+    "area": "20",
+    "water": 10
+  }
+]
