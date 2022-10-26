@@ -4,6 +4,7 @@
 from typing import List, Callable
 
 
+
 class DaySolution:
     def __init__(self, num_fields):
         self.field = [None] * num_fields
@@ -22,9 +23,11 @@ class Solution:
         for i, day in enumerate(self.days):
             txt += f"Day {i}\n"
             for field_num in range(self.num_fields):
-                txt += f"field num: {field_num} cultivation type:{day.field[field_num]}\n\n"
-        txt += "\n\n\n\n"
+                txt += f"field num: {field_num} cultivation type:{day.field[field_num]}\n"
+        txt += "\n\n"
         return txt
+
+
 
 
 

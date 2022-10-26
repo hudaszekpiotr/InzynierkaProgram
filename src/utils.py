@@ -1,6 +1,8 @@
 import json
 import re
 
+# "profit": ["1*5","3*5","5*20"],
+#not used now
 def parse_price(list_of_dicts):
     for cultivation in range(len(list_of_dicts)):
         price = list_of_dicts[cultivation]["price"]
@@ -19,7 +21,7 @@ def parse_price(list_of_dicts):
 
 def parse_resources(list_of_dicts):
     for cultivation in range(len(list_of_dicts)):
-        resources = list_of_dicts[cultivation]["needed_resources"]
+        resources = list_of_dicts[cultivation]["daily_resources"]
         i = 0
         while i < len(resources):
             if "duration" in resources[i]:
@@ -32,4 +34,8 @@ def parse_resources(list_of_dicts):
                     i += 1
                 i -= 1
 
+            i += 1
+
+        while i < list_of_dicts[cultivation]["duration"]:
+            resources.append({})
             i += 1

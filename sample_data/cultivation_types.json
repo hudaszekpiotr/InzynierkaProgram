@@ -1,55 +1,57 @@
 [
   {
     "name": "truskawki",
-    "price": ["1*5","3*4",6,"5*20"],
-    "start_cost": 22,
-    "area_cost": 12,
+    "profit": 12,
     "start_date": [1, 5],
     "duration": 30,
-    "needed_resources": [
+    "entire_period_resources": {
+      "money": 20,
+      "warehouse": 10
+    },
+    "daily_resources": [
       {
         "duration": 4,
-        "work": 20,
+        "work_hours": 15,
         "water": 8,
         "machine_1": 1
       },
       {
         "duration": 20,
-        "work": 5,
+        "work_hours": 5,
         "water": 5
       },
       {
         "duration": 6,
-        "work": 40,
-        "water": 5,
-        "harvest": 20
+        "work_hours": 10,
+        "water": 5
       }
     ]
   },
   {
     "name": "truskawki pod folia",
-    "price": ["1*5","3*5","5*20"],
-    "start_cost": 22,
-    "area_cost": 12,
+    "profit": 5,
     "start_date": [1, 5],
     "duration": 30,
-    "needed_resources": [
+    "entire_period_resources": {
+      "money": 20,
+      "warehouse": 10
+    },
+    "daily_resources": [
       {
         "duration": 4,
-        "work": 20,
+        "work_hours": 20,
         "water": 8,
         "machine_1": 1
       },
       {
-        "duration": 20,
-        "work": 5,
+        "duration": 15,
+        "work_hours": 5,
         "water": 5
       },
       {
         "duration": 6,
-        "work": 40,
-        "water": 5,
-        "harvest": 20
+        "work_hours": 10,
+        "water": 5
       }
     ]
   }
