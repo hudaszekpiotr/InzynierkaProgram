@@ -9,10 +9,34 @@
   },
   {
     "name": "field_2",
-    "area": "20",
+    "area": 20,
     "coeficients": {
-      "truskawki": 0,
-      "truskawki pod folia": 0
+      "truskawki": 1,
+      "truskawki pod folia": 1
+    }
+  },
+  {
+    "name": "field_2",
+    "area": 20,
+    "coeficients": {
+      "truskawki": 1,
+      "truskawki pod folia": 2
+    }
+  },
+  {
+    "name": "field_2",
+    "area": 20,
+    "coeficients": {
+      "truskawki": 1,
+      "truskawki pod folia": 1
+    }
+  },
+  {
+    "name": "field_2",
+    "area": 20,
+    "coeficients": {
+      "truskawki": 2,
+      "truskawki pod folia": 1
     }
   }
 ]

@@ -1,8 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
+import copy
 from typing import List, Callable
-from solution_classes import Solution
-from src.model_limits import daily_resources_ok
+
+from Tools.scripts.dutree import display
+
+from solution_classes import Solution, SolutionAndFitness
+from src.model_limits import daily_resources_ok, resources_df, penalty
 from utils import parse_price, parse_resources
 
 from copy import deepcopy
@@ -17,26 +21,26 @@ def main():
     cultivation_types = json.load(json_cultivation_types)
     json_cultivation_types.close()
 
-    print(json.dumps(cultivation_types, indent=2))
-    print("\nparsed:")
+    # print(json.dumps(cultivation_types, indent=2))
+    # print("\nparsed:")
     #parse_price(cultivation_types)
     parse_resources(cultivation_types)
     # print(json.dumps(cultivation_types, indent=2))
-    for i in cultivation_types:
-        print(i)
+    # for i in cultivation_types:
+    #     print(i)
 
     json_fields = open('../sample_data/fields.json')
     fields = json.load(json_fields)
     json_fields.close()
-    print(json.dumps(fields, indent=2))
+    # print(json.dumps(fields, indent=2))
 
     json_resources = open('../sample_data/resources.json')
     resources = json.load(json_resources)
     json_resources.close()
-    print(json.dumps(resources, indent=2))
+    # print(json.dumps(resources, indent=2))
 
     optimization = Optimization(resources, fields, cultivation_types)
-    optimization.genetic_algorithm()
+    optimization.evolution_algorithm()
 
 
 
@@ -50,103 +54,166 @@ class Optimization:
         self.fields = fields
         self.cultivation_types = cultivation_types
 
-    def generate_initial_population(self, population_size=1):
+    def generate_initial_population(self, population_size=1, method = "filled"):
         def fill_in_solution(solution):
             for i in range(solution.num_fields):
 
                 type = random.randint(0, len(self.cultivation_types)-1)
                 day = random.randint(*self.cultivation_types[type]["start_date"])
 
-                for k in range(self.cultivation_types[type]["duration"]):
-                    solution.days[day+k].field[i] = type, k
+                self.add_to_solution(solution, day, i, type)
+                # for k in range(self.cultivation_types[type]["duration"]):
+                #     solution.days[day+k].field[i] = type, k
             return solution
-
 
         sol_list = []
         for _ in range(population_size):
             solution = Solution(self.num_fields, self.num_days)
-            solution = fill_in_solution(solution)
-            #print(solution)
+            if method == "filled":
+                solution = fill_in_solution(solution)
             sol_list.append(solution)
-            daily_resources_ok(solution, self.resources, self.cultivation_types)
 
+        return sol_list
+            #daily_resources_ok(solution, self.resources, self.cultivation_types)
 
+    def add_to_solution(self, solution, day, field, crop_type):
+        for k in range(self.cultivation_types[crop_type]["duration"]):
+            solution.days[day + k].field[field] = crop_type, k
 
+    def check_slot(self, solution, start_day, duration, field):
+        for day in range(start_day, start_day + duration):
+            if len(solution.days) <= day:
+                return False
+            crop = solution.days[day].field[field]
+            if crop:
+                return False
+        return True
+
+    def clear_slot(self, solution, start_day, duration, field):
+        for day in range(start_day, start_day + duration):
+            if len(solution.days) <= day:
+                return False
+            crop = solution.days[day].field[field]
+
+            if crop and day == start_day:
+                day_iter_back = day - 1
+                prev = crop[1]
+                while solution.days[day_iter_back].field[field] is not None and prev > solution.days[day_iter_back].field[field][1]:
+                    solution.days[day_iter_back+1].field[field] = None
+                    prev = solution.days[day_iter_back].field[field][1]
+                    day_iter_back -= 1
+                solution.days[day_iter_back+1].field[field] = None
+
+            if crop and day == start_day + duration - 1:
+                day_iter_forward = day + 1
+                prev = crop[1]
+                while solution.days[day_iter_forward].field[field] is not None and prev < solution.days[day_iter_forward].field[field][1]:
+                    solution.days[day_iter_forward-1].field[field] = None
+                    prev = solution.days[day_iter_forward].field[field][1]
+                    day_iter_forward += 1
+                solution.days[day_iter_forward-1].field[field] = None
+
+            solution.days[day].field[field] = None
+        return True
 
     def check_if_sol_acceptable(self, solution: Solution) -> bool:
-        """
-        Sprawdza wszystkie ograniczenia dla danego rozwiązania w najprostszej wersji
-        zwraca bool, w bardziej skomplikowanej informacje gdzie błąd i ewentualnie kara
-
-        :param solution:
-        :return:
-        """
         pass
 
     def calculate_objective_fun(self, solution: Solution):
-        """
-        Funckja oblicza wartośc funkcji celu dla rozwiązania
-        :param solution: obiekt reprezentujący rozwiązanie
-        :return: profit - wartośc funkcji celu
-        """
         profit = 0
 
-        for day_id, day in enumerate(solution.days):
-            for _ in range():
-                pass
+        for day in solution.days:
+            for field_count, field in enumerate(day.field):
+                if field is not None and field[1] == 0:
+                    crop_type = self.cultivation_types[field[0]]
+                    field_type = self.fields[field_count]
+                    profit += crop_type["profit"] * field_type["coeficients"][crop_type["name"]] * field_type["area"]
 
+        profit -= penalty(solution, self.cultivation_types, self.resources)
         return profit
 
-    # losuje dopuszcalnego sąsiada
-    def draw_solution(self, initial_solution):
+    def mutate_solution(self, initial_solution):
 
-        def neighbourhood_1(org_solution):
+        def mutation_smart_fit(org_solution):
             solution = deepcopy(org_solution)
             prev_solution = deepcopy(org_solution)
-            day = random.randint(0, self.num_days - 1)
+            type = random.randint(0, len(self.cultivation_types) - 1)
+            day = random.randint(*self.cultivation_types[type]["start_date"])
+            duration = self.cultivation_types[type]["duration"]
 
+            fields_shuffled_list = list(range(self.num_fields))
+            random.shuffle(fields_shuffled_list)
+            for field in fields_shuffled_list:
+                slot_empty = self.check_slot(solution, day, duration, field)
+                if slot_empty:
+                    self.add_to_solution(solution, day, field, type)
+                    return solution
+
+            field = random.randint(0, self.num_fields - 1)
+            success = self.clear_slot(solution, day, duration, field)
+            if success:
+                self.add_to_solution(solution, day, field, type)
             return solution
 
-        # próbuje znalezc sasiada jesli w ciagu 100 losowan nie znajdzie akceptowalnego rzuca wyjątek
-        for _ in range(100):
-            sol = neighbourhood_1(initial_solution)
-            if self.check_if_sol_acceptable(sol):
-                return sol
+        def mutation_force_fit(org_solution):
+            solution = deepcopy(org_solution)
+            prev_solution = deepcopy(org_solution)
+            field = random.randint(0, self.num_fields - 1)
+            crop_type = random.randint(0, len(self.cultivation_types) - 1)
+            day = random.randint(*self.cultivation_types[crop_type]["start_date"])
+            duration = self.cultivation_types[crop_type]["duration"]
+            self.clear_slot(solution, day, duration, field)
+            self.add_to_solution(solution, day, field, crop_type)
+            return solution
 
-        raise Exception("error nie znaleziono otoczenia")
+        return mutation_smart_fit(initial_solution)
 
-    # metoda wybierająca rodziców
     def selection(self, population):
-        parents = []
-        while len(parents) < 2:
-            # losuje dwóch kandydatów do listy rodziców
-            candidate1 = random.randint(0, len(population) - 1)
-            candidate2 = random.randint(0, len(population) - 1)
-            while candidate1 == candidate2:
-                # w przypadku, gdy wylosowano dwóch takich samych 
-                # kandydatów, losowanie jest powtarzane 
-                candidate2 = random.randint(0, len(population) - 1)
-            if population[candidate1][1] > population[candidate2][1]:
-                parents.append(population[candidate1])
-                # do listy rodziców dodawany jest kandydat
-                # dający większą wartość funkcji celu
-            else:
-                parents.append(population[candidate2])
-        return parents
+        pass
 
-    # metoda krzyżująca dwa rozwiązania sol1 i sol2
-    def crossover(self, sol1: Solution, sol2: Solution, bruteforce_comapre=False):
-        if (not self.check_if_sol_acceptable(sol1)) or (not self.check_if_sol_acceptable(sol2)):
-            raise Exception("error podano niedopuszczalne rozw. do skrzyżowania")
+    def rulete_wheel_select_one(self, population):
+        acc_fitness = sum([c.fitness for c in population])
+        if acc_fitness == 0:
+            return population[np.random.choice(len(population))]
+        selection_probs = [c.fitness / acc_fitness for c in population]
+        return population[np.random.choice(len(population), p=selection_probs)]
 
-        for _ in range(100):
-            pass
-            child = None
-            if self.check_if_sol_acceptable(child):
-                return child
-        return None
+    def select_parents_SUS(self, population):
+        pass
 
-    def genetic_algorithm(self, max_iter_no_progress=10, max_iter=0, replacement_rate=0.5, mutation_proba=0.2):
+    def crossover(self, solution1: Solution, solution2: Solution, method = "days"):
+        def crossover_days(sol1, sol2):
+            child = copy.deepcopy(sol1)
+
+            for field in range(self.num_fields):
+                edge = True
+                for day in range(self.num_days // 2, self.num_days):
+                    if sol1.days[day].field[field] is None:
+                        edge = False
+                    if not edge:
+                        child.days[day].field[field] = sol2.days[day].field[field]
+            return child
+
+        def crossover_fields(sol1, sol2):
+            child1 = copy.deepcopy(sol1)
+            child2 = copy.deepcopy(sol2)
+
+            for day in range(self.num_days):
+                for field in range(self.num_fields):
+                    if field % 2 == 0:
+                        child1.days[day].field[field] = sol2.days[day].field[field]
+                    else:
+                        child2.days[day].field[field] = sol1.days[day].field[field]
+            return child1, child2
+
+        if method == "days":
+            child1 = crossover_days(solution1, solution2)
+            child2 = crossover_days(solution2, solution1)
+            return child1, child2
+        else:
+            return crossover_fields(solution1, solution2)
+
+    def evolution_algorithm(self, max_iter_no_progress=2, max_iter=2, replacement_rate=0.5, mutation_proba=0.2):
         """
         :param max_iter_no_progress: Maksymalna ilość iteracji bez poprawy funkcji celu
         :param max_iter: Łączna maksymalna ilość iteracji algorytmu
@@ -157,49 +224,49 @@ class Optimization:
 
         :return: Znalezione rozwiązanie, koszt rozwiązania, ilość wykonanych iteracji
         """
-        solutions = self.generate_initial_population()
+        solutions = self.generate_initial_population(2, method = "filled")
+        population = []
 
-        # population to lista list, w której przechowujemy rozwiązania.
-        # Poszczególne elementy listy population to dwuelementowe
-        # listy o następującej postaci [rozwiązanie, funkcja celu dla rozwiązania]
+        for sol in solutions:
+            #print(sol.to_dataframe())
+            population.append(SolutionAndFitness(sol, self.calculate_objective_fun(sol)))
 
-        #population = [[sol[0], self.calculate_objective_fun(sol[0])] for sol in solutions]
+        iter_with_no_progress = 0
 
-        # sortowanie populacji po wartości funkcji celu
-        # population = sorted(population, key=lambda x: x[1])
-        #
-        # # licznik iteracji bez poprawy funkcji celu
-        # iter_with_no_progress = 0
-        # # licznik wszystkich iteracji
-        # iterations = 0
-        # # wartość funkcji celu dla najleoszego rozwiązania
-        # best_cost = -np.inf
-        #
-        # # lista best_results przechowuje najlepsze wyniki w każdej iteracji
-        # best_results = []
-        #
-        # while iter_with_no_progress <= max_iter_no_progress and iterations <= max_iter:
-        #     # Kryterium stopu algorytmu jest osiągnięcie maksymalnej liczby iteracji bez poprawy
-        #     # lub osiągnięcie maksymalnej iteracji w ogóle.
-        #     iterations += 1
-        #
-        #     # licznik dzieci utworzonych w danej iteracji
-        #     children_count = 0
-        #     # lista przechowująca nowe rozwiązania (dzieci)
-        #     children = []
-        #     # aktualny procent populacji, która zostanie
-        #     # zastąpiona przez nowych członków
-        #     replaced = 0
-        #
-        #     while replaced < replacement_rate:
-        #         # wybieramy rodzicow i tworzymy dziecko
-        #
-        #         pass
-        #
-        #         # następnie losujemy liczbę z zakresu 0-1 i sprawdzamy
-        #         # czy mamy dokonać mutacji dziecka.
+        iterations = 0
 
-        #return population[-1][0], population[-1][1], iterations, best_results
+        best_profit = -np.inf
+
+        best_results = []
+
+        while iter_with_no_progress <= max_iter_no_progress and iterations <= max_iter:
+
+            iterations += 1
+            num_children = 0
+            children = []
+            while replacement_rate > num_children/len(population):
+                parent1 = self.rulete_wheel_select_one(population)
+                parent2 = self.rulete_wheel_select_one(population)
+                child1, child2 = self.crossover(parent1.solution, parent2.solution)
+                child1 = self.mutate_solution(child1)
+                population.append(SolutionAndFitness(child1, self.calculate_objective_fun(child1)))
+                population.append(SolutionAndFitness(child2, self.calculate_objective_fun(child2)))
+                num_children +=2
+                population = sorted(population, key=lambda x: x.fitness)
+                population = population[2:]
+            population = sorted(population, key=lambda x: x.fitness)
+            best_results.append(population[-1].fitness)
+            for sol in population:
+                print(sol.solution.to_dataframe())
+                df, period_dict = resources_df(sol.solution, self.cultivation_types)
+                print(df)
+                print(period_dict)
+                print("_________________")
+            # num_children = num_children*replacement_rate
+            # children = self.select_parents_SUS(population, num_children)
+
+        print(best_results)
+        return 0
 
 
 if __name__ == "__main__":

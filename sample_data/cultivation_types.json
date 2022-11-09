@@ -3,7 +3,7 @@
     "name": "truskawki",
     "profit": 12,
     "start_date": [1, 5],
-    "duration": 30,
+    "duration": 20,
     "entire_period_resources": {
       "money": 20,
       "warehouse": 10
@@ -13,10 +13,11 @@
         "duration": 4,
         "work_hours": 15,
         "water": 8,
-        "machine_1": 1
+        "machine_1": 1,
+        "machine_2": 1
       },
       {
-        "duration": 20,
+        "duration": 10,
         "work_hours": 5,
         "water": 5
       },
@@ -31,7 +32,7 @@
     "name": "truskawki pod folia",
     "profit": 5,
     "start_date": [1, 5],
-    "duration": 30,
+    "duration": 10,
     "entire_period_resources": {
       "money": 20,
       "warehouse": 10
@@ -41,12 +42,7 @@
         "duration": 4,
         "work_hours": 20,
         "water": 8,
-        "machine_1": 1
-      },
-      {
-        "duration": 15,
-        "work_hours": 5,
-        "water": 5
+        "machine_2": 1
       },
       {
         "duration": 6,
