@@ -3,7 +3,7 @@
 import collections
 import functools
 
-from solution_classes import Solution
+
 import pandas as pd
 import operator
 
