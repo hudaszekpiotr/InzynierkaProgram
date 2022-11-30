@@ -36,7 +36,26 @@ class Solution:
         pd.set_option("display.max_rows", 500)
         pd.set_option("display.max_columns", 30)
         pd.set_option("display.width", 1000)
-        return str(df) + "\n"
+        return df
+
+    def to_simple_dataframe(self):
+        def reduct(series):
+            def remove_tuples(elem):
+                if type(elem) is tuple:
+                    return int(elem[0])+ 1
+                return 0
+
+            dsds = series.apply(remove_tuples)
+            pass
+            return dsds
+
+
+        df = self.to_dataframe()
+        df = df.apply(reduct)
+
+        return df
+
+
 
 class SolutionAndFitness:
     def __init__(self, solution: Solution, fitness: int):

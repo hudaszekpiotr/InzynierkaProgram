@@ -209,6 +209,7 @@ class Optimization:
         best_profit = -np.inf
 
         best_results = []
+        best_solution = None
 
         while iter_with_no_progress <= max_iter_no_progress and iterations <= max_iter:
 
@@ -227,15 +228,25 @@ class Optimization:
                 population = population[2:]
             population = sorted(population, key=lambda x: x.fitness)
             best_results.append(population[-1].fitness)
+            if best_solution is None or best_solution.fitness < population[-1].fitness:
+                best_solution = population[-1]
             for sol in population:
-                print(sol.solution.to_dataframe())
+                #print(sol.solution.to_dataframe())
                 df, period_dict = resources_df(sol.solution, self.cultivation_types)
-                print(df)
-                print(period_dict)
+                #print(df)
+                #print(period_dict)
                 print("_________________")
             # num_children = num_children*replacement_rate
             # children = self.select_parents_SUS(population, num_children)
 
         print(best_results)
+        print(best_solution.solution.to_dataframe())
+        df = best_solution.solution.to_simple_dataframe()
+        print(df)
+
+        df.style.background_gradient(cmap='viridis').set_properties(**{'font-size': '20px'})
+
+        #best_solution.solution.to_simple_dataframe().plot()
+
         return 0
 
