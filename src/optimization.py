@@ -3,10 +3,10 @@
 import copy
 from typing import List, Callable
 
+from matplotlib import pyplot as plt
 
 from src.solution_classes import Solution, SolutionAndFitness
-from src.model_limits import daily_resources_ok, resources_df, penalty
-
+from src.model_limits import daily_resources_ok, resources_df, penalty, resources_percent
 
 from copy import deepcopy
 import math
@@ -184,7 +184,7 @@ class Optimization:
         else:
             return crossover_fields(solution1, solution2)
 
-    def evolution_algorithm(self, max_iter_no_progress=2, max_iter=2, replacement_rate=0.5, mutation_proba=0.2):
+    def evolution_algorithm(self, par = None):
         """
         :param max_iter_no_progress: Maksymalna ilość iteracji bez poprawy funkcji celu
         :param max_iter: Łączna maksymalna ilość iteracji algorytmu
@@ -195,6 +195,14 @@ class Optimization:
 
         :return: Znalezione rozwiązanie, koszt rozwiązania, ilość wykonanych iteracji
         """
+
+        max_iter_no_progress = 2
+        max_iter = 2
+        replacement_rate = 0.5
+        mutation_proba = 0.2
+        if par is not None:
+            max_iter = par.max_iter
+
         solutions = self.generate_initial_population(2, method = "filled")
         population = []
 
@@ -232,21 +240,21 @@ class Optimization:
                 best_solution = population[-1]
             for sol in population:
                 #print(sol.solution.to_dataframe())
-                df, period_dict = resources_df(sol.solution, self.cultivation_types)
+                #df, period_dict = resources_df(sol.solution, self.cultivation_types)
                 #print(df)
                 #print(period_dict)
-                print("_________________")
+                pass
+                #print("_________________")
             # num_children = num_children*replacement_rate
             # children = self.select_parents_SUS(population, num_children)
 
         print(best_results)
-        print(best_solution.solution.to_dataframe())
+        #print(best_solution.solution.to_dataframe())
         df = best_solution.solution.to_simple_dataframe()
-        print(df)
-
-        df.style.background_gradient(cmap='viridis').set_properties(**{'font-size': '20px'})
-
+        #print(df)
+        df_resources, period_dict = resources_percent(best_solution.solution, self.cultivation_types, self.resources)
+        #print(df_resources)
         #best_solution.solution.to_simple_dataframe().plot()
 
-        return 0
+        return df, df_resources, best_results
 

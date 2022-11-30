@@ -42,17 +42,11 @@ class Solution:
         def reduct(series):
             def remove_tuples(elem):
                 if type(elem) is tuple:
-                    return int(elem[0])+ 1
-                return 0
-
-            dsds = series.apply(remove_tuples)
-            pass
-            return dsds
-
-
+                    return str((elem[0])+ 1)
+                return " "
+            return series.apply(remove_tuples)
         df = self.to_dataframe()
         df = df.apply(reduct)
-
         return df
 
 

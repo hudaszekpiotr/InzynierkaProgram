@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'cult_type_stage.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -60,6 +60,7 @@ class Ui_Form(object):
         sizePolicy1.setVerticalStretch(0)
         sizePolicy1.setHeightForWidth(self.dailyResources.sizePolicy().hasHeightForWidth())
         self.dailyResources.setSizePolicy(sizePolicy1)
+        self.dailyResources.setMinimumSize(QSize(0, 100))
         self.dailyResources.horizontalHeader().setStretchLastSection(True)
 
         self.gridLayout.addWidget(self.dailyResources, 0, 2, 2, 1)

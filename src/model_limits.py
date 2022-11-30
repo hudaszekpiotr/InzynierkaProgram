@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import collections
 import functools
-
+import math
 
 import pandas as pd
 import operator
@@ -68,6 +68,16 @@ def penalty(solution, cultivation_types, resources):
     return penalty_val
 
 
+def resources_percent(solution, cultivation_types, resources):
+    df, period_dict = resources_df(solution, cultivation_types)
+    #print(df)
+    for column in df:
+        for row in df.index:
+            if math.isnan(df[column][row]):
+                df[column][row] = 0.0
+            df[column][row] = (df[column][row]/resources['daily_resources'][row])*100
+    df = df.transpose()
+    return df, period_dict
 
 def resources_df(solution, cultivation_types):
     df = pd.DataFrame()

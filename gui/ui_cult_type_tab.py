@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'cult_type_tab.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -26,8 +26,50 @@ class Ui_widget(object):
         if not widget.objectName():
             widget.setObjectName(u"widget")
         widget.resize(766, 563)
-        self.gridLayout_2 = QGridLayout(widget)
-        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.gridLayout = QGridLayout(widget)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.frame_5 = QFrame(widget)
+        self.frame_5.setObjectName(u"frame_5")
+        sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
+        self.frame_5.setSizePolicy(sizePolicy)
+        self.frame_5.setFrameShape(QFrame.StyledPanel)
+        self.frame_5.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_3 = QHBoxLayout(self.frame_5)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setContentsMargins(5, 5, 5, 5)
+        self.frame_4 = QFrame(self.frame_5)
+        self.frame_4.setObjectName(u"frame_4")
+        sizePolicy.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
+        self.frame_4.setSizePolicy(sizePolicy)
+        self.frame_4.setFrameShape(QFrame.StyledPanel)
+        self.frame_4.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout = QHBoxLayout(self.frame_4)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(5, 5, 5, 5)
+        self.label = QLabel(self.frame_4)
+        self.label.setObjectName(u"label")
+
+        self.horizontalLayout.addWidget(self.label)
+
+        self.name = QLineEdit(self.frame_4)
+        self.name.setObjectName(u"name")
+        sizePolicy1 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.name.sizePolicy().hasHeightForWidth())
+        self.name.setSizePolicy(sizePolicy1)
+
+        self.horizontalLayout.addWidget(self.name)
+
+
+        self.horizontalLayout_3.addWidget(self.frame_4)
+
+
+        self.gridLayout.addWidget(self.frame_5, 0, 0, 1, 1)
+
         self.frame_7 = QFrame(widget)
         self.frame_7.setObjectName(u"frame_7")
         self.frame_7.setFrameShape(QFrame.StyledPanel)
@@ -96,11 +138,11 @@ class Ui_widget(object):
 
         self.label_7 = QLabel(self.frame_9)
         self.label_7.setObjectName(u"label_7")
-        sizePolicy = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
-        self.label_7.setSizePolicy(sizePolicy)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy2)
 
         self.horizontalLayout_6.addWidget(self.label_7)
 
@@ -117,65 +159,30 @@ class Ui_widget(object):
         self.horizontalLayout_4.addItem(self.horizontalSpacer)
 
 
-        self.gridLayout_2.addWidget(self.frame_7, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.frame_7, 1, 0, 1, 1)
 
         self.label_3 = QLabel(widget)
         self.label_3.setObjectName(u"label_3")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
-        self.label_3.setSizePolicy(sizePolicy1)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy3)
 
-        self.gridLayout_2.addWidget(self.label_3, 2, 0, 1, 1)
-
-        self.label_4 = QLabel(widget)
-        self.label_4.setObjectName(u"label_4")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy2)
-
-        self.gridLayout_2.addWidget(self.label_4, 4, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_3, 2, 0, 1, 1)
 
         self.frame_2 = QFrame(widget)
         self.frame_2.setObjectName(u"frame_2")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Minimum)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.frame_2.sizePolicy().hasHeightForWidth())
-        self.frame_2.setSizePolicy(sizePolicy3)
-        self.frame_2.setMinimumSize(QSize(100, 40))
+        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.MinimumExpanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.frame_2.sizePolicy().hasHeightForWidth())
+        self.frame_2.setSizePolicy(sizePolicy4)
+        self.frame_2.setMinimumSize(QSize(100, 10))
         self.frame_2.setFrameShape(QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QFrame.Raised)
-        self.gridLayout = QGridLayout(self.frame_2)
-        self.gridLayout.setObjectName(u"gridLayout")
-        self.frame = QFrame(self.frame_2)
-        self.frame.setObjectName(u"frame")
-        sizePolicy.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
-        self.frame.setSizePolicy(sizePolicy)
-        self.frame.setFrameShape(QFrame.StyledPanel)
-        self.frame.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_2 = QVBoxLayout(self.frame)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
-        self.addPeriodResources = QPushButton(self.frame)
-        self.addPeriodResources.setObjectName(u"addPeriodResources")
-        sizePolicy1.setHeightForWidth(self.addPeriodResources.sizePolicy().hasHeightForWidth())
-        self.addPeriodResources.setSizePolicy(sizePolicy1)
-
-        self.verticalLayout_2.addWidget(self.addPeriodResources)
-
-        self.removePeriodResources = QPushButton(self.frame)
-        self.removePeriodResources.setObjectName(u"removePeriodResources")
-        sizePolicy1.setHeightForWidth(self.removePeriodResources.sizePolicy().hasHeightForWidth())
-        self.removePeriodResources.setSizePolicy(sizePolicy1)
-
-        self.verticalLayout_2.addWidget(self.removePeriodResources)
-
-
-        self.gridLayout.addWidget(self.frame, 0, 1, 1, 1)
-
+        self.horizontalLayout_8 = QHBoxLayout(self.frame_2)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
         self.periodResources = QTableWidget(self.frame_2)
         if (self.periodResources.columnCount() < 2):
             self.periodResources.setColumnCount(2)
@@ -188,93 +195,90 @@ class Ui_widget(object):
         __qtablewidgetitem2 = QTableWidgetItem()
         self.periodResources.setVerticalHeaderItem(0, __qtablewidgetitem2)
         self.periodResources.setObjectName(u"periodResources")
-        sizePolicy3.setHeightForWidth(self.periodResources.sizePolicy().hasHeightForWidth())
-        self.periodResources.setSizePolicy(sizePolicy3)
-        self.periodResources.setMinimumSize(QSize(300, 30))
+        sizePolicy4.setHeightForWidth(self.periodResources.sizePolicy().hasHeightForWidth())
+        self.periodResources.setSizePolicy(sizePolicy4)
+        self.periodResources.setMinimumSize(QSize(300, 100))
         self.periodResources.horizontalHeader().setDefaultSectionSize(200)
         self.periodResources.horizontalHeader().setStretchLastSection(True)
 
-        self.gridLayout.addWidget(self.periodResources, 0, 0, 1, 1)
+        self.horizontalLayout_8.addWidget(self.periodResources)
+
+        self.frame = QFrame(self.frame_2)
+        self.frame.setObjectName(u"frame")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.MinimumExpanding)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.frame.sizePolicy().hasHeightForWidth())
+        self.frame.setSizePolicy(sizePolicy5)
+        self.frame.setMinimumSize(QSize(0, 100))
+        self.frame.setFrameShape(QFrame.StyledPanel)
+        self.frame.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.frame)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.addPeriodResources = QPushButton(self.frame)
+        self.addPeriodResources.setObjectName(u"addPeriodResources")
+        sizePolicy3.setHeightForWidth(self.addPeriodResources.sizePolicy().hasHeightForWidth())
+        self.addPeriodResources.setSizePolicy(sizePolicy3)
+
+        self.verticalLayout_2.addWidget(self.addPeriodResources)
+
+        self.removePeriodResources = QPushButton(self.frame)
+        self.removePeriodResources.setObjectName(u"removePeriodResources")
+        sizePolicy3.setHeightForWidth(self.removePeriodResources.sizePolicy().hasHeightForWidth())
+        self.removePeriodResources.setSizePolicy(sizePolicy3)
+
+        self.verticalLayout_2.addWidget(self.removePeriodResources)
 
 
-        self.gridLayout_2.addWidget(self.frame_2, 3, 0, 1, 1)
+        self.horizontalLayout_8.addWidget(self.frame)
+
+
+        self.gridLayout.addWidget(self.frame_2, 3, 0, 1, 1)
+
+        self.label_4 = QLabel(widget)
+        self.label_4.setObjectName(u"label_4")
+        sizePolicy1.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy1)
+
+        self.gridLayout.addWidget(self.label_4, 4, 0, 1, 1)
 
         self.frame_6 = QFrame(widget)
         self.frame_6.setObjectName(u"frame_6")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.frame_6.sizePolicy().hasHeightForWidth())
-        self.frame_6.setSizePolicy(sizePolicy4)
+        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy6.setHorizontalStretch(0)
+        sizePolicy6.setVerticalStretch(0)
+        sizePolicy6.setHeightForWidth(self.frame_6.sizePolicy().hasHeightForWidth())
+        self.frame_6.setSizePolicy(sizePolicy6)
         self.frame_6.setFrameShape(QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_5 = QHBoxLayout(self.frame_6)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.addStage = QPushButton(self.frame_6)
         self.addStage.setObjectName(u"addStage")
-        sizePolicy1.setHeightForWidth(self.addStage.sizePolicy().hasHeightForWidth())
-        self.addStage.setSizePolicy(sizePolicy1)
+        sizePolicy3.setHeightForWidth(self.addStage.sizePolicy().hasHeightForWidth())
+        self.addStage.setSizePolicy(sizePolicy3)
 
         self.horizontalLayout_5.addWidget(self.addStage)
 
         self.removeStage = QPushButton(self.frame_6)
         self.removeStage.setObjectName(u"removeStage")
-        sizePolicy1.setHeightForWidth(self.removeStage.sizePolicy().hasHeightForWidth())
-        self.removeStage.setSizePolicy(sizePolicy1)
+        sizePolicy3.setHeightForWidth(self.removeStage.sizePolicy().hasHeightForWidth())
+        self.removeStage.setSizePolicy(sizePolicy3)
 
         self.horizontalLayout_5.addWidget(self.removeStage)
 
 
-        self.gridLayout_2.addWidget(self.frame_6, 5, 0, 1, 1)
-
-        self.frame_5 = QFrame(widget)
-        self.frame_5.setObjectName(u"frame_5")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.frame_5.sizePolicy().hasHeightForWidth())
-        self.frame_5.setSizePolicy(sizePolicy5)
-        self.frame_5.setFrameShape(QFrame.StyledPanel)
-        self.frame_5.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_3 = QHBoxLayout(self.frame_5)
-        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
-        self.horizontalLayout_3.setContentsMargins(5, 5, 5, 5)
-        self.frame_4 = QFrame(self.frame_5)
-        self.frame_4.setObjectName(u"frame_4")
-        sizePolicy5.setHeightForWidth(self.frame_4.sizePolicy().hasHeightForWidth())
-        self.frame_4.setSizePolicy(sizePolicy5)
-        self.frame_4.setFrameShape(QFrame.StyledPanel)
-        self.frame_4.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout = QHBoxLayout(self.frame_4)
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalLayout.setContentsMargins(5, 5, 5, 5)
-        self.label = QLabel(self.frame_4)
-        self.label.setObjectName(u"label")
-
-        self.horizontalLayout.addWidget(self.label)
-
-        self.name = QLineEdit(self.frame_4)
-        self.name.setObjectName(u"name")
-        sizePolicy2.setHeightForWidth(self.name.sizePolicy().hasHeightForWidth())
-        self.name.setSizePolicy(sizePolicy2)
-
-        self.horizontalLayout.addWidget(self.name)
-
-
-        self.horizontalLayout_3.addWidget(self.frame_4)
-
-
-        self.gridLayout_2.addWidget(self.frame_5, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.frame_6, 5, 0, 1, 1)
 
         self.tabWidgetStages = QTabWidget(widget)
         self.tabWidgetStages.setObjectName(u"tabWidgetStages")
-        sizePolicy6 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        sizePolicy6.setHorizontalStretch(0)
-        sizePolicy6.setVerticalStretch(0)
-        sizePolicy6.setHeightForWidth(self.tabWidgetStages.sizePolicy().hasHeightForWidth())
-        self.tabWidgetStages.setSizePolicy(sizePolicy6)
+        sizePolicy7 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        sizePolicy7.setHorizontalStretch(0)
+        sizePolicy7.setVerticalStretch(0)
+        sizePolicy7.setHeightForWidth(self.tabWidgetStages.sizePolicy().hasHeightForWidth())
+        self.tabWidgetStages.setSizePolicy(sizePolicy7)
 
-        self.gridLayout_2.addWidget(self.tabWidgetStages, 6, 0, 1, 1)
+        self.gridLayout.addWidget(self.tabWidgetStages, 6, 0, 1, 1)
 
 
         self.retranslateUi(widget)
@@ -287,23 +291,23 @@ class Ui_widget(object):
 
     def retranslateUi(self, widget):
         widget.setWindowTitle(QCoreApplication.translate("widget", u"Form", None))
+        self.label.setText(QCoreApplication.translate("widget", u"Name", None))
+        self.name.setText("")
         self.label_2.setText(QCoreApplication.translate("widget", u"Profit", None))
         self.label_5.setText(QCoreApplication.translate("widget", u"Duration", None))
         self.label_6.setText(QCoreApplication.translate("widget", u"Start date", None))
         self.label_7.setText(QCoreApplication.translate("widget", u"\u00b1", None))
         self.label_3.setText(QCoreApplication.translate("widget", u"entire period resources", None))
-        self.label_4.setText(QCoreApplication.translate("widget", u"daily period resources", None))
-        self.addPeriodResources.setText(QCoreApplication.translate("widget", u"Add", None))
-        self.removePeriodResources.setText(QCoreApplication.translate("widget", u"Remove", None))
         ___qtablewidgetitem = self.periodResources.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("widget", u"Resource name", None));
         ___qtablewidgetitem1 = self.periodResources.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("widget", u"Quantity", None));
         ___qtablewidgetitem2 = self.periodResources.verticalHeaderItem(0)
         ___qtablewidgetitem2.setText(QCoreApplication.translate("widget", u"Lp. 1", None));
+        self.addPeriodResources.setText(QCoreApplication.translate("widget", u"Add", None))
+        self.removePeriodResources.setText(QCoreApplication.translate("widget", u"Remove", None))
+        self.label_4.setText(QCoreApplication.translate("widget", u"daily period resources", None))
         self.addStage.setText(QCoreApplication.translate("widget", u"Add new stage", None))
         self.removeStage.setText(QCoreApplication.translate("widget", u"Remove selected stage", None))
-        self.label.setText(QCoreApplication.translate("widget", u"Name", None))
-        self.name.setText("")
     # retranslateUi
 

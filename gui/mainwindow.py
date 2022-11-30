@@ -3,9 +3,15 @@ import copy
 import json
 import sys
 
+#from PyQt6.QtCore import QAbstractTableModel, Qt
+
+from PySide6.QtCore import QRect
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
+from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtCore import Qt
 
 from src.optimization import Optimization
+from src.parameters import Parameters
 from src.utils import parse_resources, load_files
 # Important:
 # You need to run the following command to generate the ui_form.py file
@@ -15,17 +21,60 @@ from ui_form import Ui_MainWindow
 import ui_cult_type_tab
 import ui_cult_type_stage
 import ui_field_type_tab
+import ui_result
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
 
 class MplCanvas(FigureCanvasQTAgg):
-
     def __init__(self, parent=None, width=5, height=4, dpi=100):
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.axes = fig.add_subplot(111)
         super(MplCanvas, self).__init__(fig)
+
+
+class TableModel(QtCore.QAbstractTableModel):
+    def __init__(self, data):
+        super(TableModel, self).__init__()
+        self._data = data
+
+    def data(self, index, role):
+        if role == Qt.DisplayRole:
+            # See below for the nested-list data structure.
+            # .row() indexes into the outer list,
+            # .column() indexes into the sub-list
+            return self._data[index.row()][index.column()]
+
+    def rowCount(self, index):
+        # The length of the outer list.
+        return len(self._data)
+
+    def columnCount(self, index):
+        # The following takes the first sub-list, and returns
+        # the length (only works if all rows are an equal length)
+        return len(self._data[0])
+
+
+class Result(QWidget):
+    def __init__(self, df, df_resources, parent=None):
+        super().__init__(parent)
+        self.ui = ui_result.Ui_Form()
+        self.ui.setupUi(self)
+        self.table = QtWidgets.QTableView()
+        df = df.values.tolist()
+        self.model = TableModel(df)
+        self.table.setModel(self.model)
+        self.ui.topSpot.addWidget(self.table)
+
+        sc = MplCanvas(self, width=5, height=4, dpi=100)
+        #sc.axes.plot([0, 1, 2, 3, 4], [10, 1, 20, 3, 40])
+        #print(df_resources)
+        df_resources.plot(ax=sc.axes, kind="bar")
+
+        #sc.axes.bar(langs, students)
+        self.ui.bottomSpot.addWidget(sc)
+
 
 class FieldTypeTab(QWidget):
     def __init__(self, parent=None):
@@ -103,20 +152,35 @@ class MainWindow(QMainWindow):
         self.ui.removeCultType.clicked.connect(self.remove_cult_type)
         self.ui.addField.clicked.connect(self.add_field)
         self.ui.removeField.clicked.connect(self.remove_field)
-        sc = MplCanvas(self, width=5, height=4, dpi=100)
-        sc.axes.plot([0, 1, 2, 3, 4], [10, 1, 20, 3, 40])
+        self.sc = MplCanvas(self, width=5, height=4, dpi=100)
+        #self.sc.axes.plot([0, 1, 2, 3, 4], [10, 1, 20, 3, 40])
         # self.setCentralWidget(sc)
-        self.ui.verticalLayout_3.addWidget(sc)
+        self.ui.verticalLayout_3.addWidget(self.sc)
+        self.result = None
 
+    def plot(self, best_results):
+        self.sc.axes.plot(best_results)
+        # self.setCentralWidget(sc)
+        self.ui.verticalLayout_3.addWidget(self.sc)
+
+    def get_parameters(self):
+        max_iter = self.ui.maxIter.value()
+        par = Parameters(max_iter)
+        return par
 
     def run_optimization(self):
+        par = self.get_parameters()
         self.save_data()
-        self.optimization.evolution_algorithm()
+        df, df_resources, best_results = self.optimization.evolution_algorithm(par)
+        self.result = Result(df, df_resources)
+        self.result.setGeometry(QRect(100, 100, 800, 800))
+        self.result.show()
+        self.plot(best_results)
 
     def save_data(self):
         self.save_fields()
         self.save_resources()
-        self.save_cultivation_types()
+        #self.save_cultivation_types()
 
     def save_cultivation_types(self):
         for i in range(self.ui.tabWidgetCultTypes.count()):
@@ -127,14 +191,14 @@ class MainWindow(QMainWindow):
                 quantity = tab.periodResources.item(k, 1).text()
                 entire_period_resources[resource] = quantity
             print(entire_period_resources)
-            for k in range(tab.tabWidgetStages.count()):
-                stage = tab.widget(i).ui
+            # for k in range(tab.tabWidgetStages.count()):
+            #     stage = tab.widget(i).ui
 
 
             new_type = {"name": tab.name.text(),
                         "profit": tab.profit.value(),
                         "duration": tab.duration.value(),
-                        "start_date": [tab.startDate.date().toPython(), tab.startDate.date().toPython()]
+                        "start_date": [tab.startDate.date().toPython(), tab.startDate.date().toPython()],
                         "entire_period_resources": entire_period_resources}
             print(new_type)
 

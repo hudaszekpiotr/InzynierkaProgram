@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'form.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -26,7 +26,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1078, 722)
+        MainWindow.resize(1066, 551)
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -71,12 +71,14 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addWidget(self.runButton, 0, 3, 1, 1)
 
-        self.spinBox = QSpinBox(self.tab)
-        self.spinBox.setObjectName(u"spinBox")
-        sizePolicy3.setHeightForWidth(self.spinBox.sizePolicy().hasHeightForWidth())
-        self.spinBox.setSizePolicy(sizePolicy3)
+        self.maxIter = QSpinBox(self.tab)
+        self.maxIter.setObjectName(u"maxIter")
+        sizePolicy3.setHeightForWidth(self.maxIter.sizePolicy().hasHeightForWidth())
+        self.maxIter.setSizePolicy(sizePolicy3)
+        self.maxIter.setMaximum(9999999)
+        self.maxIter.setValue(100)
 
-        self.gridLayout_2.addWidget(self.spinBox, 0, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.maxIter, 0, 1, 1, 1)
 
         self.verticalLayout_3 = QVBoxLayout()
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
@@ -217,8 +219,8 @@ class Ui_MainWindow(object):
 
         self.frame_7 = QFrame(self.frame_8)
         self.frame_7.setObjectName(u"frame_7")
-        sizePolicy7.setHeightForWidth(self.frame_7.sizePolicy().hasHeightForWidth())
-        self.frame_7.setSizePolicy(sizePolicy7)
+        sizePolicy4.setHeightForWidth(self.frame_7.sizePolicy().hasHeightForWidth())
+        self.frame_7.setSizePolicy(sizePolicy4)
         self.frame_7.setFrameShape(QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame_7)
@@ -271,6 +273,8 @@ class Ui_MainWindow(object):
 
         self.frame_11 = QFrame(self.frame_9)
         self.frame_11.setObjectName(u"frame_11")
+        sizePolicy4.setHeightForWidth(self.frame_11.sizePolicy().hasHeightForWidth())
+        self.frame_11.setSizePolicy(sizePolicy4)
         self.frame_11.setFrameShape(QFrame.StyledPanel)
         self.frame_11.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.frame_11)
@@ -298,7 +302,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1078, 32))
+        self.menubar.setGeometry(QRect(0, 0, 1066, 22))
         self.menuinfo = QMenu(self.menubar)
         self.menuinfo.setObjectName(u"menuinfo")
         MainWindow.setMenuBar(self.menubar)
@@ -310,7 +314,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(2)
         self.tabWidgetCultTypes.setCurrentIndex(-1)
         self.tabWidgetFields.setCurrentIndex(-1)
 
