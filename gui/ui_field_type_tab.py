@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'field_type_tab.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -17,8 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QHeaderView, QLabel, QLineEdit, QPushButton,
-    QSizePolicy, QTableWidget, QTableWidgetItem, QVBoxLayout,
-    QWidget)
+    QSizePolicy, QSpinBox, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -44,6 +44,8 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.coefficient.sizePolicy().hasHeightForWidth())
         self.coefficient.setSizePolicy(sizePolicy)
+        self.coefficient.horizontalHeader().setDefaultSectionSize(200)
+        self.coefficient.horizontalHeader().setStretchLastSection(True)
 
         self.gridLayout.addWidget(self.coefficient, 2, 1, 2, 1)
 
@@ -121,12 +123,12 @@ class Ui_Form(object):
 
         self.horizontalLayout_3.addWidget(self.label_2)
 
-        self.lineEdit_2 = QLineEdit(self.frame_3)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-        sizePolicy1.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
-        self.lineEdit_2.setSizePolicy(sizePolicy1)
+        self.spinBox = QSpinBox(self.frame_3)
+        self.spinBox.setObjectName(u"spinBox")
+        sizePolicy1.setHeightForWidth(self.spinBox.sizePolicy().hasHeightForWidth())
+        self.spinBox.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_3.addWidget(self.lineEdit_2)
+        self.horizontalLayout_3.addWidget(self.spinBox)
 
 
         self.gridLayout.addWidget(self.frame_3, 1, 1, 1, 2)
