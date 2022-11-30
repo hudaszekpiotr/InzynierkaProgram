@@ -46,7 +46,7 @@ class FieldTypeTab(QWidget):
 class CultTypeStage(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = ui_cult_type_stage.Ui_Widget()
+        self.ui = ui_cult_type_stage.Ui_Form()
         self.ui.setupUi(self)
         self.ui.addResources.clicked.connect(self.add_daily_resource)
         self.ui.removeResources.clicked.connect(self.remove_daily_resource)
@@ -62,7 +62,7 @@ class CultTypeStage(QWidget):
 class CultTypeTab(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = ui_cult_type_tab.Ui_Widget()
+        self.ui = ui_cult_type_tab.Ui_widget()
         self.ui.setupUi(self)
         self.ui.addPeriodResources.clicked.connect(self.add_period_resource)
         self.ui.removePeriodResources.clicked.connect(self.remove_period_resource)
@@ -114,10 +114,35 @@ class MainWindow(QMainWindow):
         self.optimization.evolution_algorithm()
 
     def save_data(self):
+        self.save_fields()
+        self.save_resources()
+        self.save_cultivation_types()
+
+    def save_cultivation_types(self):
         for i in range(self.ui.tabWidgetCultTypes.count()):
-            pass
-            name = self.ui.tabWidgetCultTypes.widget(i).ui.name.text()
-            print(name)
+            tab = self.ui.tabWidgetCultTypes.widget(i).ui
+            entire_period_resources = {}
+            for k in range(tab.periodResources.rowCount()):
+                resource = tab.periodResources.item(k, 0).text()
+                quantity = tab.periodResources.item(k, 1).text()
+                entire_period_resources[resource] = quantity
+            print(entire_period_resources)
+            for k in range(tab.tabWidgetStages.count()):
+                stage = tab.widget(i).ui
+
+
+            new_type = {"name": tab.name.text(),
+                        "profit": tab.profit.value(),
+                        "duration": tab.duration.value(),
+                        "start_date": [tab.startDate.date().toPython(), tab.startDate.date().toPython()]
+                        "entire_period_resources": entire_period_resources}
+            print(new_type)
+
+    def save_fields(self):
+        pass
+
+    def save_resources(self):
+        pass
 
 
 
