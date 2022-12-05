@@ -140,10 +140,18 @@ class Optimization:
         pass
 
     def rulete_wheel_select_one(self, population):
-        acc_fitness = sum([c.fitness for c in population])
+        negative = 0
+        acc_fitness = 0
+        for solution in population:
+            if solution.fitness < 0:
+                if negative > solution.fitness:
+                    negative = solution.fitness
+
+        fitness_list = [c.fitness + abs(negative) for c in population]
+        acc_fitness = sum(fitness_list)
         if acc_fitness == 0:
             return population[np.random.choice(len(population))]
-        selection_probs = [c.fitness / acc_fitness for c in population]
+        selection_probs = [c / acc_fitness for c in fitness_list]
         return population[np.random.choice(len(population), p=selection_probs)]
 
     def select_parents_SUS(self, population):

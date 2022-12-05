@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'field_type_tab.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -17,8 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QGridLayout, QHBoxLayout,
     QHeaderView, QLabel, QLineEdit, QPushButton,
-    QSizePolicy, QSpinBox, QTableWidget, QTableWidgetItem,
-    QVBoxLayout, QWidget)
+    QSizePolicy, QSpacerItem, QSpinBox, QTableWidget,
+    QTableWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -27,27 +27,27 @@ class Ui_Form(object):
         Form.resize(628, 281)
         self.gridLayout = QGridLayout(Form)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.coefficient = QTableWidget(Form)
-        if (self.coefficient.columnCount() < 2):
-            self.coefficient.setColumnCount(2)
+        self.coefficients = QTableWidget(Form)
+        if (self.coefficients.columnCount() < 2):
+            self.coefficients.setColumnCount(2)
         __qtablewidgetitem = QTableWidgetItem()
-        self.coefficient.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        self.coefficients.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
-        self.coefficient.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        if (self.coefficient.rowCount() < 1):
-            self.coefficient.setRowCount(1)
+        self.coefficients.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        if (self.coefficients.rowCount() < 1):
+            self.coefficients.setRowCount(1)
         __qtablewidgetitem2 = QTableWidgetItem()
-        self.coefficient.setVerticalHeaderItem(0, __qtablewidgetitem2)
-        self.coefficient.setObjectName(u"coefficient")
+        self.coefficients.setVerticalHeaderItem(0, __qtablewidgetitem2)
+        self.coefficients.setObjectName(u"coefficients")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.coefficient.sizePolicy().hasHeightForWidth())
-        self.coefficient.setSizePolicy(sizePolicy)
-        self.coefficient.horizontalHeader().setDefaultSectionSize(200)
-        self.coefficient.horizontalHeader().setStretchLastSection(True)
+        sizePolicy.setHeightForWidth(self.coefficients.sizePolicy().hasHeightForWidth())
+        self.coefficients.setSizePolicy(sizePolicy)
+        self.coefficients.horizontalHeader().setDefaultSectionSize(200)
+        self.coefficients.horizontalHeader().setStretchLastSection(True)
 
-        self.gridLayout.addWidget(self.coefficient, 2, 1, 2, 1)
+        self.gridLayout.addWidget(self.coefficients, 2, 1, 2, 1)
 
         self.frame_4 = QFrame(Form)
         self.frame_4.setObjectName(u"frame_4")
@@ -98,12 +98,16 @@ class Ui_Form(object):
 
         self.horizontalLayout_2.addWidget(self.label)
 
-        self.lineEdit = QLineEdit(self.frame_2)
-        self.lineEdit.setObjectName(u"lineEdit")
-        sizePolicy1.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
-        self.lineEdit.setSizePolicy(sizePolicy1)
+        self.name = QLineEdit(self.frame_2)
+        self.name.setObjectName(u"name")
+        sizePolicy1.setHeightForWidth(self.name.sizePolicy().hasHeightForWidth())
+        self.name.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_2.addWidget(self.lineEdit)
+        self.horizontalLayout_2.addWidget(self.name)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer)
 
 
         self.gridLayout.addWidget(self.frame_2, 0, 1, 1, 2)
@@ -123,12 +127,16 @@ class Ui_Form(object):
 
         self.horizontalLayout_3.addWidget(self.label_2)
 
-        self.spinBox = QSpinBox(self.frame_3)
-        self.spinBox.setObjectName(u"spinBox")
-        sizePolicy1.setHeightForWidth(self.spinBox.sizePolicy().hasHeightForWidth())
-        self.spinBox.setSizePolicy(sizePolicy1)
+        self.area = QSpinBox(self.frame_3)
+        self.area.setObjectName(u"area")
+        sizePolicy1.setHeightForWidth(self.area.sizePolicy().hasHeightForWidth())
+        self.area.setSizePolicy(sizePolicy1)
 
-        self.horizontalLayout_3.addWidget(self.spinBox)
+        self.horizontalLayout_3.addWidget(self.area)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_3.addItem(self.horizontalSpacer_2)
 
 
         self.gridLayout.addWidget(self.frame_3, 1, 1, 1, 2)
@@ -141,11 +149,11 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        ___qtablewidgetitem = self.coefficient.horizontalHeaderItem(0)
+        ___qtablewidgetitem = self.coefficients.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("Form", u"Resource name", None));
-        ___qtablewidgetitem1 = self.coefficient.horizontalHeaderItem(1)
+        ___qtablewidgetitem1 = self.coefficients.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("Form", u"Quantity", None));
-        ___qtablewidgetitem2 = self.coefficient.verticalHeaderItem(0)
+        ___qtablewidgetitem2 = self.coefficients.verticalHeaderItem(0)
         ___qtablewidgetitem2.setText(QCoreApplication.translate("Form", u"Lp. 1", None));
         self.addCoef.setText(QCoreApplication.translate("Form", u"Add", None))
         self.removeCoef.setText(QCoreApplication.translate("Form", u"Remove", None))

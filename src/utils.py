@@ -26,8 +26,7 @@ def parse_resources(list_of_dicts):
         while i < len(resources):
             if "duration" in resources[i]:
                 duration = resources[i]["duration"]
-                del resources[i]['duration']
-                raw_resources = resources[i]
+                raw_resources = resources[i]["values"]
                 del resources[i]
                 for k in range(int(duration)):
                     resources.insert(i, raw_resources)

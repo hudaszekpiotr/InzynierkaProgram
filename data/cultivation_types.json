@@ -1,0 +1,21 @@
+[
+  {
+    "name": "",
+    "profit": 0,
+    "duration": 0,
+    "start_date": {
+      "year": 2000,
+      "month": 1,
+      "day": 1,
+      "plus_minus_days": 0
+    },
+    "entire_period_resources": {},
+    "daily_resources": [
+      {
+        "name": "",
+        "duration": 0,
+        "values": {}
+      }
+    ]
+  }
+]

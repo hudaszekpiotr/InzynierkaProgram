@@ -38,40 +38,32 @@
         <verstretch>200</verstretch>
        </sizepolicy>
       </property>
+      <property name="font">
+       <font>
+        <pointsize>11</pointsize>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="tabPosition">
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>3</number>
+      </property>
+      <property name="elideMode">
+       <enum>Qt::ElideNone</enum>
       </property>
       <widget class="QWidget" name="tab">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
        <attribute name="title">
         <string>Control</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="2">
-         <widget class="QFrame" name="frame">
-          <property name="frameShape">
-           <enum>QFrame::StyledPanel</enum>
-          </property>
-          <property name="frameShadow">
-           <enum>QFrame::Raised</enum>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="3">
-         <widget class="QPushButton" name="runButton">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="text">
-           <string>Run</string>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="QSpinBox" name="maxIter">
           <property name="sizePolicy">
@@ -88,8 +80,57 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="0" colspan="4">
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_2">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Max iterations without progress</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="spinBox"/>
+        </item>
+        <item row="2" column="0" colspan="7">
          <layout class="QVBoxLayout" name="verticalLayout_3"/>
+        </item>
+        <item row="1" column="2">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>Crossover type</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="6">
+         <widget class="QPushButton" name="runButton">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Run</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="label">
@@ -100,35 +141,53 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Number of iterations</string>
+           <string>Max number of iterations</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="checkBox">
+        <item row="0" column="2">
+         <widget class="QLabel" name="label_3">
           <property name="text">
-           <string>CheckBox</string>
+           <string>Selection type</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QPushButton" name="pushButton_3">
+        <item row="1" column="3">
+         <widget class="QComboBox" name="comboBox_2"/>
+        </item>
+        <item row="0" column="3">
+         <widget class="QComboBox" name="comboBox"/>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_5">
           <property name="text">
-           <string>PushButton</string>
+           <string>TextLabel</string>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="types">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
        <attribute name="title">
         <string>Cultivation types</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
         <item row="2" column="0">
          <widget class="QTabWidget" name="tabWidgetCultTypes">
+          <property name="tabShape">
+           <enum>QTabWidget::Triangular</enum>
+          </property>
           <property name="currentIndex">
            <number>-1</number>
+          </property>
+          <property name="tabsClosable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
@@ -156,20 +215,7 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Add new</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="removeCultType">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Remove</string>
+              <string>Add new cultivation type</string>
              </property>
             </widget>
            </item>
@@ -179,6 +225,12 @@
        </layout>
       </widget>
       <widget class="QWidget" name="fields">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
        <attribute name="title">
         <string>Fields</string>
        </attribute>
@@ -201,20 +253,7 @@
               </sizepolicy>
              </property>
              <property name="text">
-              <string>Add new</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="removeField">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Remove</string>
+              <string>Add new field</string>
              </property>
             </widget>
            </item>
@@ -223,14 +262,26 @@
         </item>
         <item>
          <widget class="QTabWidget" name="tabWidgetFields">
+          <property name="tabShape">
+           <enum>QTabWidget::Triangular</enum>
+          </property>
           <property name="currentIndex">
            <number>-1</number>
+          </property>
+          <property name="tabsClosable">
+           <bool>true</bool>
           </property>
          </widget>
         </item>
        </layout>
       </widget>
       <widget class="QWidget" name="resources">
+       <property name="font">
+        <font>
+         <pointsize>9</pointsize>
+         <bold>false</bold>
+        </font>
+       </property>
        <attribute name="title">
         <string>Resources</string>
        </attribute>
@@ -258,13 +309,22 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QTableWidget" name="cultTypesPeriodResources_7">
+            <widget class="QTableWidget" name="dailyResources">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <attribute name="horizontalHeaderMinimumSectionSize">
+              <number>150</number>
+             </attribute>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
+             <attribute name="verticalHeaderStretchLastSection">
+              <bool>false</bool>
+             </attribute>
              <row>
               <property name="text">
                <string>Lp. 1</string>
@@ -298,14 +358,14 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_2">
               <item>
-               <widget class="QPushButton" name="pushButton_8">
+               <widget class="QPushButton" name="addDailyResources">
                 <property name="text">
                  <string>Add</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_9">
+               <widget class="QPushButton" name="removeDailyResources">
                 <property name="text">
                  <string>Remove</string>
                 </property>
@@ -340,13 +400,19 @@
             </widget>
            </item>
            <item row="1" column="0">
-            <widget class="QTableWidget" name="cultTypesPeriodResources_8">
+            <widget class="QTableWidget" name="periodResources">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
              </property>
+             <attribute name="horizontalHeaderMinimumSectionSize">
+              <number>150</number>
+             </attribute>
+             <attribute name="horizontalHeaderStretchLastSection">
+              <bool>true</bool>
+             </attribute>
              <row>
               <property name="text">
                <string>Lp. 1</string>
@@ -380,14 +446,14 @@
              </property>
              <layout class="QVBoxLayout" name="verticalLayout_4">
               <item>
-               <widget class="QPushButton" name="pushButton_10">
+               <widget class="QPushButton" name="addPeriodResources">
                 <property name="text">
                  <string>Add</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pushButton_11">
+               <widget class="QPushButton" name="removePeriodResources">
                 <property name="text">
                  <string>Remove</string>
                 </property>
