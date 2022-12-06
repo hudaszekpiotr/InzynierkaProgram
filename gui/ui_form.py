@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'form.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -33,6 +33,10 @@ class Ui_MainWindow(object):
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
         MainWindow.setTabShape(QTabWidget.Triangular)
+        self.actionlast_used = QAction(MainWindow)
+        self.actionlast_used.setObjectName(u"actionlast_used")
+        self.actionset1 = QAction(MainWindow)
+        self.actionset1.setObjectName(u"actionset1")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         sizePolicy1 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
@@ -333,15 +337,23 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1066, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1066, 32))
         self.menuinfo = QMenu(self.menubar)
         self.menuinfo.setObjectName(u"menuinfo")
+        self.menuload_data = QMenu(self.menubar)
+        self.menuload_data.setObjectName(u"menuload_data")
+        self.menusave_data = QMenu(self.menubar)
+        self.menusave_data.setObjectName(u"menusave_data")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
         self.menubar.addAction(self.menuinfo.menuAction())
+        self.menubar.addAction(self.menuload_data.menuAction())
+        self.menubar.addAction(self.menusave_data.menuAction())
+        self.menuload_data.addAction(self.actionlast_used)
+        self.menuload_data.addAction(self.actionset1)
 
         self.retranslateUi(MainWindow)
 
@@ -355,6 +367,8 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.actionlast_used.setText(QCoreApplication.translate("MainWindow", u"last used", None))
+        self.actionset1.setText(QCoreApplication.translate("MainWindow", u"set1", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Max iterations without progress", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Crossover type", None))
         self.runButton.setText(QCoreApplication.translate("MainWindow", u"Run", None))
@@ -372,7 +386,7 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem1 = self.dailyResources.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("MainWindow", u"Quantity", None));
         ___qtablewidgetitem2 = self.dailyResources.verticalHeaderItem(0)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"Lp. 1", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MainWindow", u"1", None));
         self.addDailyResources.setText(QCoreApplication.translate("MainWindow", u"Add", None))
         self.removeDailyResources.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.label_8.setText(QCoreApplication.translate("MainWindow", u"Entire period resources", None))
@@ -381,10 +395,12 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem4 = self.periodResources.horizontalHeaderItem(1)
         ___qtablewidgetitem4.setText(QCoreApplication.translate("MainWindow", u"Quantity", None));
         ___qtablewidgetitem5 = self.periodResources.verticalHeaderItem(0)
-        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"Lp. 1", None));
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MainWindow", u"1", None));
         self.addPeriodResources.setText(QCoreApplication.translate("MainWindow", u"Add", None))
         self.removePeriodResources.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.resources), QCoreApplication.translate("MainWindow", u"Resources", None))
         self.menuinfo.setTitle(QCoreApplication.translate("MainWindow", u"info", None))
+        self.menuload_data.setTitle(QCoreApplication.translate("MainWindow", u"load data", None))
+        self.menusave_data.setTitle(QCoreApplication.translate("MainWindow", u"save data", None))
     # retranslateUi
 

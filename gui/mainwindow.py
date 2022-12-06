@@ -186,6 +186,10 @@ class MainWindow(QMainWindow):
         self.ui.addCultType.clicked.connect(self.add_new_cult_type)
         #self.ui.removeCultType.clicked.connect(self.remove_cult_type)
         self.ui.addField.clicked.connect(self.add_field)
+        self.ui.addDailyResources.clicked.connect(self.add_daily_resources)
+        self.ui.removeDailyResources.clicked.connect(self.remove_daily_resources)
+        self.ui.addPeriodResources.clicked.connect(self.add_period_resources)
+        self.ui.removePeriodResources.clicked.connect(self.remove_period_resources)
         #self.ui.removeField.clicked.connect(self.remove_field)
         self.sc = MplCanvas(self, width=5, height=4, dpi=100)
         #self.sc.axes.plot([0, 1, 2, 3, 4], [10, 1, 20, 3, 40])
@@ -199,6 +203,7 @@ class MainWindow(QMainWindow):
         self.ui.dailyResources.setItemDelegateForColumn(1, delegate)
         delegate = NumericDelegate(self.ui.periodResources)
         self.ui.periodResources.setItemDelegateForColumn(1, delegate)
+        self.ui.actionset1.triggered.connect()
 
     def plot(self, best_results):
         self.sc.axes.plot(best_results)
@@ -212,8 +217,8 @@ class MainWindow(QMainWindow):
 
     def run_optimization(self):
         par = self.get_parameters()
-        self.save_data()
-        self.load_data()
+        #self.save_data()
+        #self.load_data()
         df, df_resources, best_results = self.optimization.evolution_algorithm(par)
         self.result = Result(df, df_resources)
         self.result.setGeometry(QRect(100, 100, 800, 800))
@@ -258,9 +263,52 @@ class MainWindow(QMainWindow):
                     quantity = QtWidgets.QTableWidgetItem(str(stage["values"][row]))
                     table.setItem(table.rowCount() - 1, 0, resource)
                     table.setItem(table.rowCount() - 1, 1, quantity)
-
-
         f.close()
+
+    def load_fields_types(self):
+        f = open('sample_fields.json')
+        data = json.load(f)
+        self.ui.tabWidgetFields.removeTab(0)
+        for i in data:
+            field = self.add_field()
+            field.ui.name.setText(i["name"])
+            field.ui.area.setValue(i["area"])
+            table = field.ui.coefficients
+            table.removeRow(0)
+            for row in i["coefficients"]:
+                table.insertRow(table.rowCount())
+                resource = QtWidgets.QTableWidgetItem(row)
+                quantity = QtWidgets.QTableWidgetItem(str(i["coefficients"][row]))
+                table.setItem(table.rowCount() - 1, 0, resource)
+                table.setItem(table.rowCount() - 1, 1, quantity)
+        f.close()
+
+    def load_resources(self):
+        f = open('sample_fields.json')
+        data = json.load(f)
+
+        daily_resources = self.ui.dailyResources
+        period_resources = self.ui.periodResources
+        daily_resources.removeRow(0)
+        period_resources.removeRow(0)
+
+        for row in data["daily_resources"]:
+            table = daily_resources
+            table.insertRow(table.rowCount())
+            resource = QtWidgets.QTableWidgetItem(row)
+            quantity = QtWidgets.QTableWidgetItem(str(data["daily_resources"][row]))
+            table.setItem(table.rowCount() - 1, 0, resource)
+            table.setItem(table.rowCount() - 1, 1, quantity)
+
+        for row in data["entire_period_resources"]:
+            table = daily_resources
+            table.insertRow(table.rowCount())
+            resource = QtWidgets.QTableWidgetItem(row)
+            quantity = QtWidgets.QTableWidgetItem(str(data["entire_period_resources"][row]))
+            table.setItem(table.rowCount() - 1, 0, resource)
+            table.setItem(table.rowCount() - 1, 1, quantity)
+        f.close()
+
 
     def save_cultivation_types(self):
         cultivation_types = []
@@ -359,8 +407,6 @@ class MainWindow(QMainWindow):
         with open("../data/resources.json", "w") as outfile:
             outfile.write(json_object)
 
-
-
     def add_new_cult_type(self):
         tab = CultTypeTab()
         self.ui.tabWidgetCultTypes.addTab(tab, "sds")
@@ -371,11 +417,28 @@ class MainWindow(QMainWindow):
         self.ui.tabWidgetCultTypes.removeTab(index)
 
     def add_field(self):
-        self.ui.tabWidgetFields.addTab(FieldTypeTab(), "sds")
+        field = self.ui.tabWidgetFields.addTab(FieldTypeTab(), "sds")
+        return field
 
     def remove_field(self):
         index = self.ui.tabWidgetFields.currentIndex()
         self.ui.tabWidgetFields.removeTab(index)
+
+    def add_daily_resources(self):
+        table = self.ui.dailyResources
+        table.insertRow(table.rowCount())
+
+    def remove_daily_resources(self):
+        table = self.ui.dailyResources
+        table.removeRow(table.rowCount()-1)
+
+    def add_period_resources(self):
+        table = self.ui.periodResources
+        table.insertRow(table.rowCount())
+
+    def remove_period_resources(self):
+        table = self.ui.periodResources
+        table.removeRow(table.rowCount()-1)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

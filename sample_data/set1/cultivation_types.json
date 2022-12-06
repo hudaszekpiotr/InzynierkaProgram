@@ -1,0 +1,74 @@
+[
+  {
+    "name": "truskawki",
+    "profit": 12,
+    "start_date": [1, 5],
+    "start_date2": {
+      "year": 2022,
+      "month": 5,
+      "day": 1
+    },
+    "duration": 20,
+    "entire_period_resources": {
+      "money": 20,
+      "warehouse": 10
+    },
+    "daily_resources": [
+      {
+        "values": {
+          "work_hours": 15,
+          "water": 8,
+          "machine_1": 1,
+          "machine_2": 1
+        },
+        "name": "dsds",
+        "duration": 4
+      },
+      {
+        "values": {
+          "work_hours": 5,
+          "water": 5
+        },
+        "name": "dsds",
+        "duration": 10
+      },
+      {
+        "values": {
+          "work_hours": 10,
+          "water": 5
+        },
+        "name": "dsds",
+        "duration": 6
+      }
+    ]
+  },
+  {
+    "name": "truskawki pod folia",
+    "profit": 5,
+    "start_date": [1, 5],
+    "duration": 10,
+    "entire_period_resources": {
+      "money": 20,
+      "warehouse": 10
+    },
+    "daily_resources": [
+      {
+        "values": {
+          "work_hours": 20,
+          "water": 8,
+          "machine_2": 1
+        },
+        "name": "dsds",
+        "duration": 4
+      },
+      {
+        "values": {
+          "work_hours": 10,
+          "water": 5
+        },
+        "name": "dsds",
+        "duration": 6
+      }
+    ]
+  }
+]

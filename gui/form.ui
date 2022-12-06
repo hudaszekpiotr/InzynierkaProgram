@@ -327,7 +327,7 @@
              </attribute>
              <row>
               <property name="text">
-               <string>Lp. 1</string>
+               <string>1</string>
               </property>
              </row>
              <column>
@@ -415,7 +415,7 @@
              </attribute>
              <row>
               <property name="text">
-               <string>Lp. 1</string>
+               <string>1</string>
               </property>
              </row>
              <column>
@@ -477,7 +477,7 @@
      <x>0</x>
      <y>0</y>
      <width>1066</width>
-     <height>22</height>
+     <height>32</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuinfo">
@@ -485,9 +485,33 @@
      <string>info</string>
     </property>
    </widget>
+   <widget class="QMenu" name="menuload_data">
+    <property name="title">
+     <string>load data</string>
+    </property>
+    <addaction name="actionlast_used"/>
+    <addaction name="actionset1"/>
+   </widget>
+   <widget class="QMenu" name="menusave_data">
+    <property name="title">
+     <string>save data</string>
+    </property>
+   </widget>
    <addaction name="menuinfo"/>
+   <addaction name="menuload_data"/>
+   <addaction name="menusave_data"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionlast_used">
+   <property name="text">
+    <string>last used</string>
+   </property>
+  </action>
+  <action name="actionset1">
+   <property name="text">
+    <string>set1</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
