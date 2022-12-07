@@ -1,14 +1,16 @@
 # This Python file uses the following encoding: utf-8
 import copy
 import json
+import os
 import sys
 from datetime import timedelta
 
 #from PyQt6.QtCore import QAbstractTableModel, Qt
 
-from PySide6.QtCore import QRect
-from PySide6.QtGui import QIntValidator
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit
+from PySide6.QtCore import QRect, QDate
+from PySide6.QtGui import QIntValidator, QAction
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit, QDialog, \
+    QDialogButtonBox, QVBoxLayout, QLabel, QFileDialog
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import Qt
 
@@ -24,6 +26,7 @@ import ui_cult_type_tab
 import ui_cult_type_stage
 import ui_field_type_tab
 import ui_result
+import ui_save_files
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
@@ -78,8 +81,7 @@ class Result(QWidget):
         self.ui.topSpot.addWidget(self.table)
 
         sc = MplCanvas(self, width=5, height=4, dpi=100)
-        #sc.axes.plot([0, 1, 2, 3, 4], [10, 1, 20, 3, 40])
-        #print(df_resources)
+
         df_resources.plot(ax=sc.axes, kind="bar")
 
         #sc.axes.bar(langs, students)
@@ -169,32 +171,29 @@ class CultTypeTab(QWidget):
         index = self.ui.tabWidgetStages.currentIndex()
         self.ui.tabWidgetStages.removeTab(index)
 
+
+
+
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        resources, fields, cultivation_types = load_files()
 
         self.ui.tabWidgetCultTypes.addTab(CultTypeTab(), "sds")
         self.ui.tabWidgetFields.addTab(FieldTypeTab(), "sds")
-
-
-        self.optimization = Optimization(resources, fields, cultivation_types)
         self.ui.runButton.clicked.connect(self.run_optimization)
-
         self.ui.addCultType.clicked.connect(self.add_new_cult_type)
-        #self.ui.removeCultType.clicked.connect(self.remove_cult_type)
         self.ui.addField.clicked.connect(self.add_field)
         self.ui.addDailyResources.clicked.connect(self.add_daily_resources)
         self.ui.removeDailyResources.clicked.connect(self.remove_daily_resources)
         self.ui.addPeriodResources.clicked.connect(self.add_period_resources)
         self.ui.removePeriodResources.clicked.connect(self.remove_period_resources)
-        #self.ui.removeField.clicked.connect(self.remove_field)
         self.sc = MplCanvas(self, width=5, height=4, dpi=100)
-        #self.sc.axes.plot([0, 1, 2, 3, 4], [10, 1, 20, 3, 40])
-        # self.setCentralWidget(sc)
+        self.sc.axes.plot([0, 1, 2, 3, 4])
+
         self.ui.verticalLayout_3.addWidget(self.sc)
+        self.sc.axes.plot([5, 6, 2, 3, 4,7,6,6,6,6])
         self.result = None
         self.ui.tabWidgetCultTypes.tabCloseRequested.connect(self.ui.tabWidgetCultTypes.removeTab)
         self.ui.tabWidgetFields.tabCloseRequested.connect(self.ui.tabWidgetFields.removeTab)
@@ -203,21 +202,44 @@ class MainWindow(QMainWindow):
         self.ui.dailyResources.setItemDelegateForColumn(1, delegate)
         delegate = NumericDelegate(self.ui.periodResources)
         self.ui.periodResources.setItemDelegateForColumn(1, delegate)
-        self.ui.actionset1.triggered.connect()
+        #self.ui.actionset1.triggered.connect(get_data_sets)
+        #self.ui.actionsave.triggered.connect(self.save_data_to_file)
+
+        save_action = QAction("save data", self)
+        load_action = QAction("load data", self)
+        save_action.triggered.connect(self.save_data_to_file)
+        load_action.triggered.connect(self.load_data)
+        self.ui.menubar.addAction(save_action)
+        self.ui.menubar.addAction(load_action)
+
+
+
+    def save_data_to_file(self):
+        filename = QFileDialog.getSaveFileName(self, 'Open file','../', "JSON files (*.json)")[0]
+        self.save_data(filename)
 
     def plot(self, best_results):
-        self.sc.axes.plot(best_results)
-        # self.setCentralWidget(sc)
-        self.ui.verticalLayout_3.addWidget(self.sc)
+        print("dsdsds")
+        self.sc.axes.plot([1,1,1,1,1,1,1,1,1,1,1,1])
+        dsds = self.ui.verticalLayout_3.widget()
+        item = self.ui.verticalLayout_3.itemAt(0)
+        self.ui.verticalLayout_3.removeItem(item)
+        self.ui.tab.update()
 
     def get_parameters(self):
         max_iter = self.ui.maxIter.value()
-        par = Parameters(max_iter)
+        max_iter_no_progress = self.ui.maxIterNoProgress.value()
+        start_date = self.ui.startDate.date().toPython()
+        par = Parameters(max_iter, max_iter_no_progress, start_date)
         return par
 
     def run_optimization(self):
+
+
         par = self.get_parameters()
-        #self.save_data()
+        self.save_data()
+        resources, fields, cultivation_types = load_files()
+        self.optimization = Optimization(resources, fields, cultivation_types)
         #self.load_data()
         df, df_resources, best_results = self.optimization.evolution_algorithm(par)
         self.result = Result(df, df_resources)
@@ -225,22 +247,43 @@ class MainWindow(QMainWindow):
         self.result.show()
         self.plot(best_results)
 
-    def save_data(self):
-        self.save_fields()
-        self.save_resources()
-        self.save_cultivation_types()
+
+    def save_data(self, filename="../data/model_data.json"):
+
+        fields = self.save_fields()
+        resources = self.save_resources()
+        cult_types = self.save_cultivation_types()
+        model_data = {"fields": fields,
+                      "resources": resources,
+                      "cultivation_types": cult_types}
+
+        model_data_json = json.dumps(model_data, indent=2)
+        with open(filename, "w") as outfile:
+            outfile.write(model_data_json)
+
+
+
 
     def load_data(self):
-        self.load_cultivation_types()
+        file_name = QFileDialog.getOpenFileName(self, 'Open file','.', "JSON files (*.json)")[0]
+        if file_name == "":
+            return 0
+        with open(file_name, "r") as file:
+            data = json.load(file)
+        self.load_cultivation_types(data["cultivation_types"])
+        self.load_fields_types(data["fields"])
+        self.load_resources(data["resources"])
 
-    def load_cultivation_types(self):
-        f = open('sample.json')
-        data = json.load(f)
+    def load_cultivation_types(self, cultivation_types_list):
+        data = cultivation_types_list
         self.ui.tabWidgetCultTypes.removeTab(0)
         for i in data:
             tab = self.add_new_cult_type()
             tab.ui.name.setText(i["name"])
             tab.ui.profit.setValue(i["profit"])
+            date = QDate(i["start_date"]["year"], i["start_date"]["month"], i["start_date"]["day"])
+            tab.ui.startDate.setDate(date)
+            tab.ui.plusMinus.setValue(i["start_date"]["plus_minus_days"])
             table = tab.ui.periodResources
             table.removeRow(0)
             for row in i["entire_period_resources"]:
@@ -263,11 +306,9 @@ class MainWindow(QMainWindow):
                     quantity = QtWidgets.QTableWidgetItem(str(stage["values"][row]))
                     table.setItem(table.rowCount() - 1, 0, resource)
                     table.setItem(table.rowCount() - 1, 1, quantity)
-        f.close()
 
-    def load_fields_types(self):
-        f = open('sample_fields.json')
-        data = json.load(f)
+    def load_fields_types(self, fields_types_list):
+        data = fields_types_list
         self.ui.tabWidgetFields.removeTab(0)
         for i in data:
             field = self.add_field()
@@ -281,12 +322,9 @@ class MainWindow(QMainWindow):
                 quantity = QtWidgets.QTableWidgetItem(str(i["coefficients"][row]))
                 table.setItem(table.rowCount() - 1, 0, resource)
                 table.setItem(table.rowCount() - 1, 1, quantity)
-        f.close()
 
-    def load_resources(self):
-        f = open('sample_fields.json')
-        data = json.load(f)
-
+    def load_resources(self, resources_list):
+        data = resources_list
         daily_resources = self.ui.dailyResources
         period_resources = self.ui.periodResources
         daily_resources.removeRow(0)
@@ -301,13 +339,12 @@ class MainWindow(QMainWindow):
             table.setItem(table.rowCount() - 1, 1, quantity)
 
         for row in data["entire_period_resources"]:
-            table = daily_resources
+            table = period_resources
             table.insertRow(table.rowCount())
             resource = QtWidgets.QTableWidgetItem(row)
             quantity = QtWidgets.QTableWidgetItem(str(data["entire_period_resources"][row]))
             table.setItem(table.rowCount() - 1, 0, resource)
             table.setItem(table.rowCount() - 1, 1, quantity)
-        f.close()
 
 
     def save_cultivation_types(self):
@@ -354,12 +391,9 @@ class MainWindow(QMainWindow):
                         "start_date": start_date,
                         "entire_period_resources": entire_period_resources,
                         "daily_resources": daily_resources}
-            #print(new_type)
             cultivation_types.append(new_type)
 
-        json_object = json.dumps(cultivation_types, indent=2)
-        with open("../data/cultivation_types.json", "w") as outfile:
-            outfile.write(json_object)
+        return cultivation_types
 
     def save_fields(self):
         fields = []
@@ -369,7 +403,7 @@ class MainWindow(QMainWindow):
             for k in range(tab.coefficients.rowCount()):
                 if tab.coefficients.item(k, 0) is not None and tab.coefficients.item(k, 1) is not None:
                     resource = tab.coefficients.item(k, 0).text()
-                    value = int(tab.coefficients.item(k, 1).text())
+                    value = float(tab.coefficients.item(k, 1).text())
                     coefficients[resource] = value
 
             new_type = {"name": tab.name.text(),
@@ -378,9 +412,7 @@ class MainWindow(QMainWindow):
 
             fields.append(new_type)
 
-        json_object = json.dumps(fields, indent=2)
-        with open("../data/fields.json", "w") as outfile:
-            outfile.write(json_object)
+        return fields
 
     def save_resources(self):
         daily_resources = {}
@@ -403,9 +435,7 @@ class MainWindow(QMainWindow):
         resources = {"daily_resources": daily_resources,
                     "entire_period_resources": entire_period_resources}
 
-        json_object = json.dumps(resources, indent=2)
-        with open("../data/resources.json", "w") as outfile:
-            outfile.write(json_object)
+        return resources
 
     def add_new_cult_type(self):
         tab = CultTypeTab()
@@ -417,7 +447,8 @@ class MainWindow(QMainWindow):
         self.ui.tabWidgetCultTypes.removeTab(index)
 
     def add_field(self):
-        field = self.ui.tabWidgetFields.addTab(FieldTypeTab(), "sds")
+        field = FieldTypeTab()
+        self.ui.tabWidgetFields.addTab(field, "sds")
         return field
 
     def remove_field(self):
@@ -439,6 +470,9 @@ class MainWindow(QMainWindow):
     def remove_period_resources(self):
         table = self.ui.periodResources
         table.removeRow(table.rowCount()-1)
+
+def get_data_sets():
+    return next(os.walk('../data'))[1]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

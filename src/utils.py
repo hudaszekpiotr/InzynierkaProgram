@@ -1,23 +1,7 @@
 import json
 import re
+from datetime import date
 
-# "profit": ["1*5","3*5","5*20"],
-#not used now
-def parse_price(list_of_dicts):
-    for cultivation in range(len(list_of_dicts)):
-        price = list_of_dicts[cultivation]["price"]
-        i = 0
-        while i < len(price):
-            if isinstance(price[i], str):
-                if re.search("""^\d*\*\d*$""", price[i]) is not None:
-                    amount, multiplier = price[i].split("*")
-                    del price[i]
-                    for k in range(int(multiplier)):
-                        price.insert(i, int(amount))
-                        i += 1
-                    i -= 1
-
-            i += 1
 
 def parse_resources(list_of_dicts):
     for cultivation in range(len(list_of_dicts)):
@@ -38,6 +22,9 @@ def parse_resources(list_of_dicts):
         while i < list_of_dicts[cultivation]["duration"]:
             resources.append({})
             i += 1
+
+
+
 
 def load_files():
     json_cultivation_types = open('../sample_data/cultivation_types.json')

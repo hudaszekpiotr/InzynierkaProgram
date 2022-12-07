@@ -2,11 +2,11 @@
   {
     "name": "truskawki",
     "profit": 12,
-    "start_date": [1, 5],
-    "start_date2": {
-      "year": 2022,
+    "start_date": {
+      "year": 2020,
       "month": 5,
-      "day": 1
+      "day": 5,
+      "plus_minus_days": 2
     },
     "duration": 20,
     "entire_period_resources": {
@@ -45,7 +45,12 @@
   {
     "name": "truskawki pod folia",
     "profit": 5,
-    "start_date": [1, 5],
+    "start_date": {
+      "year": 2020,
+      "month": 5,
+      "day": 5,
+      "plus_minus_days": 2
+    },
     "duration": 10,
     "entire_period_resources": {
       "money": 20,

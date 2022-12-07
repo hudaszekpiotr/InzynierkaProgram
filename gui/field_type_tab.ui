@@ -35,12 +35,12 @@
      </row>
      <column>
       <property name="text">
-       <string>Resource name</string>
+       <string>Cultivation type</string>
       </property>
      </column>
      <column>
       <property name="text">
-       <string>Quantity</string>
+       <string>Coefficient</string>
       </property>
      </column>
     </widget>

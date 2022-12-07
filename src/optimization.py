@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import copy
+from datetime import date
 from typing import List, Callable
 
 from matplotlib import pyplot as plt
@@ -192,7 +193,15 @@ class Optimization:
         else:
             return crossover_fields(solution1, solution2)
 
-    def evolution_algorithm(self, par = None):
+    def transform_cult_types_start_date(self, alg_start_date):
+
+        for i in self.cultivation_types:
+            cult_type_start_date = date(i["start_date"]["year"], i["start_date"]["month"], i["start_date"]["day"])
+            delta = cult_type_start_date - alg_start_date
+            plus_minus_days = i["start_date"]["plus_minus_days"]
+            i["start_date"] = [delta.days - plus_minus_days, delta.days + plus_minus_days]
+
+    def evolution_algorithm(self, parameters = None):
         """
         :param max_iter_no_progress: Maksymalna ilość iteracji bez poprawy funkcji celu
         :param max_iter: Łączna maksymalna ilość iteracji algorytmu
@@ -208,9 +217,9 @@ class Optimization:
         max_iter = 2
         replacement_rate = 0.5
         mutation_proba = 0.2
-        if par is not None:
-            max_iter = par.max_iter
-
+        if parameters is not None:
+            max_iter = parameters.max_iter
+        self.transform_cult_types_start_date(parameters.start_date)
         solutions = self.generate_initial_population(2, method = "filled")
         population = []
 

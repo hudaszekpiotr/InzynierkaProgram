@@ -48,7 +48,7 @@
        <enum>QTabWidget::North</enum>
       </property>
       <property name="currentIndex">
-       <number>3</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
@@ -64,19 +64,49 @@
         <string>Control</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="1">
-         <widget class="QSpinBox" name="maxIter">
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="text">
+           <string>End date</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Dealing with unacceptable solutions</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QComboBox" name="comboBox">
+          <item>
+           <property name="text">
+            <string>roulette wheel</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>tournament</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>ranking</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="maximum">
-           <number>9999999</number>
-          </property>
-          <property name="value">
-           <number>100</number>
+          <property name="text">
+           <string>Max number of iterations</string>
           </property>
          </widget>
         </item>
@@ -94,10 +124,7 @@
          </widget>
         </item>
         <item row="1" column="1">
-         <widget class="QSpinBox" name="spinBox"/>
-        </item>
-        <item row="2" column="0" colspan="7">
-         <layout class="QVBoxLayout" name="verticalLayout_3"/>
+         <widget class="QSpinBox" name="maxIterNoProgress"/>
         </item>
         <item row="1" column="2">
          <widget class="QLabel" name="label_4">
@@ -106,7 +133,27 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="5">
+        <item row="4" column="0" colspan="8">
+         <layout class="QVBoxLayout" name="verticalLayout_3"/>
+        </item>
+        <item row="1" column="3">
+         <widget class="QComboBox" name="comboBox_2">
+          <item>
+           <property name="text">
+            <string>fields</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>days</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="2" column="3">
+         <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+        </item>
+        <item row="0" column="6">
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -119,7 +166,25 @@
           </property>
          </spacer>
         </item>
-        <item row="0" column="6">
+        <item row="3" column="1">
+         <widget class="QDateEdit" name="endDate">
+          <property name="date">
+           <date>
+            <year>2020</year>
+            <month>12</month>
+            <day>1</day>
+           </date>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="2">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string>Mutation probability</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="7">
          <widget class="QPushButton" name="runButton">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
@@ -132,16 +197,30 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
+        <item row="2" column="1">
+         <widget class="QDateEdit" name="startDate">
+          <property name="date">
+           <date>
+            <year>2020</year>
+            <month>5</month>
+            <day>1</day>
+           </date>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QSpinBox" name="maxIter">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
-          <property name="text">
-           <string>Max number of iterations</string>
+          <property name="maximum">
+           <number>9999999</number>
+          </property>
+          <property name="value">
+           <number>100</number>
           </property>
          </widget>
         </item>
@@ -152,16 +231,62 @@
           </property>
          </widget>
         </item>
-        <item row="1" column="3">
-         <widget class="QComboBox" name="comboBox_2"/>
-        </item>
-        <item row="0" column="3">
-         <widget class="QComboBox" name="comboBox"/>
-        </item>
-        <item row="0" column="4">
-         <widget class="QLabel" name="label_5">
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_6">
           <property name="text">
-           <string>TextLabel</string>
+           <string>Start date</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="5">
+         <widget class="QComboBox" name="comboBox_3">
+          <item>
+           <property name="text">
+            <string>penalty</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>fixup</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="1" column="4">
+         <widget class="QLabel" name="label_12">
+          <property name="text">
+           <string>Penalty multiplier at first iteration</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="2">
+         <widget class="QLabel" name="label_11">
+          <property name="text">
+           <string>Population size</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="3">
+         <widget class="QSpinBox" name="spinBox"/>
+        </item>
+        <item row="2" column="4">
+         <widget class="QLabel" name="label_13">
+          <property name="text">
+           <string>Penalty multiplier at _ iteration</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="5">
+         <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+          <property name="value">
+           <double>1.000000000000000</double>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="5">
+         <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+          <property name="value">
+           <double>1.000000000000000</double>
           </property>
          </widget>
         </item>
@@ -477,7 +602,7 @@
      <x>0</x>
      <y>0</y>
      <width>1066</width>
-     <height>32</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuinfo">
@@ -485,21 +610,7 @@
      <string>info</string>
     </property>
    </widget>
-   <widget class="QMenu" name="menuload_data">
-    <property name="title">
-     <string>load data</string>
-    </property>
-    <addaction name="actionlast_used"/>
-    <addaction name="actionset1"/>
-   </widget>
-   <widget class="QMenu" name="menusave_data">
-    <property name="title">
-     <string>save data</string>
-    </property>
-   </widget>
    <addaction name="menuinfo"/>
-   <addaction name="menuload_data"/>
-   <addaction name="menusave_data"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionlast_used">
@@ -510,6 +621,11 @@
   <action name="actionset1">
    <property name="text">
     <string>set1</string>
+   </property>
+  </action>
+  <action name="actionsave">
+   <property name="text">
+    <string>save</string>
    </property>
   </action>
  </widget>

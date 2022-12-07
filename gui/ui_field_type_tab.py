@@ -150,9 +150,9 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
         ___qtablewidgetitem = self.coefficients.horizontalHeaderItem(0)
-        ___qtablewidgetitem.setText(QCoreApplication.translate("Form", u"Resource name", None));
+        ___qtablewidgetitem.setText(QCoreApplication.translate("Form", u"Cultivation type", None));
         ___qtablewidgetitem1 = self.coefficients.horizontalHeaderItem(1)
-        ___qtablewidgetitem1.setText(QCoreApplication.translate("Form", u"Quantity", None));
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("Form", u"Coefficient", None));
         ___qtablewidgetitem2 = self.coefficients.verticalHeaderItem(0)
         ___qtablewidgetitem2.setText(QCoreApplication.translate("Form", u"Lp. 1", None));
         self.addCoef.setText(QCoreApplication.translate("Form", u"Add", None))
