@@ -190,10 +190,10 @@ class MainWindow(QMainWindow):
         self.ui.addPeriodResources.clicked.connect(self.add_period_resources)
         self.ui.removePeriodResources.clicked.connect(self.remove_period_resources)
         self.sc = MplCanvas(self, width=5, height=4, dpi=100)
-        self.sc.axes.plot([0, 1, 2, 3, 4])
+        #self.sc.axes.plot([0, 1, 2, 3, 4])
 
-        self.ui.verticalLayout_3.addWidget(self.sc)
-        self.sc.axes.plot([5, 6, 2, 3, 4,7,6,6,6,6])
+        #self.ui.verticalLayout_3.addWidget(self.sc)
+
         self.result = None
         self.ui.tabWidgetCultTypes.tabCloseRequested.connect(self.ui.tabWidgetCultTypes.removeTab)
         self.ui.tabWidgetFields.tabCloseRequested.connect(self.ui.tabWidgetFields.removeTab)
@@ -211,6 +211,8 @@ class MainWindow(QMainWindow):
         load_action.triggered.connect(self.load_data)
         self.ui.menubar.addAction(save_action)
         self.ui.menubar.addAction(load_action)
+        #self.sc.axes.plot([5, 6, 2, 3, 4, 7, 6, 6, 6, 6])
+        self.ui.verticalLayout_3.addWidget(self.sc)
 
 
 
@@ -220,11 +222,8 @@ class MainWindow(QMainWindow):
 
     def plot(self, best_results):
         print("dsdsds")
-        self.sc.axes.plot([1,1,1,1,1,1,1,1,1,1,1,1])
-        dsds = self.ui.verticalLayout_3.widget()
-        item = self.ui.verticalLayout_3.itemAt(0)
-        self.ui.verticalLayout_3.removeItem(item)
-        self.ui.tab.update()
+        self.sc.axes.plot(best_results)
+        self.ui.verticalLayout_3.addWidget(self.sc)
 
     def get_parameters(self):
         max_iter = self.ui.maxIter.value()

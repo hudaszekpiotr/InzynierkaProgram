@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'form.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1066, 551)
+        MainWindow.resize(1108, 551)
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -64,6 +64,11 @@ class Ui_MainWindow(object):
         self.tabWidget.setElideMode(Qt.ElideNone)
         self.tab = QWidget()
         self.tab.setObjectName(u"tab")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.tab.sizePolicy().hasHeightForWidth())
+        self.tab.setSizePolicy(sizePolicy3)
         font1 = QFont()
         font1.setPointSize(9)
         font1.setBold(False)
@@ -72,6 +77,8 @@ class Ui_MainWindow(object):
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.label_9 = QLabel(self.tab)
         self.label_9.setObjectName(u"label_9")
+        sizePolicy3.setHeightForWidth(self.label_9.sizePolicy().hasHeightForWidth())
+        self.label_9.setSizePolicy(sizePolicy3)
 
         self.gridLayout_2.addWidget(self.label_9, 3, 0, 1, 1)
 
@@ -90,21 +97,18 @@ class Ui_MainWindow(object):
 
         self.label = QLabel(self.tab)
         self.label.setObjectName(u"label")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Preferred)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy4)
 
         self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
 
         self.label_2 = QLabel(self.tab)
         self.label_2.setObjectName(u"label_2")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy3)
 
         self.gridLayout_2.addWidget(self.label_2, 1, 0, 1, 1)
 
@@ -115,6 +119,8 @@ class Ui_MainWindow(object):
 
         self.label_4 = QLabel(self.tab)
         self.label_4.setObjectName(u"label_4")
+        sizePolicy3.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy3)
 
         self.gridLayout_2.addWidget(self.label_4, 1, 2, 1, 1)
 
@@ -139,13 +145,16 @@ class Ui_MainWindow(object):
 
         self.gridLayout_2.addItem(self.horizontalSpacer, 0, 6, 1, 1)
 
-        self.dateEdit_2 = QDateEdit(self.tab)
-        self.dateEdit_2.setObjectName(u"dateEdit_2")
+        self.endDate = QDateEdit(self.tab)
+        self.endDate.setObjectName(u"endDate")
+        self.endDate.setDate(QDate(2020, 12, 1))
 
-        self.gridLayout_2.addWidget(self.dateEdit_2, 3, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.endDate, 3, 1, 1, 1)
 
         self.label_10 = QLabel(self.tab)
         self.label_10.setObjectName(u"label_10")
+        sizePolicy3.setHeightForWidth(self.label_10.sizePolicy().hasHeightForWidth())
+        self.label_10.setSizePolicy(sizePolicy3)
 
         self.gridLayout_2.addWidget(self.label_10, 2, 2, 1, 1)
 
@@ -176,6 +185,8 @@ class Ui_MainWindow(object):
 
         self.label_3 = QLabel(self.tab)
         self.label_3.setObjectName(u"label_3")
+        sizePolicy3.setHeightForWidth(self.label_3.sizePolicy().hasHeightForWidth())
+        self.label_3.setSizePolicy(sizePolicy3)
 
         self.gridLayout_2.addWidget(self.label_3, 0, 2, 1, 1)
 
@@ -198,6 +209,8 @@ class Ui_MainWindow(object):
 
         self.label_11 = QLabel(self.tab)
         self.label_11.setObjectName(u"label_11")
+        sizePolicy3.setHeightForWidth(self.label_11.sizePolicy().hasHeightForWidth())
+        self.label_11.setSizePolicy(sizePolicy3)
 
         self.gridLayout_2.addWidget(self.label_11, 3, 2, 1, 1)
 
@@ -300,8 +313,8 @@ class Ui_MainWindow(object):
         self.gridLayout_5.setObjectName(u"gridLayout_5")
         self.label_7 = QLabel(self.frame_8)
         self.label_7.setObjectName(u"label_7")
-        sizePolicy4.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
-        self.label_7.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.label_7.sizePolicy().hasHeightForWidth())
+        self.label_7.setSizePolicy(sizePolicy3)
 
         self.gridLayout_5.addWidget(self.label_7, 0, 0, 1, 1)
 
@@ -330,8 +343,8 @@ class Ui_MainWindow(object):
 
         self.frame_7 = QFrame(self.frame_8)
         self.frame_7.setObjectName(u"frame_7")
-        sizePolicy3.setHeightForWidth(self.frame_7.sizePolicy().hasHeightForWidth())
-        self.frame_7.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.frame_7.sizePolicy().hasHeightForWidth())
+        self.frame_7.setSizePolicy(sizePolicy4)
         self.frame_7.setFrameShape(QFrame.StyledPanel)
         self.frame_7.setFrameShadow(QFrame.Raised)
         self.verticalLayout_2 = QVBoxLayout(self.frame_7)
@@ -360,8 +373,8 @@ class Ui_MainWindow(object):
         self.gridLayout_7.setObjectName(u"gridLayout_7")
         self.label_8 = QLabel(self.frame_9)
         self.label_8.setObjectName(u"label_8")
-        sizePolicy4.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
-        self.label_8.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.label_8.sizePolicy().hasHeightForWidth())
+        self.label_8.setSizePolicy(sizePolicy3)
 
         self.gridLayout_7.addWidget(self.label_8, 0, 0, 1, 1)
 
@@ -386,8 +399,8 @@ class Ui_MainWindow(object):
 
         self.frame_11 = QFrame(self.frame_9)
         self.frame_11.setObjectName(u"frame_11")
-        sizePolicy3.setHeightForWidth(self.frame_11.sizePolicy().hasHeightForWidth())
-        self.frame_11.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.frame_11.sizePolicy().hasHeightForWidth())
+        self.frame_11.setSizePolicy(sizePolicy4)
         self.frame_11.setFrameShape(QFrame.StyledPanel)
         self.frame_11.setFrameShadow(QFrame.Raised)
         self.verticalLayout_4 = QVBoxLayout(self.frame_11)
@@ -415,7 +428,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1066, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1108, 32))
         self.menuinfo = QMenu(self.menubar)
         self.menuinfo.setObjectName(u"menuinfo")
         MainWindow.setMenuBar(self.menubar)
