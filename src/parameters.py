@@ -1,14 +1,31 @@
 from dataclasses import dataclass
 from datetime import date
+from enum import Enum
+from typing import Literal
+
 
 @dataclass
 class Parameters:
     max_iter: int
     max_iter_no_progress: int
+    #_______________________
     start_date: date
-    #mutation_probability: float
-    #crossover_type: str
-    #unacceptable_fix_type: str # penalty_function
-    #selection_type: str # roulette_wheel
-    #initial_population_type: str # empty_solutions partially_filled_solutions
+    num_days: int
+    #_____________________
+    mutation_probability: float
+    crossover_type: Literal["days", "fields"]
+    #______________________________________
+    initial_population_type: Literal["empty solutions", "partially filled solutions"]
+    population_size: int
+    #______________________________
+    unacceptable_fix_type: Literal["penalty", "fixup"]
+    penalty_multiplier_first: float
+    penalty_multiplier_last: float
+    #____________________________
+    selection_type: Literal["roulette wheel", "tournament", "ranking"]
+    mating_pool_size: float #percent
+    elite_size: float #percent
+    tournament_size: int
+
+
 

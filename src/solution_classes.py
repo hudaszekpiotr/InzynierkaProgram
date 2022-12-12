@@ -7,7 +7,7 @@ import pandas as pd
 
 class DaySolution:
     def __init__(self, num_fields):
-        self.field = [None] * num_fields
+        self.fields = [None] * num_fields
 
 
 class Solution:
@@ -22,17 +22,28 @@ class Solution:
     def __str__(self):
         txt = ""
         for i, day in enumerate(self.days):
-            txt += f"Day {i}\n"
+            # txt += f"Day {i}\n"
+            # for field_num in range(self.num_fields):
+            #     txt += f"field: {field_num} crop:{day.fields[field_num]}\n"
+
             for field_num in range(self.num_fields):
-                txt += f"field: {field_num} crop:{day.field[field_num]}\n"
+                txt += str(day.fields[field_num])
+            txt += "  "
         txt += "\n\n"
         return txt
 
     def to_dataframe(self):
-        df = pd.DataFrame()
+        #df = pd.DataFrame()
+
+        values = {}
         for day in range(self.num_days):
-            col_name = "day"+ str(day)
-            df[col_name] = self.days[day].field
+            col_name = "day" + str(day)
+            values[col_name] = self.days[day].fields
+
+        df = pd.DataFrame(data=values)
+        # for day in range(self.num_days):
+        #     col_name = "day"+ str(day)
+        #     df[col_name] = self.days[day].fields
         pd.set_option("display.max_rows", 500)
         pd.set_option("display.max_columns", 30)
         pd.set_option("display.width", 1000)

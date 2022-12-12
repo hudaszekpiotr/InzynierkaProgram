@@ -15,7 +15,7 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QLineEdit, QPushButton, QSizePolicy,
+from PySide6.QtWidgets import (QApplication, QFrame, QGroupBox, QSizePolicy,
     QWidget)
 
 class Ui_Form(object):
@@ -23,12 +23,19 @@ class Ui_Form(object):
         if not Form.objectName():
             Form.setObjectName(u"Form")
         Form.resize(400, 300)
-        self.name = QLineEdit(Form)
-        self.name.setObjectName(u"name")
-        self.name.setGeometry(QRect(130, 50, 113, 22))
-        self.okButton = QPushButton(Form)
-        self.okButton.setObjectName(u"okButton")
-        self.okButton.setGeometry(QRect(120, 130, 75, 24))
+        self.groupBox = QGroupBox(Form)
+        self.groupBox.setObjectName(u"groupBox")
+        self.groupBox.setGeometry(QRect(40, 30, 221, 161))
+        self.line = QFrame(Form)
+        self.line.setObjectName(u"line")
+        self.line.setGeometry(QRect(290, 130, 3, 61))
+        self.line.setFrameShape(QFrame.VLine)
+        self.line.setFrameShadow(QFrame.Sunken)
+        self.line_2 = QFrame(Form)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setGeometry(QRect(240, 260, 118, 3))
+        self.line_2.setFrameShape(QFrame.HLine)
+        self.line_2.setFrameShadow(QFrame.Sunken)
 
         self.retranslateUi(Form)
 
@@ -37,6 +44,6 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(QCoreApplication.translate("Form", u"Form", None))
-        self.okButton.setText(QCoreApplication.translate("Form", u"PushButton", None))
+        self.groupBox.setTitle("")
     # retranslateUi
 

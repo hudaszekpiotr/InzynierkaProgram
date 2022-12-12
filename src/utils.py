@@ -27,26 +27,13 @@ def parse_resources(list_of_dicts):
 
 
 def load_files():
-    json_cultivation_types = open('../sample_data/cultivation_types.json')
-    cultivation_types = json.load(json_cultivation_types)
-    json_cultivation_types.close()
-
-    # print(json.dumps(cultivation_types, indent=2))
-    # print("\nparsed:")
-    # parse_price(cultivation_types)
+    json_model_data = open('../data/model_data.json')
+    model_data = json.load(json_model_data)
+    json_model_data.close()
+    cultivation_types = model_data["cultivation_types"]
+    resources = model_data["resources"]
+    fields = model_data["fields"]
     parse_resources(cultivation_types)
-    # print(json.dumps(cultivation_types, indent=2))
-    # for i in cultivation_types:
-    #     print(i)
 
-    json_fields = open('../sample_data/fields.json')
-    fields = json.load(json_fields)
-    json_fields.close()
-    # print(json.dumps(fields, indent=2))
-
-    json_resources = open('../sample_data/resources.json')
-    resources = json.load(json_resources)
-    json_resources.close()
-    # print(json.dumps(resources, indent=2))
 
     return resources, fields, cultivation_types

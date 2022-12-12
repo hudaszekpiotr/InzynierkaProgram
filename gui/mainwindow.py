@@ -4,13 +4,14 @@ import json
 import os
 import sys
 from datetime import timedelta
+from distinctipy import distinctipy
 
 #from PyQt6.QtCore import QAbstractTableModel, Qt
 
-from PySide6.QtCore import QRect, QDate
-from PySide6.QtGui import QIntValidator, QAction
+from PySide6.QtCore import QRect, QDate, QModelIndex
+from PySide6.QtGui import QIntValidator, QAction, QBrush, QColor
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit, QDialog, \
-    QDialogButtonBox, QVBoxLayout, QLabel, QFileDialog
+    QDialogButtonBox, QVBoxLayout, QLabel, QFileDialog, QCheckBox
 from PySide6 import QtCore, QtGui, QtWidgets
 from PySide6.QtCore import Qt
 
@@ -51,22 +52,32 @@ class TableModel(QtCore.QAbstractTableModel):
     def __init__(self, data):
         super(TableModel, self).__init__()
         self._data = data
+        self.colors = dict()
 
-    def data(self, index, role):
+    def data(self, index, role=Qt.DisplayRole):
         if role == Qt.DisplayRole:
             # See below for the nested-list data structure.
             # .row() indexes into the outer list,
             # .column() indexes into the sub-list
             return self._data[index.row()][index.column()]
+        if role == Qt.BackgroundRole:
+            color = self.colors.get((index.row(), index.column()))
+            if color is not None:
+                return color
 
-    def rowCount(self, index):
+    def rowCount(self, parent=QtCore.QModelIndex()):
         # The length of the outer list.
         return len(self._data)
 
-    def columnCount(self, index):
+    def columnCount(self, parent=QtCore.QModelIndex()):
         # The following takes the first sub-list, and returns
         # the length (only works if all rows are an equal length)
         return len(self._data[0])
+
+    def change_color(self, row, column, color):
+        ix = self.index(row, column)
+        self.colors[(row, column)] = color
+        self.dataChanged.emit(ix, ix, (Qt.BackgroundRole,))
 
 
 class Result(QWidget):
@@ -75,17 +86,64 @@ class Result(QWidget):
         self.ui = ui_result.Ui_Form()
         self.ui.setupUi(self)
         self.table = QtWidgets.QTableView()
+        self.df = df
+        self.df_resources = df_resources
+        self.check_boxes = []
+        #print(df)
         df = df.values.tolist()
         self.model = TableModel(df)
         self.table.setModel(self.model)
+        self.table.resizeColumnsToContents()
+        #self.model.change_color(1,1,QBrush(QColor(0, 0, 255, 127)))
+        #print(self.table.rowAt(0))
         self.ui.topSpot.addWidget(self.table)
 
-        sc = MplCanvas(self, width=5, height=4, dpi=100)
+        self.sc = MplCanvas(self, width=5, height=4, dpi=100)
 
-        df_resources.plot(ax=sc.axes, kind="bar")
+        #df_resources = df_resources[["water", "machine_1"]]
+        print(df_resources)
+        df_resources.plot(ax=self.sc.axes, kind="bar")
 
         #sc.axes.bar(langs, students)
-        self.ui.bottomSpot.addWidget(sc)
+        self.ui.bottomSpot.addWidget(self.sc)
+        self.color_table()
+        self.add_check_boxes()
+
+    def replot_resources(self):
+        names = []
+        for box in self.check_boxes:
+            if box.isChecked():
+                names.append(box.text())
+        df_resources = self.df_resources[names]
+        self.sc.axes.cla()
+        df_resources.plot(ax=self.sc.axes, kind="bar")
+        self.sc.draw()
+
+    def add_check_boxes(self):
+        for name in list(self.df_resources.columns):
+            checkbox = QCheckBox(name, self.ui.scrollAreaWidgetContents)
+            checkbox.setChecked(True)
+            checkbox.stateChanged.connect(self.replot_resources)
+            self.check_boxes.append(checkbox)
+            self.ui.verticalLayout_2.addWidget(checkbox)
+
+    def color_table(self):
+        num_colors = 0
+        values_list = []
+        for index, row in self.df.iterrows():
+            for col_index, i in enumerate(row):
+                if i is not None and i !='' and i != ' ' and i not in values_list:
+                    num_colors += 1
+                    values_list.append(i)
+
+        colors = distinctipy.get_colors(num_colors)
+
+        for index, row in self.df.iterrows():
+            for col_index, i in enumerate(row):
+                if i is not None and i !='' and i != ' ':
+                    color = colors[values_list.index(i)]
+                    color = [int(c*255) for c in color]
+                    self.model.change_color(index, col_index, QBrush(QColor(*color, 127)))
 
 
 class FieldTypeTab(QWidget):
@@ -189,10 +247,11 @@ class MainWindow(QMainWindow):
         self.ui.removeDailyResources.clicked.connect(self.remove_daily_resources)
         self.ui.addPeriodResources.clicked.connect(self.add_period_resources)
         self.ui.removePeriodResources.clicked.connect(self.remove_period_resources)
-        self.sc = MplCanvas(self, width=5, height=4, dpi=100)
+        # self.sc = MplCanvas(self, width=5, height=4, dpi=100)
+        self.sc = MplCanvas(self, width=4, height=3, dpi=80)
         #self.sc.axes.plot([0, 1, 2, 3, 4])
 
-        #self.ui.verticalLayout_3.addWidget(self.sc)
+        self.ui.verticalLayout_3.addWidget(self.sc)
 
         self.result = None
         self.ui.tabWidgetCultTypes.tabCloseRequested.connect(self.ui.tabWidgetCultTypes.removeTab)
@@ -211,9 +270,33 @@ class MainWindow(QMainWindow):
         load_action.triggered.connect(self.load_data)
         self.ui.menubar.addAction(save_action)
         self.ui.menubar.addAction(load_action)
-        #self.sc.axes.plot([5, 6, 2, 3, 4, 7, 6, 6, 6, 6])
-        self.ui.verticalLayout_3.addWidget(self.sc)
+        self.ui.tournamentBox.hide()
+        #self.ui.penaltyBox.hide()
 
+        self.ui.selectionType.activated.connect(self.hide_show_tournament)
+        self.ui.unacceptableFixType.activated.connect(self.hide_show_penalty)
+
+        self.ui.maxIter.valueChanged.connect(self.change_label_multiplier)
+        self.ui.multiplierLastLabel.setText("multiplier at " + str(self.ui.maxIter.value()) + " iteration")
+        #self.sc.axes.plot([5, 6, 2, 3, 4, 7, 6, 6, 6, 6])
+        #self.ui.verticalLayout_3.addWidget(self.sc)
+
+    def change_label_multiplier(self):
+        self.ui.multiplierLastLabel.setText("multiplier at " + str(self.ui.maxIter.value()) + " iteration")
+
+    def hide_show_tournament(self):
+        selection_type = self.ui.selectionType.currentText()
+        if selection_type == "tournament":
+            self.ui.tournamentBox.show()
+        else:
+            self.ui.tournamentBox.hide()
+
+    def hide_show_penalty(self):
+        unacceptable_fix_type = self.ui.unacceptableFixType.currentText()
+        if unacceptable_fix_type == "penalty":
+            self.ui.penaltyBox.show()
+        else:
+            self.ui.penaltyBox.hide()
 
 
     def save_data_to_file(self):
@@ -221,7 +304,6 @@ class MainWindow(QMainWindow):
         self.save_data(filename)
 
     def plot(self, best_results):
-        print("dsdsds")
         self.sc.axes.plot(best_results)
         self.ui.verticalLayout_3.addWidget(self.sc)
 
@@ -229,17 +311,32 @@ class MainWindow(QMainWindow):
         max_iter = self.ui.maxIter.value()
         max_iter_no_progress = self.ui.maxIterNoProgress.value()
         start_date = self.ui.startDate.date().toPython()
-        par = Parameters(max_iter, max_iter_no_progress, start_date)
+        num_days = self.ui.numDays.value()
+        mutation_probability = self.ui.mutationProbability.value()
+        crossover_type = self.ui.crossoverType.currentText()
+        initial_population_type = self.ui.initialPopulationType.currentText()
+        population_size = self.ui.populationSize.value()
+        unacceptable_fix_type = self.ui.unacceptableFixType.currentText()
+        penalty_multiplier_first = self.ui.penaltyMultiplierFirst.value()
+        penalty_multiplier_last = self.ui.penaltyMultiplierLast.value()
+        selection_type = self.ui.selectionType.currentText()
+        mating_pool_size = self.ui.matingPoolSize.value()
+        elite_size = self.ui.eliteSize.value()
+        tournament_size = self.ui.tournamentSize.value()
+
+        par = Parameters(max_iter=max_iter, max_iter_no_progress=max_iter_no_progress, start_date=start_date,
+                         num_days=num_days, crossover_type=crossover_type, mutation_probability=mutation_probability,
+                         initial_population_type=initial_population_type, population_size=population_size,
+                         unacceptable_fix_type=unacceptable_fix_type, penalty_multiplier_first=penalty_multiplier_first,
+                         penalty_multiplier_last=penalty_multiplier_last, selection_type=selection_type,
+                         mating_pool_size=mating_pool_size, elite_size=elite_size, tournament_size=tournament_size)
         return par
 
     def run_optimization(self):
-
-
         par = self.get_parameters()
         self.save_data()
         resources, fields, cultivation_types = load_files()
         self.optimization = Optimization(resources, fields, cultivation_types)
-        #self.load_data()
         df, df_resources, best_results = self.optimization.evolution_algorithm(par)
         self.result = Result(df, df_resources)
         self.result.setGeometry(QRect(100, 100, 800, 800))
@@ -264,7 +361,8 @@ class MainWindow(QMainWindow):
 
 
     def load_data(self):
-        file_name = QFileDialog.getOpenFileName(self, 'Open file','.', "JSON files (*.json)")[0]
+        #file_name = QFileDialog.getOpenFileName(self, 'Open file','../sample_data', "JSON files (*.json)")[0]
+        file_name = "../sample_data/data1.json"
         if file_name == "":
             return 0
         with open(file_name, "r") as file:

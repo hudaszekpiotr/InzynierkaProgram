@@ -35,7 +35,7 @@ def penalty(solution, cultivation_types, resources):
     period_dict = {}
     for count, day in enumerate(solution.days):
         daily_dict = {}
-        for field in day.field:
+        for field in day.fields:
             if field is not None:
                 iter_resources = cultivation_types[field[0]]["daily_resources"][field[1]]
                 for key in iter_resources:
@@ -83,9 +83,10 @@ def resources_df(solution, cultivation_types):
     df = pd.DataFrame()
 
     period_dict = {}
+    data = {}
     for count, day in enumerate(solution.days):
         daily_dict = {}
-        for field in day.field:
+        for field in day.fields:
             if field is not None:
                 iter_resources = cultivation_types[field[0]]["daily_resources"][field[1]]
                 for key in iter_resources:
@@ -102,6 +103,7 @@ def resources_df(solution, cultivation_types):
                         else:
                             period_dict[key] = iter_resources[key]
 
-        df["day" + str(count)] = pd.Series(daily_dict, dtype='float64')
-
+        data["day" + str(count)] = pd.Series(daily_dict, dtype='float64')
+        #df["day" + str(count)] = pd.Series(daily_dict, dtype='float64')
+    df = pd.DataFrame(data=data)
     return df, period_dict
