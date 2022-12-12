@@ -81,12 +81,13 @@ class TableModel(QtCore.QAbstractTableModel):
 
 
 class Result(QWidget):
-    def __init__(self, df, df_resources, parent=None):
+    def __init__(self, df, df_resources, cultivation_types, parent=None):
         super().__init__(parent)
         self.ui = ui_result.Ui_Form()
         self.ui.setupUi(self)
         self.table = QtWidgets.QTableView()
         self.df = df
+        self.cultivation_types = cultivation_types
         self.df_resources = df_resources
         self.check_boxes = []
         #print(df)
@@ -108,6 +109,7 @@ class Result(QWidget):
         self.ui.bottomSpot.addWidget(self.sc)
         self.color_table()
         self.add_check_boxes()
+        self.add_legend()
 
     def replot_resources(self):
         names = []
@@ -127,14 +129,27 @@ class Result(QWidget):
             self.check_boxes.append(checkbox)
             self.ui.verticalLayout_2.addWidget(checkbox)
 
-    def color_table(self):
-        num_colors = 0
+    def get_unique_types_list(self):
         values_list = []
         for index, row in self.df.iterrows():
             for col_index, i in enumerate(row):
-                if i is not None and i !='' and i != ' ' and i not in values_list:
-                    num_colors += 1
+                if i is not None and i != '' and i != ' ' and i not in values_list:
                     values_list.append(i)
+        return values_list
+
+    def add_legend(self):
+        values_list = self.get_unique_types_list()
+        table = self.ui.legend
+        for value in values_list:
+            table.insertRow(table.rowCount())
+            item1 = QtWidgets.QTableWidgetItem(value)
+            item2 = QtWidgets.QTableWidgetItem(self.cultivation_types[int(value)-1]["name"])
+            table.setItem(table.rowCount() - 1, 0, item1)
+            table.setItem(table.rowCount() - 1, 1, item2)
+
+    def color_table(self):
+        values_list = self.get_unique_types_list()
+        num_colors= len(values_list)
 
         colors = distinctipy.get_colors(num_colors)
 
@@ -338,7 +353,7 @@ class MainWindow(QMainWindow):
         resources, fields, cultivation_types = load_files()
         self.optimization = Optimization(resources, fields, cultivation_types)
         df, df_resources, best_results = self.optimization.evolution_algorithm(par)
-        self.result = Result(df, df_resources)
+        self.result = Result(df, df_resources, cultivation_types)
         self.result.setGeometry(QRect(100, 100, 800, 800))
         self.result.show()
         self.plot(best_results)

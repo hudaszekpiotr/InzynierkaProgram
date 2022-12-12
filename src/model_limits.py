@@ -3,6 +3,7 @@
 import collections
 import functools
 import math
+import random
 
 import pandas as pd
 import operator
@@ -107,3 +108,37 @@ def resources_df(solution, cultivation_types):
         #df["day" + str(count)] = pd.Series(daily_dict, dtype='float64')
     df = pd.DataFrame(data=data)
     return df, period_dict
+
+
+def fixup(solution, cultivation_types, resources):
+    penalty_val = 0
+    period_dict = {}
+    for count, day in enumerate(solution.days):
+        daily_dict = {}
+        for field in day.field:
+            if field is not None:
+                iter_resources = cultivation_types[field[0]]["daily_resources"][field[1]]
+                for key in iter_resources:
+                    if key in daily_dict:
+                        daily_dict[key] += iter_resources[key]
+                    else:
+                        daily_dict[key] = iter_resources[key]
+
+                if field[1] == 0:
+                    iter_resources = cultivation_types[field[0]]["entire_period_resources"]
+                    for key in iter_resources:
+                        if key in period_dict:
+                            period_dict[key] += iter_resources[key]
+                        else:
+                            period_dict[key] = iter_resources[key]
+
+        for key in daily_dict:
+            if key not in resources["daily_resources"]:
+                raise ValueError
+            diff = resources["daily_resources"][key] - daily_dict[key]
+            if diff < 0:
+                fields_shufled = random.shuffle(day)
+                #fields_shufled =  # todo
+                for field in fields_shufled:
+                    if key in cultivation_types[field[0]]["daily_resources"][field[1]]:
+                        pass
