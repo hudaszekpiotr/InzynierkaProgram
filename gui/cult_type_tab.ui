@@ -223,7 +223,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QDateEdit" name="startDate"/>
+          <widget class="QDateEdit" name="startDate">
+           <property name="displayFormat">
+            <string>dd.MMMM</string>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_7">

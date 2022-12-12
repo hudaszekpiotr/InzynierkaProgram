@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'result.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -63,10 +63,6 @@ class Ui_Form(object):
         self.legend.setHorizontalHeaderItem(0, __qtablewidgetitem)
         __qtablewidgetitem1 = QTableWidgetItem()
         self.legend.setHorizontalHeaderItem(1, __qtablewidgetitem1)
-        if (self.legend.rowCount() < 1):
-            self.legend.setRowCount(1)
-        __qtablewidgetitem2 = QTableWidgetItem()
-        self.legend.setVerticalHeaderItem(0, __qtablewidgetitem2)
         self.legend.setObjectName(u"legend")
         sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
@@ -88,7 +84,7 @@ class Ui_Form(object):
         self.selectResourcesArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 73, 123))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 69, 126))
         self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.selectResourcesArea.setWidget(self.scrollAreaWidgetContents)
@@ -114,7 +110,5 @@ class Ui_Form(object):
         ___qtablewidgetitem.setText(QCoreApplication.translate("Form", u"num", None));
         ___qtablewidgetitem1 = self.legend.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("Form", u"Cultivation type", None));
-        ___qtablewidgetitem2 = self.legend.verticalHeaderItem(0)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("Form", u"1", None));
     # retranslateUi
 

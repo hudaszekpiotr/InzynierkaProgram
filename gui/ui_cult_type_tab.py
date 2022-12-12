@@ -304,6 +304,7 @@ class Ui_widget(object):
         self.label_5.setText(QCoreApplication.translate("widget", u"Duration", None))
         self.duration.setText(QCoreApplication.translate("widget", u"0", None))
         self.label_6.setText(QCoreApplication.translate("widget", u"Start date", None))
+        self.startDate.setDisplayFormat(QCoreApplication.translate("widget", u"dd.MMMM", None))
         self.label_7.setText(QCoreApplication.translate("widget", u"\u00b1", None))
         self.label_3.setText(QCoreApplication.translate("widget", u"entire period resources", None))
         ___qtablewidgetitem = self.periodResources.horizontalHeaderItem(0)

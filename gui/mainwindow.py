@@ -146,6 +146,8 @@ class Result(QWidget):
             item2 = QtWidgets.QTableWidgetItem(self.cultivation_types[int(value)-1]["name"])
             table.setItem(table.rowCount() - 1, 0, item1)
             table.setItem(table.rowCount() - 1, 1, item2)
+        table.resizeColumnsToContents()
+        table.verticalHeader().setVisible(False)
 
     def color_table(self):
         values_list = self.get_unique_types_list()
@@ -491,6 +493,7 @@ class MainWindow(QMainWindow):
 
             #start_date_raw = tab.startDate.date().toPython() - timedelta(days=tab.plusMinus.value())
             start_date_raw = tab.startDate.date().toPython()
+            print(start_date_raw.year)
             start_date = {
                 "year": start_date_raw.year,
                 "month": start_date_raw.month,

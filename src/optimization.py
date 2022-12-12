@@ -94,7 +94,8 @@ class Optimization:
     def transform_cult_types_start_date(self, alg_start_date):
 
         for i in self.cultivation_types:
-            cult_type_start_date = date(i["start_date"]["year"], i["start_date"]["month"], i["start_date"]["day"])
+            cult_type_start_date = date(alg_start_date.year, i["start_date"]["month"], i["start_date"]["day"])
+            #cult_type_start_date = date(i["start_date"]["year"], i["start_date"]["month"], i["start_date"]["day"])
             delta = cult_type_start_date - alg_start_date
             plus_minus_days = i["start_date"]["plus_minus_days"]
             i["start_date"] = [delta.days - plus_minus_days, delta.days + plus_minus_days]
