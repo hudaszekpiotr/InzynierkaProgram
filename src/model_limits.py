@@ -20,25 +20,14 @@ def solution_is_valid(solution):
                 raise ValueError
 
 
-def daily_resources_ok(solution, resources, cultivation_types):
-    for day in solution.days:
-        daily_dict = resources_dict(day, cultivation_types)
-        for key in daily_dict:
-            if key not in resources["daily_resources"]:
-                print("error1", day, key)
-                return day, key
-            elif resources["daily_resources"][key] < daily_dict[key]:
-                print("error2", day, key)
-                return day, key
-
 
 
 def penalty(solution, cultivation_types, resources):
     penalty_val = 0
     period_dict = {}
-    for count, day in enumerate(solution.days):
+    for count, day in enumerate(solution.matrix.T):
         daily_dict = {}
-        for field in day.fields:
+        for field in day:
             if field is not None:
                 iter_resources = cultivation_types[field[0]]["daily_resources"][field[1]]
                 for key in iter_resources:
@@ -87,9 +76,9 @@ def resources_df(solution, cultivation_types):
 
     period_dict = {}
     data = {}
-    for count, day in enumerate(solution.days):
+    for count, day in enumerate(solution.matrix.T):
         daily_dict = {}
-        for field in day.fields:
+        for field in day:
             if field is not None:
                 iter_resources = cultivation_types[field[0]]["daily_resources"][field[1]]
                 for key in iter_resources:
@@ -115,9 +104,9 @@ def fixup(solution, cultivation_types, resources):
     penalty_val = 0
     period_dict = {}
     daily_resources_list = []
-    for count, day in enumerate(solution.days):
+    for count, day in enumerate(solution.matrix.T):
         daily_dict = {}
-        for field in day.fields:
+        for field in day:
             if field is not None:
                 iter_resources = cultivation_types[field[0]]["daily_resources"][field[1]]
                 for resource in iter_resources:
@@ -135,29 +124,29 @@ def fixup(solution, cultivation_types, resources):
                             period_dict[resource] = iter_resources[resource]
         daily_resources_list.append(daily_dict)
 
-    for count, day in enumerate(solution.days):
+    for count, day in enumerate(solution.matrix.T):
         daily_dict = daily_resources_list[count]
         for resource in daily_dict:
             if resource not in resources["daily_resources"]:
                 raise ValueError
             diff = resources["daily_resources"][resource] - daily_dict[resource]
             if diff < 0:
-                fields_num_list = list(range(len(day.fields)))
+                fields_num_list = list(range(solution.num_fields))
                 random.shuffle(fields_num_list)
 
-                for field_count in fields_num_list:
+                for field_index in fields_num_list:
                     if diff >= 0:
                         break
-                    if day.fields[field_count] is None:
+                    if day[field_index] is None:
                         continue
-                    daily_resources_current_field = cultivation_types[day.fields[field_count][0]]["daily_resources"][day.fields[field_count][1]]
-                    period_resources_current_field = cultivation_types[day.fields[field_count][0]]["entire_period_resources"]
+                    daily_resources_current_field = cultivation_types[day[field_index][0]]["daily_resources"][day[field_index][1]]
+                    period_resources_current_field = cultivation_types[day[field_index][0]]["entire_period_resources"]
                     if resource in daily_resources_current_field:
-                        duration = cultivation_types[day.fields[field_count][0]]["duration"]
+                        duration = cultivation_types[day[field_index][0]]["duration"]
                         for key in daily_resources_current_field:
                             daily_dict[key] += daily_resources_current_field[key]
                         for key in period_resources_current_field:
                             period_dict[key] += period_resources_current_field[key]
                         diff = resources["daily_resources"][resource] - daily_dict[resource]
-                        clear_slot(solution, count, duration, field_count)
+                        clear_slot(solution, count, duration, field_index)
 

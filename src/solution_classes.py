@@ -2,45 +2,32 @@
 # -*- coding: utf-8 -*-
 
 from typing import List, Callable
+
+import numpy as np
 import pandas as pd
 
-
-class DaySolution:
-    def __init__(self, num_fields):
-        self.fields = [None] * num_fields
 
 
 class Solution:
     def __init__(self, num_fields: int, num_days: int):
-        self.days = []
+        self.matrix = np.full((num_fields, num_days), None, dtype=object)
         self.num_days = num_days
         self.num_fields = num_fields
-        for _ in range(num_days):
-            day = DaySolution(num_fields)
-            self.days.append(day)
 
     def __str__(self):
-        txt = ""
-        for i, day in enumerate(self.days):
-            # txt += f"Day {i}\n"
-            # for field_num in range(self.num_fields):
-            #     txt += f"field: {field_num} crop:{day.fields[field_num]}\n"
-
-            for field_num in range(self.num_fields):
-                txt += str(day.fields[field_num])
-            txt += "  "
-        txt += "\n\n"
+        txt = str(self.matrix)
         return txt
 
     def to_dataframe(self):
-        #df = pd.DataFrame()
+        # #df = pd.DataFrame()
+        #
+        # values = {}
+        # for day in range(self.num_days):
+        #     col_name = "day" + str(day)
+        #     values[col_name] = self.days[day].fields
 
-        values = {}
-        for day in range(self.num_days):
-            col_name = "day" + str(day)
-            values[col_name] = self.days[day].fields
-
-        df = pd.DataFrame(data=values)
+        #df = pd.DataFrame(data=values)
+        df = pd.DataFrame(data=self.matrix)
         # for day in range(self.num_days):
         #     col_name = "day"+ str(day)
         #     df[col_name] = self.days[day].fields
