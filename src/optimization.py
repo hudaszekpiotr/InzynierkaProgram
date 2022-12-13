@@ -9,7 +9,7 @@ from matplotlib import pyplot as plt
 
 from src.genetic_operators import crossover, selection, add_to_solution, mutate_solution
 from src.solution_classes import Solution, SolutionAndFitness
-from src.model_limits import daily_resources_ok, resources_df, penalty, resources_percent
+from src.model_limits import daily_resources_ok, resources_df, penalty, resources_percent, fixup
 
 from copy import deepcopy
 import math
@@ -53,15 +53,10 @@ class Optimization:
 
         def fill_in_solution(solution):
             for i in range(solution.num_fields):
-
                 type = random.randint(0, len(self.cultivation_types)-1)
-
                 day = random.randint(*self.cultivation_types[type]["start_date"])
                 duration = self.cultivation_types[type]["duration"]
-
                 add_to_solution(solution, day, i, type, duration)
-                # for k in range(self.cultivation_types[type]["duration"]):
-                #     solution.days[day+k].fields[i] = type, k
             return solution
 
         remove_impossible_cult_types()
@@ -74,10 +69,7 @@ class Optimization:
 
         return sol_list
 
-    def calculate_objective_fun(self, solution: Solution):
-        def fixup():
-            pass
-
+    def calculate_objective_fun(self, solution: Solution, do_penalty):
         profit = 0
 
         for day in solution.days:
@@ -87,7 +79,8 @@ class Optimization:
                     field_type = self.fields[field_count]
                     profit += crop_type["profit"] * field_type["coefficients"][crop_type["name"]] * field_type["area"]
 
-        profit -= penalty(solution, self.cultivation_types, self.resources)
+        if do_penalty:
+            profit -= penalty(solution, self.cultivation_types, self.resources)
         return profit
 
 
@@ -113,8 +106,14 @@ class Optimization:
 
         population = []
         solutions = self.generate_initial_population(parameters.num_days, parameters.population_size, parameters.initial_population_type)
+
+        do_fixup = parameters.unacceptable_fix_type == "fixup"
+        do_penalty = parameters.unacceptable_fix_type == "penalty"
+
         for sol in solutions:
-            population.append(SolutionAndFitness(sol, self.calculate_objective_fun(sol)))
+            if do_fixup:
+                fixup(sol, self.cultivation_types, self.resources)
+            population.append(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty)))
 
         is_sorted = False
         if parameters.elite_size > 0:
@@ -158,17 +157,21 @@ class Optimization:
 
                 i = 0
                 while len(population) < parameters.population_size:
+                    have_to_copy = (parameters.population_size - len(population) > mating_pool_size)
                     if i >= mating_pool_size - 2:
                         mating_pool.extend(mating_pool)
                     child1, child2 = crossover(mating_pool[i].solution, mating_pool[i+1].solution,
-                                                    method=parameters.crossover_type)
+                                                    method=parameters.crossover_type, have_to_copy = have_to_copy)
 
                     if random.random() < probability:
                         mutate_solution(child1, self.cultivation_types)
                     if random.random() < probability:
                         mutate_solution(child2, self.cultivation_types)
-                    population.append(SolutionAndFitness(child1, self.calculate_objective_fun(child1)))
-                    population.append(SolutionAndFitness(child2, self.calculate_objective_fun(child2)))
+                    if do_fixup:
+                        fixup(child1, self.cultivation_types, self.resources)
+                        fixup(child2, self.cultivation_types, self.resources)
+                    population.append(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty)))
+                    population.append(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty)))
                     i += 2
 
                 if len(population) > parameters.population_size:

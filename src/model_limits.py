@@ -8,6 +8,8 @@ import random
 import pandas as pd
 import operator
 
+from src.genetic_operators import clear_slot
+
 
 def solution_is_valid(solution):
     for day in solution.days:
@@ -105,7 +107,6 @@ def resources_df(solution, cultivation_types):
                             period_dict[key] = iter_resources[key]
 
         data["day" + str(count)] = pd.Series(daily_dict, dtype='float64')
-        #df["day" + str(count)] = pd.Series(daily_dict, dtype='float64')
     df = pd.DataFrame(data=data)
     return df, period_dict
 
@@ -113,32 +114,50 @@ def resources_df(solution, cultivation_types):
 def fixup(solution, cultivation_types, resources):
     penalty_val = 0
     period_dict = {}
+    daily_resources_list = []
     for count, day in enumerate(solution.days):
         daily_dict = {}
-        for field in day.field:
+        for field in day.fields:
             if field is not None:
                 iter_resources = cultivation_types[field[0]]["daily_resources"][field[1]]
-                for key in iter_resources:
-                    if key in daily_dict:
-                        daily_dict[key] += iter_resources[key]
+                for resource in iter_resources:
+                    if resource in daily_dict:
+                        daily_dict[resource] += iter_resources[resource]
                     else:
-                        daily_dict[key] = iter_resources[key]
+                        daily_dict[resource] = iter_resources[resource]
 
                 if field[1] == 0:
                     iter_resources = cultivation_types[field[0]]["entire_period_resources"]
-                    for key in iter_resources:
-                        if key in period_dict:
-                            period_dict[key] += iter_resources[key]
+                    for resource in iter_resources:
+                        if resource in period_dict:
+                            period_dict[resource] += iter_resources[resource]
                         else:
-                            period_dict[key] = iter_resources[key]
+                            period_dict[resource] = iter_resources[resource]
+        daily_resources_list.append(daily_dict)
 
-        for key in daily_dict:
-            if key not in resources["daily_resources"]:
+    for count, day in enumerate(solution.days):
+        daily_dict = daily_resources_list[count]
+        for resource in daily_dict:
+            if resource not in resources["daily_resources"]:
                 raise ValueError
-            diff = resources["daily_resources"][key] - daily_dict[key]
+            diff = resources["daily_resources"][resource] - daily_dict[resource]
             if diff < 0:
-                fields_shufled = random.shuffle(day)
-                #fields_shufled =  # todo
-                for field in fields_shufled:
-                    if key in cultivation_types[field[0]]["daily_resources"][field[1]]:
-                        pass
+                fields_num_list = list(range(len(day.fields)))
+                random.shuffle(fields_num_list)
+
+                for field_count in fields_num_list:
+                    if diff >= 0:
+                        break
+                    if day.fields[field_count] is None:
+                        continue
+                    daily_resources_current_field = cultivation_types[day.fields[field_count][0]]["daily_resources"][day.fields[field_count][1]]
+                    period_resources_current_field = cultivation_types[day.fields[field_count][0]]["entire_period_resources"]
+                    if resource in daily_resources_current_field:
+                        duration = cultivation_types[day.fields[field_count][0]]["duration"]
+                        for key in daily_resources_current_field:
+                            daily_dict[key] += daily_resources_current_field[key]
+                        for key in period_resources_current_field:
+                            period_dict[key] += period_resources_current_field[key]
+                        diff = resources["daily_resources"][resource] - daily_dict[resource]
+                        clear_slot(solution, count, duration, field_count)
+

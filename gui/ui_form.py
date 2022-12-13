@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'form.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.1
+## Created by: Qt User Interface Compiler version 6.4.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -154,7 +154,7 @@ class Ui_MainWindow(object):
         self.populationSize.setSizePolicy(sizePolicy3)
         self.populationSize.setMinimum(10)
         self.populationSize.setMaximum(999999)
-        self.populationSize.setValue(10)
+        self.populationSize.setValue(50)
 
         self.gridLayout_10.addWidget(self.populationSize, 1, 1, 1, 1)
 
@@ -275,7 +275,7 @@ class Ui_MainWindow(object):
         self.maxIter.setSizePolicy(sizePolicy4)
         self.maxIter.setMinimum(1)
         self.maxIter.setMaximum(9999999)
-        self.maxIter.setValue(20)
+        self.maxIter.setValue(50)
 
         self.gridLayout.addWidget(self.maxIter, 0, 1, 1, 1)
 
@@ -555,7 +555,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1362, 32))
+        self.menubar.setGeometry(QRect(0, 0, 1362, 22))
         self.menuinfo = QMenu(self.menubar)
         self.menuinfo.setObjectName(u"menuinfo")
         MainWindow.setMenuBar(self.menubar)
@@ -567,7 +567,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidgetCultTypes.setCurrentIndex(-1)
         self.tabWidgetFields.setCurrentIndex(-1)
 

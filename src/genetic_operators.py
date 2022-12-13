@@ -69,7 +69,7 @@ def selection(population, mating_pool_size, selection_type, tournament_size, is_
     else:
         raise ValueError()
 
-def crossover(solution1: Solution, solution2: Solution, method):
+def crossover(solution1: Solution, solution2: Solution, method, have_to_copy):
     def crossover_days(sol1, sol2):
         child = copy.deepcopy(sol1)
         num_days = len(sol1.days)
