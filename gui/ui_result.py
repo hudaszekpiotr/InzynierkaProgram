@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'result.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -41,15 +41,17 @@ class Ui_Form(object):
 
         self.gridLayout.addLayout(self.horizontalLayout_3, 0, 1, 1, 1)
 
-        self.horizontalLayout_2 = QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout = QHBoxLayout()
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.label_2 = QLabel(Form)
         self.label_2.setObjectName(u"label_2")
+        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
+        self.label_2.setSizePolicy(sizePolicy)
 
-        self.horizontalLayout_2.addWidget(self.label_2)
+        self.horizontalLayout.addWidget(self.label_2)
 
 
-        self.gridLayout.addLayout(self.horizontalLayout_2, 1, 0, 1, 1)
+        self.gridLayout.addLayout(self.horizontalLayout, 1, 0, 1, 1)
 
         self.topSpot = QVBoxLayout()
         self.topSpot.setObjectName(u"topSpot")
@@ -84,7 +86,7 @@ class Ui_Form(object):
         self.selectResourcesArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 69, 126))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 73, 123))
         self.verticalLayout_2 = QVBoxLayout(self.scrollAreaWidgetContents)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.selectResourcesArea.setWidget(self.scrollAreaWidgetContents)

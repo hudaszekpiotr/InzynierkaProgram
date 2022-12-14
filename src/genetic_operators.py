@@ -69,41 +69,38 @@ def selection(population, mating_pool_size, selection_type, tournament_size, is_
     else:
         raise ValueError()
 
-def crossover(solution1: Solution, solution2: Solution, method, have_to_copy):
+def crossover(solution1: Solution, solution2: Solution, method, cultivation_types, have_to_copy):
     def crossover_days(sol1, sol2):
         child = copy.deepcopy(sol1)
         num_days = sol1.num_days
         num_fields = sol1.num_fields
-        for field in range(num_fields):
-            edge = True
-            sol2_valid = False
-            for day in range(num_days // 2, num_days):
-                if sol1.matrix[field, day] is None or sol1.matrix[field, day][1] == 0:
-                    edge = False
-                if not edge and (sol2.matrix[field, day] is None or sol2.matrix[field, day][1] == 0):
-                    sol2_valid = True
-                if sol2_valid:
-                    child.matrix[field:, day:] = sol2.matrix[field:, day:]
-                    # child.days[day].fields[field] = sol2.days[day].fields[field]
-                    # child.days[day].fields[field] = sol2.days[day].fields[field]
+        for field_index in range(num_fields):
+            edge = None
+            field_left = child.data[field_index]
+            field_right = sol2.data[field_index]
+            for index in range(len(field_left)):
+                if field_left[index][1] > num_days//2:
+                    field_left = field_left[:index]
+                    edge = field_left[1] + cultivation_types[field_left[index][0]]["duration"]
+                    break
+            if edge is None:
+                edge = num_days//2
+            for index in range(len(field_right)):
+                if field_right[index][1] > edge:
+                    child.data[field_index].append(field_right[index])
         return child
 
     def crossover_fields(sol1, sol2):
         child1 = copy.deepcopy(sol1)
         child2 = copy.deepcopy(sol2)
+        num_days = sol1.num_days
+        num_fields = sol1.num_fields
 
-        for field in range(sol1.num_fields):
+        for field in range(num_fields):
             if field % 2 == 0:
-                child1.matrix[field, :] = sol2.matrix[field, :]
+                child1.data[field] = sol2.data[field]
             else:
-                child2.matrix[field, :] = sol1.matrix[field, :]
-
-        # for day in range(num_days):
-        #     for field in range(num_fields):
-        #         if field % 2 == 0:
-        #             child1.days[day].fields[field] = sol2.days[day].fields[field]
-        #         else:
-        #             child2.days[day].fields[field] = sol1.days[day].fields[field]
+                child2.data[field] = sol1.data[field]
         return child1, child2
 
     if method == "days":
@@ -114,42 +111,35 @@ def crossover(solution1: Solution, solution2: Solution, method, have_to_copy):
         return crossover_fields(solution1, solution2)
 
 def add_to_solution(solution, day, field, crop_type, crop_duration):
-    for k in range(crop_duration):
-        solution.matrix[field, day + k] = crop_type, k
-        #solution.days[day + k].fields[field] = crop_type, k
+    inserted = False
+    for index in range(len(solution.data[field])):
+        if day < solution.data[field][index][1]:
+            solution.data[field].insert(index, (crop_type, day))
+            inserted = True
+            break
+    if not inserted:
+        solution.data[field].append((crop_type, day))
 
-def check_slot(solution, start_day, duration, field):
-    for day in range(start_day, start_day + duration):
-        if solution.num_days <= day:
-            return False
-        crop = solution.matrix[field, day]
-        if crop is not None:
-            return False
-    return True
+# def check_slot(solution, start_day, duration, field):
+#     for day in range(start_day, start_day + duration):
+#         if solution.num_days <= day:
+#             return False
+#         crop = solution.matrix[field, day]
+#         if crop is not None:
+#             return False
+#     return True
 
-def clear_slot(solution, start_day, duration, field):
-    for day in range(start_day, start_day + duration):
-        if solution.num_days <= day:
-            return False
-        crop = solution.matrix[field, day]
+def clear_slot(solution, start_day, duration, field, cultivation_types):
+    index = 0
+    end_day = start_day + duration
+    while index < solution.data[field]:
+        crop = solution.data[field][index]
+        if start_day <= crop[1] + cultivation_types[crop[0]]["duration"] <= end_day \
+                or start_day <= crop[1] <= end_day\
+                or (crop[1] < start_day and crop[1] + cultivation_types[crop[0]]["duration"] > end_day):
+            del crop
+            solution.data[field].pop(index)
+        else:
+            index += 1
 
-        if crop and day == start_day:
-            day_iter_back = day - 1
-            prev = crop[1]
-            while solution.matrix[field, day_iter_back] is not None and prev > solution.matrix[field, day_iter_back][1]:
-                solution.matrix[field, day_iter_back + 1] = None
-                prev = solution.matrix[field, day_iter_back][1]
-                day_iter_back -= 1
-            solution.matrix[field, day_iter_back+1] = None
-
-        if crop and day == start_day + duration - 1:
-            day_iter_forward = day + 1
-            prev = crop[1]
-            while solution.matrix[field, day_iter_forward] is not None and prev < solution.matrix[field, day_iter_forward][1]:
-                solution.matrix[field, day_iter_forward-1] = None
-                prev = solution.matrix[field, day_iter_forward][1]
-                day_iter_forward += 1
-            solution.matrix[field, day_iter_forward-1] = None
-
-        solution.matrix[field, day] = None
     return True

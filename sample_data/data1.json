@@ -62,7 +62,7 @@
         "year": 2022,
         "month": 5,
         "day": 1,
-        "plus_minus_days": 3
+        "plus_minus_days": 10
       },
       "entire_period_resources": {
         "money": 20,
@@ -105,7 +105,7 @@
         "year": 2022,
         "month": 5,
         "day": 1,
-        "plus_minus_days": 3
+        "plus_minus_days": 12
       },
       "entire_period_resources": {
         "money": 20,

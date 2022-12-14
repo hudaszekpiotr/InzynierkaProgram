@@ -72,20 +72,11 @@ class Optimization:
     def calculate_objective_fun(self, solution: Solution, do_penalty):
         profit = 0
 
-        for field_index, field in enumerate(solution.matrix):
+        for field_index, field in enumerate(solution.data):
             for crop in field:
-                #todo skipping indexes based on duration
-                if crop is not None and crop[1] == 0:
-                    crop_type = self.cultivation_types[crop[0]]
-                    field_type = self.fields[field_index]
-                    profit += crop_type["profit"] * field_type["coefficients"][crop_type["name"]] * field_type["area"]
-
-        # for day in solution.days:
-        #     for field_count, field in enumerate(day.fields):
-        #         if field is not None and field[1] == 0:
-        #             crop_type = self.cultivation_types[field[0]]
-        #             field_type = self.fields[field_count]
-        #             profit += crop_type["profit"] * field_type["coefficients"][crop_type["name"]] * field_type["area"]
+                crop_type = self.cultivation_types[crop[0]]
+                field_type = self.fields[field_index]
+                profit += crop_type["profit"] * field_type["coefficients"][crop_type["name"]] * field_type["area"]
 
         if do_penalty:
             profit -= penalty(solution, self.cultivation_types, self.resources)
@@ -112,8 +103,8 @@ class Optimization:
     def evolution_algorithm(self, parameters):
         self.transform_cult_types_start_date(parameters.start_date)
 
-        #population = []
-        population = set()
+        population = []
+        #population = set()
         solutions = self.generate_initial_population(parameters.num_days, parameters.population_size, parameters.initial_population_type)
 
         do_fixup = parameters.unacceptable_fix_type == "fixup"
@@ -122,8 +113,8 @@ class Optimization:
         for sol in solutions:
             if do_fixup:
                 fixup(sol, self.cultivation_types, self.resources)
-            #population.append(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty)))
-            population.add(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty)))
+            population.append(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty)))
+            #population.add(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty)))
 
         is_sorted = False
         if parameters.elite_size > 0:
@@ -171,7 +162,7 @@ class Optimization:
                     if i >= mating_pool_size - 2:
                         mating_pool.extend(mating_pool)
                     child1, child2 = crossover(mating_pool[i].solution, mating_pool[i+1].solution,
-                                                    method=parameters.crossover_type, have_to_copy = have_to_copy)
+                                                    method=parameters.crossover_type,cultivation_types=self.cultivation_types, have_to_copy = have_to_copy)
 
                     if random.random() < probability:
                         mutate_solution(child1, self.cultivation_types)
@@ -180,10 +171,10 @@ class Optimization:
                     if do_fixup:
                         fixup(child1, self.cultivation_types, self.resources)
                         fixup(child2, self.cultivation_types, self.resources)
-                    #population.append(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty)))
-                    #population.append(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty)))
-                    population.add(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty)))
-                    population.add(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty)))
+                    population.append(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty)))
+                    population.append(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty)))
+                    #population.add(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty)))
+                    #population.add(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty)))
                     i += 2
 
                 if len(population) > parameters.population_size:
