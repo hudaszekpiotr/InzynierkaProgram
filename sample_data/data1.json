@@ -43,7 +43,7 @@
   ],
   "resources": {
     "daily_resources": {
-      "work_hours": 50,
+      "work_hours": 20,
       "machine_1": 4,
       "machine_2": 6,
       "water": 200

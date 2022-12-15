@@ -10,16 +10,19 @@ import copy
 def mutate_solution(solution, cultivation_types):
 
     def mutation_force_fit(solution):
-        field = random.randint(0, num_fields - 1)
-        crop_type = random.randint(0, len(cultivation_types) - 1)
-        day = random.randint(*cultivation_types[crop_type]["start_date"])
-        duration = cultivation_types[crop_type]["duration"]
+        remove = random.choice([True, False])
+        if remove:
+            remove_random_from_solution(solution)
+        else:
+            field = random.randint(0, num_fields - 1)
+            crop_type = random.randint(0, len(cultivation_types) - 1)
+            day = random.randint(*cultivation_types[crop_type]["start_date"])
+            duration = cultivation_types[crop_type]["duration"]
 
-        clear_slot(solution, day, duration, field)
-        add_to_solution(solution, day, field, crop_type, duration)
-        # return solution
+            clear_slot(solution, day, duration, field, cultivation_types)
+            add_to_solution(solution, day, field, crop_type)
 
-    # return mutation_force_fit(solution)
+
     num_fields = solution.num_fields
     mutation_force_fit(solution)
 
@@ -98,9 +101,9 @@ def crossover(solution1: Solution, solution2: Solution, method, cultivation_type
 
         for field in range(num_fields):
             if field % 2 == 0:
-                child1.data[field] = sol2.data[field]
+                child1.data[field] = copy.deepcopy(sol2.data[field])
             else:
-                child2.data[field] = sol1.data[field]
+                child2.data[field] = copy.deepcopy(sol1.data[field])
         return child1, child2
 
     if method == "days":
@@ -110,7 +113,7 @@ def crossover(solution1: Solution, solution2: Solution, method, cultivation_type
     else:
         return crossover_fields(solution1, solution2)
 
-def add_to_solution(solution, day, field, crop_type, crop_duration):
+def add_to_solution(solution, day, field, crop_type):
     inserted = False
     for index in range(len(solution.data[field])):
         if day < solution.data[field][index][1]:
@@ -132,7 +135,7 @@ def add_to_solution(solution, day, field, crop_type, crop_duration):
 def clear_slot(solution, start_day, duration, field, cultivation_types):
     index = 0
     end_day = start_day + duration
-    while index < solution.data[field]:
+    while index < len(solution.data[field]):
         crop = solution.data[field][index]
         if start_day <= crop[1] + cultivation_types[crop[0]]["duration"] <= end_day \
                 or start_day <= crop[1] <= end_day\
@@ -143,3 +146,12 @@ def clear_slot(solution, start_day, duration, field, cultivation_types):
             index += 1
 
     return True
+
+def remove_random_from_solution(solution):
+    all_crops = []
+    for field_index, field in enumerate(solution.data):
+        for index, crop in enumerate(field):
+            all_crops.append((field_index, index))
+    if all_crops:
+        field_index, index = random.choice(all_crops)
+        solution.data[field_index].pop(index)

@@ -1,6 +1,38 @@
 {
   "fields": [
     {
+      "name": "field_2",
+      "area": 20,
+      "coefficients": {
+        "truskawki": 1.0,
+        "truskawki pod folia": 1.0
+      }
+    },
+    {
+      "name": "field_2",
+      "area": 20,
+      "coefficients": {
+        "truskawki": 1.0,
+        "truskawki pod folia": 2.0
+      }
+    },
+    {
+      "name": "field_2",
+      "area": 20,
+      "coefficients": {
+        "truskawki": 1.0,
+        "truskawki pod folia": 1.0
+      }
+    },
+    {
+      "name": "field_2",
+      "area": 20,
+      "coefficients": {
+        "truskawki": 2.0,
+        "truskawki pod folia": 1.0
+      }
+    },
+    {
       "name": "field_1",
       "area": 10,
       "coefficients": {
@@ -43,14 +75,14 @@
   ],
   "resources": {
     "daily_resources": {
-      "work_hours": 20,
       "machine_1": 4,
       "machine_2": 6,
-      "water": 200
+      "water": 200,
+      "work_hours": 20
     },
     "entire_period_resources": {
-      "money": 1000,
-      "warehouse": 100
+      "warehouse": 100,
+      "money": 1000
     }
   },
   "cultivation_types": [

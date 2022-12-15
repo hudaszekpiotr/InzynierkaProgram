@@ -1,6 +1,4 @@
 import json
-import re
-from datetime import date
 
 
 def parse_resources(list_of_dicts):

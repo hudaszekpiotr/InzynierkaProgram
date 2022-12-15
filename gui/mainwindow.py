@@ -1,33 +1,24 @@
 # This Python file uses the following encoding: utf-8
-import copy
 import json
 import os
 import sys
-from datetime import timedelta
 from distinctipy import distinctipy
-
-#from PyQt6.QtCore import QAbstractTableModel, Qt
 
 from PySide6.QtCore import QRect, QDate, QModelIndex
 from PySide6.QtGui import QIntValidator, QAction, QBrush, QColor
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit, QDialog, \
-    QDialogButtonBox, QVBoxLayout, QLabel, QFileDialog, QCheckBox
-from PySide6 import QtCore, QtGui, QtWidgets
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit, QFileDialog, QCheckBox
+from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import Qt
 
 from src.optimization import Optimization
 from src.parameters import Parameters
-from src.utils import parse_resources, load_files
-# Important:
-# You need to run the following command to generate the ui_form.py file
-#     pyside6-uic form.ui -o ui_form.py, or
-#     pyside2-uic form.ui -o ui_form.py
+from src.utils import load_files
+
 from ui_form import Ui_MainWindow
 import ui_cult_type_tab
 import ui_cult_type_stage
 import ui_field_type_tab
 import ui_result
-import ui_save_files
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
@@ -81,7 +72,7 @@ class TableModel(QtCore.QAbstractTableModel):
 
 
 class Result(QWidget):
-    def __init__(self, df, df_resources, cultivation_types, parent=None):
+    def __init__(self, df, df_resources, period_df, cultivation_types, parent=None):
         super().__init__(parent)
         self.ui = ui_result.Ui_Form()
         self.ui.setupUi(self)
@@ -100,13 +91,20 @@ class Result(QWidget):
         self.ui.topSpot.addWidget(self.table)
 
         self.sc = MplCanvas(self, width=5, height=4, dpi=100)
-
+        self.sc_period = MplCanvas(self, width=3, height=2, dpi=70)
+        #plt.tight_layout()
         #df_resources = df_resources[["water", "machine_1"]]
         print(df_resources)
+        print(period_df)
         df_resources.plot(ax=self.sc.axes, kind="bar")
+        self.sc.axes.set_xlabel("days")
+        self.sc.axes.set_ylabel("%")
 
+        period_df.plot(ax=self.sc_period.axes, kind="bar")
+        self.sc_period.axes.set_xticks([])
         #sc.axes.bar(langs, students)
         self.ui.bottomSpot.addWidget(self.sc)
+        self.ui.periodSpot.addWidget(self.sc_period)
         self.color_table()
         self.add_check_boxes()
         self.add_legend()
@@ -322,6 +320,8 @@ class MainWindow(QMainWindow):
 
     def plot(self, best_results):
         self.sc.axes.plot(best_results)
+        self.sc.axes.set_xlabel("iteration")
+        self.sc.axes.set_ylabel("profit")
         self.ui.verticalLayout_3.addWidget(self.sc)
 
     def get_parameters(self):
@@ -354,8 +354,8 @@ class MainWindow(QMainWindow):
         self.save_data()
         resources, fields, cultivation_types = load_files()
         self.optimization = Optimization(resources, fields, cultivation_types)
-        df, df_resources, best_results = self.optimization.evolution_algorithm(par)
-        self.result = Result(df, df_resources, cultivation_types)
+        df, df_resources, period_df, best_results = self.optimization.evolution_algorithm(par)
+        self.result = Result(df, df_resources, period_df, cultivation_types)
         self.result.setGeometry(QRect(100, 100, 800, 800))
         self.result.show()
         self.plot(best_results)
@@ -378,15 +378,23 @@ class MainWindow(QMainWindow):
 
 
     def load_data(self):
-        #file_name = QFileDialog.getOpenFileName(self, 'Open file','../sample_data', "JSON files (*.json)")[0]
-        file_name = "../sample_data/data1.json"
+        file_name = QFileDialog.getOpenFileName(self, 'Open file','../sample_data', "JSON files (*.json)")[0]
+        #file_name = "../sample_data/data1.json"
         if file_name == "":
             return 0
         with open(file_name, "r") as file:
             data = json.load(file)
+
+        self.ui.tabWidgetCultTypes.clear()
+        self.ui.tabWidgetFields.clear()
+        self.ui.dailyResources.setRowCount(0)
+        self.ui.periodResources.setRowCount(0)
+
         self.load_cultivation_types(data["cultivation_types"])
         self.load_fields_types(data["fields"])
         self.load_resources(data["resources"])
+
+
 
     def load_cultivation_types(self, cultivation_types_list):
         data = cultivation_types_list

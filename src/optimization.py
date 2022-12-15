@@ -1,25 +1,21 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import cProfile
-import copy
 from datetime import date
-from typing import List, Callable
 
-from matplotlib import pyplot as plt
 
 from src.genetic_operators import crossover, selection, add_to_solution, mutate_solution
 from src.solution_classes import Solution, SolutionAndFitness
 from src.model_limits import resources_df, penalty, resources_percent, fixup
 
 from copy import deepcopy
-import math
 import numpy as np
 import random
-import json
+
 
 class Optimization:
     def __init__(self, resources, fields, cultivation_types):
-        #self.num_days = resources["time"]
+        # self.num_days = resources["time"]
         self.num_fields = len(fields)
         self.resources = resources
         self.fields = fields
@@ -50,13 +46,11 @@ class Optimization:
                 raise ValueError()
             self.cultivation_types = valid_cult_types
 
-
         def fill_in_solution(solution):
             for i in range(solution.num_fields):
-                type = random.randint(0, len(self.cultivation_types)-1)
+                type = random.randint(0, len(self.cultivation_types) - 1)
                 day = random.randint(*self.cultivation_types[type]["start_date"])
-                duration = self.cultivation_types[type]["duration"]
-                add_to_solution(solution, day, i, type, duration)
+                add_to_solution(solution, day, i, type)
             return solution
 
         remove_impossible_cult_types()
@@ -69,7 +63,7 @@ class Optimization:
 
         return sol_list
 
-    def calculate_objective_fun(self, solution: Solution, do_penalty):
+    def calculate_objective_fun(self, solution: Solution, do_penalty, multiplier):
         profit = 0
 
         for field_index, field in enumerate(solution.data):
@@ -79,15 +73,15 @@ class Optimization:
                 profit += crop_type["profit"] * field_type["coefficients"][crop_type["name"]] * field_type["area"]
 
         if do_penalty:
-            profit -= penalty(solution, self.cultivation_types, self.resources)
+            pass
+            profit -= penalty(solution, self.cultivation_types, self.resources, multiplier)
         return profit
-
 
     def transform_cult_types_start_date(self, alg_start_date):
 
         for i in self.cultivation_types:
             cult_type_start_date = date(alg_start_date.year, i["start_date"]["month"], i["start_date"]["day"])
-            #cult_type_start_date = date(i["start_date"]["year"], i["start_date"]["month"], i["start_date"]["day"])
+            # cult_type_start_date = date(i["start_date"]["year"], i["start_date"]["month"], i["start_date"]["day"])
             delta = cult_type_start_date - alg_start_date
             plus_minus_days = i["start_date"]["plus_minus_days"]
             i["start_date"] = [delta.days - plus_minus_days, delta.days + plus_minus_days]
@@ -99,13 +93,13 @@ class Optimization:
                 best_so_far = sol
         return best_so_far
 
-
     def evolution_algorithm(self, parameters):
         self.transform_cult_types_start_date(parameters.start_date)
 
         population = []
-        #population = set()
-        solutions = self.generate_initial_population(parameters.num_days, parameters.population_size, parameters.initial_population_type)
+        # population = set()
+        solutions = self.generate_initial_population(parameters.num_days, parameters.population_size,
+                                                     parameters.initial_population_type)
 
         do_fixup = parameters.unacceptable_fix_type == "fixup"
         do_penalty = parameters.unacceptable_fix_type == "penalty"
@@ -113,8 +107,8 @@ class Optimization:
         for sol in solutions:
             if do_fixup:
                 fixup(sol, self.cultivation_types, self.resources)
-            population.append(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty)))
-            #population.add(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty)))
+            population.append(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty, parameters.penalty_multiplier_first)))
+            # population.add(SolutionAndFitness(sol, self.calculate_objective_fun(sol, do_penalty)))
 
         is_sorted = False
         if parameters.elite_size > 0:
@@ -144,8 +138,8 @@ class Optimization:
         with cProfile.Profile() as pr:
             while iter_with_no_progress <= parameters.max_iter_no_progress and iteration <= parameters.max_iter:
 
-                mating_pool = selection(population, mating_pool_size, parameters.selection_type, parameters.tournament_size, is_sorted)
-
+                mating_pool = selection(population, mating_pool_size, parameters.selection_type, parameters.tournament_size,
+                                        is_sorted)
 
                 if is_sorted:
                     population = sorted(population, key=lambda x: x.fitness)
@@ -159,10 +153,20 @@ class Optimization:
                 i = 0
                 while len(population) < parameters.population_size:
                     have_to_copy = (parameters.population_size - len(population) > mating_pool_size)
-                    if i >= mating_pool_size - 2:
-                        mating_pool.extend(mating_pool)
-                    child1, child2 = crossover(mating_pool[i].solution, mating_pool[i+1].solution,
-                                                    method=parameters.crossover_type,cultivation_types=self.cultivation_types, have_to_copy = have_to_copy)
+                    parents_selected = False
+                    if i == mating_pool_size - 1:
+                        parent1 = mating_pool[i].solution
+                        parent2 = mating_pool[0].solution
+                        i = 1
+                        parents_selected = True
+                    if i >= mating_pool_size:
+                        i = 0
+                    if not parents_selected:
+                        parent1 = mating_pool[i].solution
+                        parent2 = mating_pool[i + 1].solution
+                    child1, child2 = crossover(parent1, parent2,
+                                               method=parameters.crossover_type, cultivation_types=self.cultivation_types,
+                                               have_to_copy=have_to_copy)
 
                     if random.random() < probability:
                         mutate_solution(child1, self.cultivation_types)
@@ -171,10 +175,16 @@ class Optimization:
                     if do_fixup:
                         fixup(child1, self.cultivation_types, self.resources)
                         fixup(child2, self.cultivation_types, self.resources)
-                    population.append(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty)))
-                    population.append(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty)))
-                    #population.add(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty)))
-                    #population.add(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty)))
+                    multiplier = None
+                    if do_penalty:
+                        a = (parameters.penalty_multiplier_last - parameters.penalty_multiplier_first) / parameters.max_iter
+                        b = parameters.penalty_multiplier_first
+                        multiplier = a * iteration + b
+
+                    population.append(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty, multiplier)))
+                    population.append(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty, multiplier)))
+                    # population.add(SolutionAndFitness(child1, self.calculate_objective_fun(child1, do_penalty)))
+                    # population.add(SolutionAndFitness(child2, self.calculate_objective_fun(child2, do_penalty)))
                     i += 2
 
                 if len(population) > parameters.population_size:
@@ -191,8 +201,7 @@ class Optimization:
                 iteration += 1
         pr.print_stats()
         print(best_results)
-        df = best_solution.solution.to_simple_dataframe()
-        df_resources, period_dict = resources_percent(best_solution.solution, self.cultivation_types, self.resources)
+        df = best_solution.solution.to_dataframe(self.cultivation_types)
+        df_resources, period_df = resources_percent(best_solution.solution, self.cultivation_types, self.resources)
 
-        return df, df_resources, best_results
-
+        return df, df_resources, period_df, best_results
