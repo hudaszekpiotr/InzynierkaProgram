@@ -14,11 +14,11 @@ from src.optimization import Optimization
 from src.parameters import Parameters
 from src.utils import load_files
 
-from ui_form import Ui_MainWindow
-import ui_cult_type_tab
-import ui_cult_type_stage
-import ui_field_type_tab
-import ui_result
+from gui.ui_form import Ui_MainWindow
+import gui.ui_cult_type_tab as ui_cult_type_tab
+import gui.ui_cult_type_stage as ui_cult_type_stage
+import gui.ui_field_type_tab as ui_field_type_tab
+import gui.ui_result as ui_result
 
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
@@ -315,7 +315,7 @@ class MainWindow(QMainWindow):
 
 
     def save_data_to_file(self):
-        filename = QFileDialog.getSaveFileName(self, 'Open file','../', "JSON files (*.json)")[0]
+        filename = QFileDialog.getSaveFileName(self, 'Open file', '/', "JSON files (*.json)")[0]
         self.save_data(filename)
 
     def plot(self, best_results):
@@ -361,7 +361,7 @@ class MainWindow(QMainWindow):
         self.plot(best_results)
 
 
-    def save_data(self, filename="../data/model_data.json"):
+    def save_data(self, filename="data/model_data.json"):
 
         fields = self.save_fields()
         resources = self.save_resources()
@@ -371,14 +371,16 @@ class MainWindow(QMainWindow):
                       "cultivation_types": cult_types}
 
         model_data_json = json.dumps(model_data, indent=2)
-        with open(filename, "w") as outfile:
-            outfile.write(model_data_json)
+
+        os.makedirs(os.path.dirname(filename), exist_ok=True)
+        with open(filename, "w") as file:
+            file.write(model_data_json)
 
 
 
 
     def load_data(self):
-        file_name = QFileDialog.getOpenFileName(self, 'Open file','../sample_data', "JSON files (*.json)")[0]
+        file_name = QFileDialog.getOpenFileName(self, 'Open file', 'sample_data', "JSON files (*.json)")[0]
         #file_name = "../sample_data/data1.json"
         if file_name == "":
             return 0
@@ -595,7 +597,7 @@ class MainWindow(QMainWindow):
         table.removeRow(table.rowCount()-1)
 
 def get_data_sets():
-    return next(os.walk('../data'))[1]
+    return next(os.walk('data'))[1]
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

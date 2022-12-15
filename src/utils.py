@@ -25,7 +25,7 @@ def parse_resources(list_of_dicts):
 
 
 def load_files():
-    json_model_data = open('../data/model_data.json')
+    json_model_data = open('data/model_data.json')
     model_data = json.load(json_model_data)
     json_model_data.close()
     cultivation_types = model_data["cultivation_types"]
