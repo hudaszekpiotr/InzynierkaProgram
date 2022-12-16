@@ -27,7 +27,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1362, 551)
+        MainWindow.resize(1110, 468)
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -555,7 +555,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1362, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1110, 22))
         self.menuinfo = QMenu(self.menubar)
         self.menuinfo.setObjectName(u"menuinfo")
         MainWindow.setMenuBar(self.menubar)
@@ -567,7 +567,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
         self.tabWidgetCultTypes.setCurrentIndex(-1)
         self.tabWidgetFields.setCurrentIndex(-1)
 

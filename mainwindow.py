@@ -280,7 +280,7 @@ class MainWindow(QMainWindow):
         self.ui.addPeriodResources.clicked.connect(self.add_period_resources)
         self.ui.removePeriodResources.clicked.connect(self.remove_period_resources)
         # self.sc = MplCanvas(self, width=5, height=4, dpi=100)
-        self.sc = MplCanvas(self, width=4, height=3, dpi=80)
+        self.sc = MplCanvas(self, width=5, height=3, dpi=80)
         #self.sc.axes.plot([0, 1, 2, 3, 4])
 
         self.ui.verticalLayout_3.addWidget(self.sc)
