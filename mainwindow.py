@@ -7,7 +7,7 @@ from distinctipy import distinctipy
 from PySide6.QtCore import QRect, QDate, QModelIndex
 from PySide6.QtGui import QIntValidator, QAction, QBrush, QColor
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit, QFileDialog, \
-    QCheckBox, QMessageBox
+    QCheckBox, QMessageBox, QSizePolicy
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import Qt
 
@@ -30,8 +30,7 @@ class NumericDelegate(QStyledItemDelegate):
     def createEditor(self, parent, option, index):
         editor = super(NumericDelegate, self).createEditor(parent, option, index)
         if isinstance(editor, QLineEdit):
-
-            editor.setValidator(QIntValidator())
+            editor.setValidator(QIntValidator(0, 999999))
         return editor
 
 class MplCanvas(FigureCanvasQTAgg):
@@ -88,11 +87,18 @@ class Result(QWidget):
         self.model = TableModel(df)
         self.table.setModel(self.model)
         self.table.resizeColumnsToContents()
+
+        # sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        # sizePolicy.setHorizontalStretch(0)
+        # sizePolicy.setVerticalStretch(0)
+        # sizePolicy.setHeightForWidth(self.table.sizePolicy().hasHeightForWidth())
+        # self.table.setSizePolicy(sizePolicy)
+
         #self.model.change_color(1,1,QBrush(QColor(0, 0, 255, 127)))
         #print(self.table.rowAt(0))
         self.ui.topSpot.addWidget(self.table)
 
-        self.sc = MplCanvas(self, width=5, height=4, dpi=100)
+        self.sc = MplCanvas(self, width=5, height=4, dpi=90)
         self.sc_period = MplCanvas(self, width=3, height=2, dpi=70)
         #plt.tight_layout()
         #df_resources = df_resources[["water", "machine_1"]]
@@ -379,7 +385,7 @@ class MainWindow(QMainWindow):
         try:
             df, df_resources, period_df, best_results = self.optimization.evolution_algorithm(par)
             self.result = Result(df, df_resources, period_df, cultivation_types)
-            self.result.setGeometry(QRect(100, 100, 800, 800))
+            self.result.setGeometry(QRect(0, 0, 400, 400))
             self.result.show()
             self.plot(best_results)
         except NoValidCultivationTypesException:
