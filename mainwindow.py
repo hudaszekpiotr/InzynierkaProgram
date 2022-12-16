@@ -6,10 +6,12 @@ from distinctipy import distinctipy
 
 from PySide6.QtCore import QRect, QDate, QModelIndex
 from PySide6.QtGui import QIntValidator, QAction, QBrush, QColor
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit, QFileDialog, QCheckBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit, QFileDialog, \
+    QCheckBox, QMessageBox
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import Qt
 
+from src.exceptions import NoValidCultivationTypesException
 from src.optimization import Optimization
 from src.parameters import Parameters
 from src.utils import load_files
@@ -96,11 +98,13 @@ class Result(QWidget):
         #df_resources = df_resources[["water", "machine_1"]]
         print(df_resources)
         print(period_df)
-        df_resources.plot(ax=self.sc.axes, kind="bar")
+        if not df_resources.empty:
+            df_resources.plot(ax=self.sc.axes, kind="bar")
         self.sc.axes.set_xlabel("days")
         self.sc.axes.set_ylabel("%")
 
-        period_df.plot(ax=self.sc_period.axes, kind="bar")
+        if not period_df.empty:
+            period_df.plot(ax=self.sc_period.axes, kind="bar")
         self.sc_period.axes.set_xticks([])
         #sc.axes.bar(langs, students)
         self.ui.bottomSpot.addWidget(self.sc)
@@ -178,7 +182,11 @@ class FieldTypeTab(QWidget):
 
     def remove_coef(self):
         table = self.ui.coefficients
-        table.removeRow(table.rowCount()-1)
+        rows = sorted(set(index.row() for index in table.selectedIndexes()), reverse=True)
+        for row in rows:
+            table.removeRow(row)
+        if not rows:
+            table.removeRow(table.rowCount() - 1)
 
 class CultTypeStage(QWidget):
     def __init__(self, parent=None):
@@ -197,7 +205,11 @@ class CultTypeStage(QWidget):
 
     def remove_daily_resource(self):
         table = self.ui.resources
-        table.removeRow(table.rowCount()-1)
+        rows = sorted(set(index.row() for index in table.selectedIndexes()), reverse=True)
+        for row in rows:
+            table.removeRow(row)
+        if not rows:
+            table.removeRow(table.rowCount() - 1)
 
 class CultTypeTab(QWidget):
     def __init__(self, parent=None):
@@ -206,7 +218,7 @@ class CultTypeTab(QWidget):
         self.ui.setupUi(self)
         self.ui.addPeriodResources.clicked.connect(self.add_period_resource)
         self.ui.removePeriodResources.clicked.connect(self.remove_period_resource)
-        self.ui.tabWidgetStages.addTab(CultTypeStage(), "sds")
+        self.ui.tabWidgetStages.addTab(CultTypeStage(), "stage 1")
         self.ui.addStage.clicked.connect(self.add_stage)
         #self.ui.removeStage.clicked.connect(self.remove_stage)
         self.ui.tabWidgetStages.tabCloseRequested.connect(self.ui.tabWidgetStages.removeTab)
@@ -230,11 +242,16 @@ class CultTypeTab(QWidget):
 
     def remove_period_resource(self):
         table = self.ui.periodResources
-        table.removeRow(table.rowCount()-1)
+        rows = sorted(set(index.row() for index in table.selectedIndexes()), reverse=True)
+        for row in rows:
+            table.removeRow(row)
+        if not rows:
+            table.removeRow(table.rowCount() - 1)
 
     def add_stage(self):
         stage = CultTypeStage()
-        self.ui.tabWidgetStages.addTab(stage, "sds")
+        count = self.ui.tabWidgetStages.count()
+        self.ui.tabWidgetStages.addTab(stage, "stage "+str(count+1))
         for i in range(self.ui.tabWidgetStages.count()):
             tab_stages = self.ui.tabWidgetStages.widget(i).ui
             tab_stages.duration.valueChanged.connect(self.sum_duration)
@@ -253,8 +270,8 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        self.ui.tabWidgetCultTypes.addTab(CultTypeTab(), "sds")
-        self.ui.tabWidgetFields.addTab(FieldTypeTab(), "sds")
+        self.ui.tabWidgetCultTypes.addTab(CultTypeTab(), "type 1")
+        self.ui.tabWidgetFields.addTab(FieldTypeTab(), "field 1")
         self.ui.runButton.clicked.connect(self.run_optimization)
         self.ui.addCultType.clicked.connect(self.add_new_cult_type)
         self.ui.addField.clicked.connect(self.add_field)
@@ -286,13 +303,14 @@ class MainWindow(QMainWindow):
         self.ui.menubar.addAction(save_action)
         self.ui.menubar.addAction(load_action)
         self.ui.tournamentBox.hide()
-        #self.ui.penaltyBox.hide()
+        self.ui.penaltyBox.hide()
 
         self.ui.selectionType.activated.connect(self.hide_show_tournament)
         self.ui.unacceptableFixType.activated.connect(self.hide_show_penalty)
 
         self.ui.maxIter.valueChanged.connect(self.change_label_multiplier)
         self.ui.multiplierLastLabel.setText("multiplier at " + str(self.ui.maxIter.value()) + " iteration")
+        self.i = 0
         #self.sc.axes.plot([5, 6, 2, 3, 4, 7, 6, 6, 6, 6])
         #self.ui.verticalLayout_3.addWidget(self.sc)
 
@@ -319,7 +337,9 @@ class MainWindow(QMainWindow):
         self.save_data(filename)
 
     def plot(self, best_results):
-        self.sc.axes.plot(best_results)
+        self.i += 1
+        self.sc.axes.plot(best_results, label="run "+str(self.i)+" - highest profit = "+str(max(best_results)))
+        self.sc.axes.legend(loc="upper right")
         self.sc.axes.set_xlabel("iteration")
         self.sc.axes.set_ylabel("profit")
         self.ui.verticalLayout_3.addWidget(self.sc)
@@ -350,15 +370,25 @@ class MainWindow(QMainWindow):
         return par
 
     def run_optimization(self):
+        self.fix_resources()
+        self.fix_coefficients()
         par = self.get_parameters()
         self.save_data()
         resources, fields, cultivation_types = load_files()
         self.optimization = Optimization(resources, fields, cultivation_types)
-        df, df_resources, period_df, best_results = self.optimization.evolution_algorithm(par)
-        self.result = Result(df, df_resources, period_df, cultivation_types)
-        self.result.setGeometry(QRect(100, 100, 800, 800))
-        self.result.show()
-        self.plot(best_results)
+        try:
+            df, df_resources, period_df, best_results = self.optimization.evolution_algorithm(par)
+            self.result = Result(df, df_resources, period_df, cultivation_types)
+            self.result.setGeometry(QRect(100, 100, 800, 800))
+            self.result.show()
+            self.plot(best_results)
+        except NoValidCultivationTypesException:
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("No valid cultivation types")
+            dlg.setText("In selected time period there aren't any valid cultivation types")
+            button = dlg.exec_()
+
+
 
 
     def save_data(self, filename="data/model_data.json"):
@@ -470,6 +500,84 @@ class MainWindow(QMainWindow):
             table.setItem(table.rowCount() - 1, 0, resource)
             table.setItem(table.rowCount() - 1, 1, quantity)
 
+    def fix_resources(self):
+        entire_period_resources_needed = set()
+        daily_resources_needed = set()
+        for i in range(self.ui.tabWidgetCultTypes.count()):
+            tab = self.ui.tabWidgetCultTypes.widget(i).ui
+
+            for k in range(tab.periodResources.rowCount()):
+                if tab.periodResources.item(k, 0) is not None and tab.periodResources.item(k, 1) is not None:
+                    resource = tab.periodResources.item(k, 0).text()
+                    entire_period_resources_needed.add(resource)
+
+            for k in range(tab.tabWidgetStages.count()):
+                tab_stages = tab.tabWidgetStages.widget(k).ui
+                for j in range(tab_stages.resources.rowCount()):
+                    if tab_stages.resources.item(j, 0) is not None and tab_stages.resources.item(j, 1) is not None:
+                        resource = tab_stages.resources.item(j, 0).text()
+                        daily_resources_needed.add(resource)
+
+        daily_resources_present = set()
+        entire_period_resources_present = set()
+        for k in range(self.ui.dailyResources.rowCount()):
+            resources = self.ui.dailyResources
+            if resources.item(k, 0) is not None and resources.item(k, 1) is not None:
+                resource = resources.item(k, 0).text()
+                daily_resources_present.add(resource)
+
+        for k in range(self.ui.periodResources.rowCount()):
+            resources = self.ui.periodResources
+            if resources.item(k, 0) is not None and resources.item(k, 1) is not None:
+                resource = resources.item(k, 0).text()
+                entire_period_resources_present.add(resource)
+
+        missing_period_resources = entire_period_resources_needed.difference(entire_period_resources_present)
+        missing_daily_resources = daily_resources_needed.difference(daily_resources_present)
+
+        if missing_period_resources or missing_daily_resources:
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Missing resources")
+            dlg.setText(f"""There are resources needed for cultivation types which are not present in resources tab
+                            Daily resources - {missing_daily_resources}
+                            Entire period resources - {missing_period_resources}
+                            Those resources have been added with quantity 0""")
+            button = dlg.exec_()
+
+    def fix_coefficients(self):
+        coefficients_needed = set()
+
+        for i in range(self.ui.tabWidgetCultTypes.count()):
+            tab = self.ui.tabWidgetCultTypes.widget(i).ui
+            coefficients_needed.add(tab.name.text())
+
+        missing_coefficients = []
+        for i in range(self.ui.tabWidgetFields.count()):
+            coefficients_present = set()
+            tab = self.ui.tabWidgetFields.widget(i).ui
+            for k in range(tab.coefficients.rowCount()):
+                if tab.coefficients.item(k, 0) is not None and tab.coefficients.item(k, 1) is not None:
+                    coefficients_present.add(tab.coefficients.item(k, 0).text())
+
+            missing_coefficients.append(coefficients_needed.difference(coefficients_present))
+
+        if any(missing_coefficients):
+            dlg = QMessageBox(self)
+            dlg.setWindowTitle("Missing coefficients")
+            dlg.setText(f"""There are cultivation types which are missing coefficients in fields tab. Those coefficients have been added with value 1.""")
+            button = dlg.exec_()
+
+        for field_index, field in enumerate(missing_coefficients):
+            tab = self.ui.tabWidgetFields.widget(field_index).ui
+            table = tab.coefficients
+            for coefficient in field:
+                table.insertRow(table.rowCount())
+                table.setItem(table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(coefficient))
+                table.setItem(table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(str(1)))
+
+
+
+
 
     def save_cultivation_types(self):
         cultivation_types = []
@@ -481,7 +589,7 @@ class MainWindow(QMainWindow):
                     resource = tab.periodResources.item(k, 0).text()
                     quantity = int(tab.periodResources.item(k, 1).text())
                     entire_period_resources[resource] = quantity
-            #print(entire_period_resources)
+
             daily_resources = []
 
             for k in range(tab.tabWidgetStages.count()):
@@ -564,7 +672,8 @@ class MainWindow(QMainWindow):
 
     def add_new_cult_type(self):
         tab = CultTypeTab()
-        self.ui.tabWidgetCultTypes.addTab(tab, "sds")
+        count = self.ui.tabWidgetCultTypes.count()
+        self.ui.tabWidgetCultTypes.addTab(tab, "type "+str(count+1))
         return tab
 
     def remove_cult_type(self):
@@ -573,7 +682,8 @@ class MainWindow(QMainWindow):
 
     def add_field(self):
         field = FieldTypeTab()
-        self.ui.tabWidgetFields.addTab(field, "sds")
+        count = self.ui.tabWidgetFields.count()
+        self.ui.tabWidgetFields.addTab(field, "field "+str(count+1))
         return field
 
     def remove_field(self):
@@ -586,7 +696,11 @@ class MainWindow(QMainWindow):
 
     def remove_daily_resources(self):
         table = self.ui.dailyResources
-        table.removeRow(table.rowCount()-1)
+        rows = sorted(set(index.row() for index in table.selectedIndexes()), reverse=True)
+        for row in rows:
+            table.removeRow(row)
+        if not rows:
+            table.removeRow(table.rowCount() - 1)
 
     def add_period_resources(self):
         table = self.ui.periodResources
@@ -594,7 +708,13 @@ class MainWindow(QMainWindow):
 
     def remove_period_resources(self):
         table = self.ui.periodResources
-        table.removeRow(table.rowCount()-1)
+        rows = sorted(set(index.row() for index in table.selectedIndexes()), reverse=True)
+        for row in rows:
+            table.removeRow(row)
+        if not rows:
+            table.removeRow(table.rowCount()-1)
+
+
 
 def get_data_sets():
     return next(os.walk('data'))[1]

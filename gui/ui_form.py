@@ -567,7 +567,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.tabWidgetCultTypes.setCurrentIndex(-1)
         self.tabWidgetFields.setCurrentIndex(-1)
 
@@ -610,9 +610,10 @@ class Ui_MainWindow(object):
         self.label.setText(QCoreApplication.translate("MainWindow", u"Max number of iterations", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Max iterations no progress", None))
         self.groupBox_6.setTitle(QCoreApplication.translate("MainWindow", u"Dealing with unacceptable solutions", None))
-        self.unacceptableFixType.setItemText(0, QCoreApplication.translate("MainWindow", u"penalty", None))
-        self.unacceptableFixType.setItemText(1, QCoreApplication.translate("MainWindow", u"fixup", None))
+        self.unacceptableFixType.setItemText(0, QCoreApplication.translate("MainWindow", u"fixup", None))
+        self.unacceptableFixType.setItemText(1, QCoreApplication.translate("MainWindow", u"penalty", None))
 
+        self.unacceptableFixType.setCurrentText(QCoreApplication.translate("MainWindow", u"fixup", None))
         self.label_5.setText(QCoreApplication.translate("MainWindow", u"Method", None))
         self.tournamentBox.setTitle(QCoreApplication.translate("MainWindow", u"Tournament", None))
         self.label_17.setText(QCoreApplication.translate("MainWindow", u"Tournament size", None))

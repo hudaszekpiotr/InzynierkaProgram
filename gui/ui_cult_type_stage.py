@@ -120,7 +120,7 @@ class Ui_Form(object):
         ___qtablewidgetitem1 = self.resources.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("Form", u"Quantity", None));
         ___qtablewidgetitem2 = self.resources.verticalHeaderItem(0)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("Form", u"Lp. 1", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("Form", u"1", None));
         self.label.setText(QCoreApplication.translate("Form", u"Name", None))
         self.addResources.setText(QCoreApplication.translate("Form", u"Add", None))
         self.removeResources.setText(QCoreApplication.translate("Form", u"Remove", None))

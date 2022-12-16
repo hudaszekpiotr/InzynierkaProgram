@@ -1,0 +1,4 @@
+
+class NoValidCultivationTypesException(Exception):
+    pass
+

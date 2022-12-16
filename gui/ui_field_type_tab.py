@@ -154,7 +154,7 @@ class Ui_Form(object):
         ___qtablewidgetitem1 = self.coefficients.horizontalHeaderItem(1)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("Form", u"Coefficient", None));
         ___qtablewidgetitem2 = self.coefficients.verticalHeaderItem(0)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("Form", u"Lp. 1", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("Form", u"1", None));
         self.addCoef.setText(QCoreApplication.translate("Form", u"Add", None))
         self.removeCoef.setText(QCoreApplication.translate("Form", u"Remove", None))
         self.label.setText(QCoreApplication.translate("Form", u"Name", None))

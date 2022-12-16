@@ -3,7 +3,7 @@
 import cProfile
 from datetime import date
 
-
+from src.exceptions import NoValidCultivationTypesException
 from src.genetic_operators import crossover, selection, add_to_solution, mutate_solution
 from src.solution_classes import Solution, SolutionAndFitness
 from src.model_limits import resources_df, penalty, resources_percent, fixup
@@ -43,14 +43,18 @@ class Optimization:
                 self.cultivation_types[i]["start_date"] = [begin, end]
                 valid_cult_types.append(self.cultivation_types[i])
             if len(valid_cult_types) == 0:
-                raise ValueError()
+                raise NoValidCultivationTypesException
             self.cultivation_types = valid_cult_types
 
         def fill_in_solution(solution):
-            for i in range(solution.num_fields):
+            fields_shuffled_num = list(range(solution.num_fields))
+            random.shuffle(fields_shuffled_num)
+            for i in fields_shuffled_num:
                 type = random.randint(0, len(self.cultivation_types) - 1)
                 day = random.randint(*self.cultivation_types[type]["start_date"])
                 add_to_solution(solution, day, i, type)
+                if penalty(solution, self.cultivation_types, self.resources, 1) > 0:
+                    solution.data[i].pop()
             return solution
 
         remove_impossible_cult_types()
@@ -201,6 +205,7 @@ class Optimization:
                 iteration += 1
         pr.print_stats()
         print(best_results)
+        print(best_solution.fitness)
         df = best_solution.solution.to_dataframe(self.cultivation_types)
         df_resources, period_df = resources_percent(best_solution.solution, self.cultivation_types, self.resources)
 

@@ -227,6 +227,13 @@
            <property name="displayFormat">
             <string>dd.MMMM</string>
            </property>
+           <property name="date">
+            <date>
+             <year>2000</year>
+             <month>5</month>
+             <day>1</day>
+            </date>
+           </property>
           </widget>
          </item>
          <item>

@@ -133,6 +133,7 @@ class Ui_widget(object):
 
         self.startDate = QDateEdit(self.frame_9)
         self.startDate.setObjectName(u"startDate")
+        self.startDate.setDate(QDate(2000, 5, 1))
 
         self.horizontalLayout_6.addWidget(self.startDate)
 

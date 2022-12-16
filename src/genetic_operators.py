@@ -7,6 +7,7 @@ from src.solution_classes import Solution
 import copy
 
 
+
 def mutate_solution(solution, cultivation_types):
 
     def mutation_force_fit(solution):
@@ -40,7 +41,6 @@ def selection(population, mating_pool_size, selection_type, tournament_size, is_
         acc_fitness = sum(fitness_list)
         if acc_fitness == 0:
             return population[0:mating_pool_size]
-            # return population[np.random.choice(len(population))]
         selection_probs = [c / acc_fitness for c in fitness_list]
 
         mating_pool = []
