@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'cult_type_tab.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -151,6 +151,11 @@ class Ui_widget(object):
         self.plusMinus.setObjectName(u"plusMinus")
 
         self.horizontalLayout_6.addWidget(self.plusMinus)
+
+        self.label_8 = QLabel(self.frame_9)
+        self.label_8.setObjectName(u"label_8")
+
+        self.horizontalLayout_6.addWidget(self.label_8)
 
 
         self.horizontalLayout_4.addWidget(self.frame_9)
@@ -302,6 +307,7 @@ class Ui_widget(object):
         self.label_6.setText(QCoreApplication.translate("widget", u"Start date", None))
         self.startDate.setDisplayFormat(QCoreApplication.translate("widget", u"dd.MMMM", None))
         self.label_7.setText(QCoreApplication.translate("widget", u"\u00b1", None))
+        self.label_8.setText(QCoreApplication.translate("widget", u"days", None))
         self.label_3.setText(QCoreApplication.translate("widget", u"entire period resources", None))
         ___qtablewidgetitem = self.periodResources.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("widget", u"Resource name", None));

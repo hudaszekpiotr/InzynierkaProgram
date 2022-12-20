@@ -1,0 +1,425 @@
+{
+  "fields": [
+    {
+      "name": "field_1",
+      "area": 3,
+      "coefficients": {
+        "truskawki": 1.5,
+        "truskawki pod folia": 1.3,
+        "szczypiorek": 1.0,
+        "cebula": 1.0,
+        "pietruszka": 1.0,
+        "ziemniaki": 1.0,
+        "poplony": 1.0,
+        "rukola_szklarnia": 0.0,
+        "sa\u0142ata": 1.0
+      }
+    },
+    {
+      "name": "field_2",
+      "area": 2,
+      "coefficients": {
+        "truskawki": 1.0,
+        "truskawki pod folia": 2.0,
+        "szczypiorek": 1.0,
+        "cebula": 1.0,
+        "pietruszka": 1.0,
+        "ziemniaki": 1.0,
+        "poplony": 1.0,
+        "rukola_szklarnia": 0.0,
+        "sa\u0142ata": 3.0
+      }
+    },
+    {
+      "name": "field_2",
+      "area": 1,
+      "coefficients": {
+        "truskawki": 2.0,
+        "truskawki pod folia": 1.0,
+        "szczypiorek": 3.0,
+        "cebula": 3.0,
+        "pietruszka": 3.0,
+        "ziemniaki": 1.0,
+        "poplony": 1.0,
+        "rukola_szklarnia": 0.0,
+        "sa\u0142ata": 1.0
+      }
+    },
+    {
+      "name": "",
+      "area": 2,
+      "coefficients": {
+        "truskawki pod folia": 1.0,
+        "szczypiorek": 1.0,
+        "pietruszka": 3.0,
+        "cebula": 3.0,
+        "truskawki": 1.0,
+        "ziemniaki": 1.0,
+        "poplony": 1.0,
+        "rukola_szklarnia": 0.0,
+        "sa\u0142ata": 1.0
+      }
+    },
+    {
+      "name": "",
+      "area": 2,
+      "coefficients": {
+        "truskawki pod folia": 1.0,
+        "szczypiorek": 1.0,
+        "pietruszka": 1.0,
+        "cebula": 1.0,
+        "truskawki": 1.0,
+        "ziemniaki": 1.0,
+        "poplony": 1.0,
+        "rukola_szklarnia": 0.0,
+        "sa\u0142ata": 1.0
+      }
+    },
+    {
+      "name": "",
+      "area": 2,
+      "coefficients": {
+        "truskawki pod folia": 1.0,
+        "szczypiorek": 1.0,
+        "pietruszka": 1.0,
+        "cebula": 1.0,
+        "truskawki": 1.0,
+        "ziemniaki": 1.0,
+        "poplony": 1.0,
+        "rukola_szklarnia": 0.0,
+        "sa\u0142ata": 1.0
+      }
+    },
+    {
+      "name": "",
+      "area": 4,
+      "coefficients": {
+        "truskawki pod folia": 0.2,
+        "szczypiorek": 0.2,
+        "pietruszka": 0.2,
+        "cebula": 0.2,
+        "truskawki": 0.2,
+        "ziemniaki": 4.0,
+        "poplony": 0.2,
+        "rukola_szklarnia": 0.0,
+        "sa\u0142ata": 0.2
+      }
+    },
+    {
+      "name": "szklarnia",
+      "area": 1,
+      "coefficients": {
+        "rukola_szklarnia": 2.0,
+        "cebula": 1.0,
+        "poplony": 1.0,
+        "truskawki pod folia": 1.0,
+        "ziemniaki": 1.0,
+        "pietruszka": 1.0,
+        "truskawki": 1.0,
+        "szczypiorek": 1.0,
+        "sa\u0142ata": 1.0
+      }
+    }
+  ],
+  "resources": {
+    "daily_resources": {
+      "work_hours": 20,
+      "machine_1": 5,
+      "machine_2": 10,
+      "water": 15,
+      "nawoz2": 20,
+      "machine_5": 12,
+      "nawoz1": 6,
+      "machine_3": 5
+    },
+    "entire_period_resources": {
+      "money": 3000,
+      "warehouse": 800
+    }
+  },
+  "cultivation_types": [
+    {
+      "name": "truskawki",
+      "profit": 12,
+      "duration": 20,
+      "start_date": {
+        "year": 2022,
+        "month": 5,
+        "day": 1,
+        "plus_minus_days": 10
+      },
+      "entire_period_resources": {
+        "money": 20,
+        "warehouse": 10
+      },
+      "daily_resources": [
+        {
+          "name": "dsds",
+          "duration": 4,
+          "values": {
+            "work_hours": 5,
+            "water": 8,
+            "machine_1": 1,
+            "machine_2": 1
+          }
+        },
+        {
+          "name": "dsds",
+          "duration": 10,
+          "values": {
+            "work_hours": 5,
+            "water": 10
+          }
+        },
+        {
+          "name": "dsds",
+          "duration": 6,
+          "values": {
+            "work_hours": 10,
+            "water": 5,
+            "machine_5": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "truskawki pod folia",
+      "profit": 15,
+      "duration": 12,
+      "start_date": {
+        "year": 2022,
+        "month": 4,
+        "day": 10,
+        "plus_minus_days": 12
+      },
+      "entire_period_resources": {
+        "money": 40,
+        "warehouse": 10
+      },
+      "daily_resources": [
+        {
+          "name": "dsds",
+          "duration": 4,
+          "values": {
+            "work_hours": 15,
+            "water": 8,
+            "machine_2": 1
+          }
+        },
+        {
+          "name": "dsds",
+          "duration": 8,
+          "values": {
+            "work_hours": 10,
+            "water": 5
+          }
+        }
+      ]
+    },
+    {
+      "name": "ziemniaki",
+      "profit": 7,
+      "duration": 55,
+      "start_date": {
+        "year": 2000,
+        "month": 4,
+        "day": 1,
+        "plus_minus_days": 20
+      },
+      "entire_period_resources": {
+        "money": 10,
+        "warehouse": 30
+      },
+      "daily_resources": [
+        {
+          "name": "sadzenie",
+          "duration": 5,
+          "values": {
+            "machine_2": 3,
+            "work_hours": 10
+          }
+        },
+        {
+          "name": "uprawa",
+          "duration": 45,
+          "values": {
+            "nawoz1": 2,
+            "nawoz2": 5,
+            "work_hours": 3,
+            "machine_3": 1
+          }
+        },
+        {
+          "name": "zbiory",
+          "duration": 5,
+          "values": {
+            "work_hours": 10,
+            "machine_2": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "szczypiorek",
+      "profit": 6,
+      "duration": 12,
+      "start_date": {
+        "year": 2000,
+        "month": 5,
+        "day": 1,
+        "plus_minus_days": 60
+      },
+      "entire_period_resources": {
+        "money": 3
+      },
+      "daily_resources": [
+        {
+          "name": "uprawa",
+          "duration": 12,
+          "values": {
+            "work_hours": 4,
+            "nawoz1": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "pietruszka",
+      "profit": 9,
+      "duration": 14,
+      "start_date": {
+        "year": 2000,
+        "month": 4,
+        "day": 1,
+        "plus_minus_days": 10
+      },
+      "entire_period_resources": {
+        "money": 5,
+        "warehouse": 5
+      },
+      "daily_resources": [
+        {
+          "name": "sadzenie",
+          "duration": 2,
+          "values": {
+            "machine_2": 1,
+            "work_hours": 5
+          }
+        },
+        {
+          "name": "uprawa",
+          "duration": 10,
+          "values": {
+            "work_hours": 6,
+            "water": 3
+          }
+        },
+        {
+          "name": "zbiory",
+          "duration": 2,
+          "values": {
+            "work_hours": 15,
+            "machine_3": 2
+          }
+        }
+      ]
+    },
+    {
+      "name": "cebula",
+      "profit": 16,
+      "duration": 21,
+      "start_date": {
+        "year": 2000,
+        "month": 4,
+        "day": 1,
+        "plus_minus_days": 10
+      },
+      "entire_period_resources": {
+        "money": 5,
+        "warehouse": 5
+      },
+      "daily_resources": [
+        {
+          "name": "sadzenie",
+          "duration": 3,
+          "values": {
+            "machine_2": 1,
+            "work_hours": 3
+          }
+        },
+        {
+          "name": "uprawa",
+          "duration": 15,
+          "values": {
+            "water": 10,
+            "nawoz1": 3,
+            "work_hours": 2
+          }
+        },
+        {
+          "name": "zbiory",
+          "duration": 3,
+          "values": {
+            "work_hours": 10,
+            "machine_3": 1
+          }
+        }
+      ]
+    },
+    {
+      "name": "sa\u0142ata",
+      "profit": 15,
+      "duration": 12,
+      "start_date": {
+        "year": 2000,
+        "month": 5,
+        "day": 10,
+        "plus_minus_days": 15
+      },
+      "entire_period_resources": {
+        "money": 2
+      },
+      "daily_resources": [
+        {
+          "name": "",
+          "duration": 2,
+          "values": {
+            "work_hours": 7,
+            "machine_1": 2
+          }
+        },
+        {
+          "name": "",
+          "duration": 10,
+          "values": {
+            "work_hours": 8
+          }
+        }
+      ]
+    },
+    {
+      "name": "rukola_szklarnia",
+      "profit": 9,
+      "duration": 10,
+      "start_date": {
+        "year": 2000,
+        "month": 5,
+        "day": 1,
+        "plus_minus_days": 60
+      },
+      "entire_period_resources": {
+        "money": 4
+      },
+      "daily_resources": [
+        {
+          "name": "",
+          "duration": 10,
+          "values": {
+            "work_hours": 8,
+            "water": 3
+          }
+        }
+      ]
+    }
+  ]
+}

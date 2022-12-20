@@ -4,12 +4,14 @@ import os
 import sys
 from distinctipy import distinctipy
 
-from PySide6.QtCore import QRect, QDate, QModelIndex
-from PySide6.QtGui import QIntValidator, QAction, QBrush, QColor
+
+from PySide6.QtCore import QRect, QDate, QModelIndex, QLocale
+from PySide6.QtGui import QIntValidator, QAction, QBrush, QColor, QDoubleValidator
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget, QStyledItemDelegate, QLineEdit, QFileDialog, \
     QCheckBox, QMessageBox, QSizePolicy
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtCore import Qt
+from matplotlib import pyplot as plt
 
 from src.exceptions import NoValidCultivationTypesException
 from src.optimization import Optimization
@@ -31,6 +33,15 @@ class NumericDelegate(QStyledItemDelegate):
         editor = super(NumericDelegate, self).createEditor(parent, option, index)
         if isinstance(editor, QLineEdit):
             editor.setValidator(QIntValidator(0, 999999))
+        return editor
+
+class NumericDelegateFloat(QStyledItemDelegate):
+    def createEditor(self, parent, option, index):
+        editor = super(NumericDelegateFloat, self).createEditor(parent, option, index)
+        if isinstance(editor, QLineEdit):
+            validator = QDoubleValidator(-9.999, 9.999, 3, notation=QDoubleValidator.StandardNotation)
+            validator.setLocale(QLocale.English)
+            editor.setValidator(validator)
         return editor
 
 class MplCanvas(FigureCanvasQTAgg):
@@ -77,6 +88,7 @@ class Result(QWidget):
         super().__init__(parent)
         self.ui = ui_result.Ui_Form()
         self.ui.setupUi(self)
+        self.setWindowTitle("Result window")
         self.table = QtWidgets.QTableView()
         self.df = df
         self.cultivation_types = cultivation_types
@@ -88,12 +100,6 @@ class Result(QWidget):
         self.table.setModel(self.model)
         self.table.resizeColumnsToContents()
 
-        # sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        # sizePolicy.setHorizontalStretch(0)
-        # sizePolicy.setVerticalStretch(0)
-        # sizePolicy.setHeightForWidth(self.table.sizePolicy().hasHeightForWidth())
-        # self.table.setSizePolicy(sizePolicy)
-
         #self.model.change_color(1,1,QBrush(QColor(0, 0, 255, 127)))
         #print(self.table.rowAt(0))
         self.ui.topSpot.addWidget(self.table)
@@ -102,16 +108,19 @@ class Result(QWidget):
         self.sc_period = MplCanvas(self, width=3, height=2, dpi=70)
         #plt.tight_layout()
         #df_resources = df_resources[["water", "machine_1"]]
-        print(df_resources)
-        print(period_df)
+        #print(df_resources)
+        #print(period_df)
         if not df_resources.empty:
             df_resources.plot(ax=self.sc.axes, kind="bar")
         self.sc.axes.set_xlabel("days")
         self.sc.axes.set_ylabel("%")
+        self.sc.axes.set_title("Used daily resources")
 
         if not period_df.empty:
             period_df.plot(ax=self.sc_period.axes, kind="bar")
         self.sc_period.axes.set_xticks([])
+        self.sc_period.axes.set_title("Used period resources")
+        self.sc_period.axes.set_ylabel("%")
         #sc.axes.bar(langs, students)
         self.ui.bottomSpot.addWidget(self.sc)
         self.ui.periodSpot.addWidget(self.sc_period)
@@ -127,6 +136,9 @@ class Result(QWidget):
         df_resources = self.df_resources[names]
         self.sc.axes.cla()
         df_resources.plot(ax=self.sc.axes, kind="bar")
+        self.sc.axes.set_xlabel("days")
+        self.sc.axes.set_ylabel("%")
+        self.sc.axes.set_title("Used daily resources")
         self.sc.draw()
 
     def add_check_boxes(self):
@@ -151,7 +163,7 @@ class Result(QWidget):
         for value in values_list:
             table.insertRow(table.rowCount())
             item1 = QtWidgets.QTableWidgetItem(value)
-            item2 = QtWidgets.QTableWidgetItem(self.cultivation_types[int(value)-1]["name"])
+            item2 = QtWidgets.QTableWidgetItem(self.cultivation_types[int(value)]["name"])
             table.setItem(table.rowCount() - 1, 0, item1)
             table.setItem(table.rowCount() - 1, 1, item2)
         table.resizeColumnsToContents()
@@ -178,7 +190,7 @@ class FieldTypeTab(QWidget):
         self.ui.setupUi(self)
         self.ui.addCoef.clicked.connect(self.add_coef)
         self.ui.removeCoef.clicked.connect(self.remove_coef)
-        delegate = NumericDelegate(self.ui.coefficients)
+        delegate = NumericDelegateFloat(self.ui.coefficients)
         self.ui.coefficients.setItemDelegateForColumn(1, delegate)
 
 
@@ -273,9 +285,10 @@ class CultTypeTab(QWidget):
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
+
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-
+        self.setWindowTitle("Modeling and Optimization of Agricultural Production")
         self.ui.tabWidgetCultTypes.addTab(CultTypeTab(), "type 1")
         self.ui.tabWidgetFields.addTab(FieldTypeTab(), "field 1")
         self.ui.runButton.clicked.connect(self.run_optimization)
@@ -339,7 +352,7 @@ class MainWindow(QMainWindow):
 
 
     def save_data_to_file(self):
-        filename = QFileDialog.getSaveFileName(self, 'Open file', '/', "JSON files (*.json)")[0]
+        filename = QFileDialog.getSaveFileName(self, 'Open file', '.', "JSON files (*.json)")[0]
         self.save_data(filename)
 
     def plot(self, best_results):
@@ -366,13 +379,15 @@ class MainWindow(QMainWindow):
         mating_pool_size = self.ui.matingPoolSize.value()
         elite_size = self.ui.eliteSize.value()
         tournament_size = self.ui.tournamentSize.value()
+        mutation_type = self.ui.mutationType.currentText()
 
         par = Parameters(max_iter=max_iter, max_iter_no_progress=max_iter_no_progress, start_date=start_date,
                          num_days=num_days, crossover_type=crossover_type, mutation_probability=mutation_probability,
                          initial_population_type=initial_population_type, population_size=population_size,
                          unacceptable_fix_type=unacceptable_fix_type, penalty_multiplier_first=penalty_multiplier_first,
                          penalty_multiplier_last=penalty_multiplier_last, selection_type=selection_type,
-                         mating_pool_size=mating_pool_size, elite_size=elite_size, tournament_size=tournament_size)
+                         mating_pool_size=mating_pool_size, elite_size=elite_size, tournament_size=tournament_size,
+                         mutation_type=mutation_type)
         return par
 
     def run_optimization(self):
@@ -380,11 +395,11 @@ class MainWindow(QMainWindow):
         self.fix_coefficients()
         par = self.get_parameters()
         self.save_data()
-        resources, fields, cultivation_types = load_files()
-        self.optimization = Optimization(resources, fields, cultivation_types)
+        #resources, fields, cultivation_types = load_files()
+        optimization = Optimization()
         try:
-            df, df_resources, period_df, best_results = self.optimization.evolution_algorithm(par)
-            self.result = Result(df, df_resources, period_df, cultivation_types)
+            df, df_resources, period_df, best_results = optimization.run_algorithm(par)
+            self.result = Result(df, df_resources, period_df, optimization.cultivation_types)
             self.result.setGeometry(QRect(0, 0, 400, 400))
             self.result.show()
             self.plot(best_results)
@@ -398,90 +413,129 @@ class MainWindow(QMainWindow):
 
 
     def save_data(self, filename="data/model_data.json"):
+        if filename != '':
+            fields = self.save_fields()
+            resources = self.save_resources()
+            cult_types = self.save_cultivation_types()
+            model_data = {"fields": fields,
+                          "resources": resources,
+                          "cultivation_types": cult_types}
 
-        fields = self.save_fields()
-        resources = self.save_resources()
-        cult_types = self.save_cultivation_types()
-        model_data = {"fields": fields,
-                      "resources": resources,
-                      "cultivation_types": cult_types}
+            model_data_json = json.dumps(model_data, indent=2)
 
-        model_data_json = json.dumps(model_data, indent=2)
-
-        os.makedirs(os.path.dirname(filename), exist_ok=True)
-        with open(filename, "w") as file:
-            file.write(model_data_json)
+            os.makedirs(os.path.dirname(filename), exist_ok=True)
+            with open(filename, "w") as file:
+                file.write(model_data_json)
 
 
 
 
     def load_data(self):
-        file_name = QFileDialog.getOpenFileName(self, 'Open file', 'sample_data', "JSON files (*.json)")[0]
+        file_name = QFileDialog.getOpenFileName(self, 'Open file', '.', "JSON files (*.json)")[0]
         #file_name = "../sample_data/data1.json"
         if file_name == "":
             return 0
         with open(file_name, "r") as file:
-            data = json.load(file)
+            try:
+                data = json.load(file)
+            except ValueError :
+                dlg = QMessageBox(self)
+                dlg.setWindowTitle("Invalid JSON")
+                dlg.setText(f"""File is not a valid json file""")
+                button = dlg.exec_()
+                return 0
+
 
         self.ui.tabWidgetCultTypes.clear()
         self.ui.tabWidgetFields.clear()
         self.ui.dailyResources.setRowCount(0)
         self.ui.periodResources.setRowCount(0)
 
-        self.load_cultivation_types(data["cultivation_types"])
-        self.load_fields_types(data["fields"])
-        self.load_resources(data["resources"])
+        valid_cult_types = 0
+        if "cultivation_types" in data:
+            valid_cult_types = self.load_cultivation_types(data["cultivation_types"])
+
+        valid_fields = 0
+        if "fields" in data:
+            valid_fields = self.load_fields_types(data["fields"])
+
+        valid_resource_types = 0
+        if "resources" in data:
+            valid_resource_types = self.load_resources(data["resources"])
+
+        dlg = QMessageBox(self)
+        dlg.setWindowTitle("Loading summary")
+        dlg.setText(f"Successfully loaded:\n{valid_cult_types} cultivation types\n{valid_fields} fields\n{valid_resource_types} resource types")
+        button = dlg.exec()
 
 
 
     def load_cultivation_types(self, cultivation_types_list):
         data = cultivation_types_list
-        self.ui.tabWidgetCultTypes.removeTab(0)
-        for i in data:
-            tab = self.add_new_cult_type()
-            tab.ui.name.setText(i["name"])
-            tab.ui.profit.setValue(i["profit"])
-            date = QDate(i["start_date"]["year"], i["start_date"]["month"], i["start_date"]["day"])
-            tab.ui.startDate.setDate(date)
-            tab.ui.plusMinus.setValue(i["start_date"]["plus_minus_days"])
-            table = tab.ui.periodResources
-            table.removeRow(0)
-            for row in i["entire_period_resources"]:
-                table.insertRow(table.rowCount())
-                resource = QtWidgets.QTableWidgetItem(row)
-                quantity = QtWidgets.QTableWidgetItem(str(i["entire_period_resources"][row]))
-                table.setItem(table.rowCount() - 1, 0, resource)
-                table.setItem(table.rowCount() - 1, 1, quantity)
 
-            tab.ui.tabWidgetStages.removeTab(0)
-            for stage in i["daily_resources"]:
-                new_stage = tab.add_stage()
-                new_stage.ui.name.setText(stage["name"])
-                new_stage.ui.duration.setValue(stage["duration"])
-                table = new_stage.ui.resources
+        valid = 0
+        for i in data:
+            try:
+                tab = self.add_new_cult_type()
+                tab.ui.name.setText(i["name"])
+                tab.ui.profit.setValue(i["profit"])
+                date = QDate(i["start_date"]["year"], i["start_date"]["month"], i["start_date"]["day"])
+                tab.ui.startDate.setDate(date)
+                tab.ui.plusMinus.setValue(i["start_date"]["plus_minus_days"])
+                table = tab.ui.periodResources
                 table.removeRow(0)
-                for row in stage["values"]:
+                for row in i["entire_period_resources"]:
                     table.insertRow(table.rowCount())
                     resource = QtWidgets.QTableWidgetItem(row)
-                    quantity = QtWidgets.QTableWidgetItem(str(stage["values"][row]))
+                    quantity = QtWidgets.QTableWidgetItem(str(i["entire_period_resources"][row]))
                     table.setItem(table.rowCount() - 1, 0, resource)
                     table.setItem(table.rowCount() - 1, 1, quantity)
 
+                tab.ui.tabWidgetStages.removeTab(0)
+                for stage in i["daily_resources"]:
+                    new_stage = tab.add_stage()
+                    new_stage.ui.name.setText(stage["name"])
+                    new_stage.ui.duration.setValue(stage["duration"])
+                    table = new_stage.ui.resources
+                    table.removeRow(0)
+                    for row in stage["values"]:
+                        table.insertRow(table.rowCount())
+                        resource = QtWidgets.QTableWidgetItem(row)
+                        quantity = QtWidgets.QTableWidgetItem(str(stage["values"][row]))
+                        table.setItem(table.rowCount() - 1, 0, resource)
+                        table.setItem(table.rowCount() - 1, 1, quantity)
+            except:
+                print("invalid")
+            else:
+                valid += 1
+        # if valid:
+        #     self.ui.tabWidgetCultTypes.removeTab(0)
+        return valid
+
     def load_fields_types(self, fields_types_list):
         data = fields_types_list
-        self.ui.tabWidgetFields.removeTab(0)
+
+        valid = 0
         for i in data:
-            field = self.add_field()
-            field.ui.name.setText(i["name"])
-            field.ui.area.setValue(i["area"])
-            table = field.ui.coefficients
-            table.removeRow(0)
-            for row in i["coefficients"]:
-                table.insertRow(table.rowCount())
-                resource = QtWidgets.QTableWidgetItem(row)
-                quantity = QtWidgets.QTableWidgetItem(str(i["coefficients"][row]))
-                table.setItem(table.rowCount() - 1, 0, resource)
-                table.setItem(table.rowCount() - 1, 1, quantity)
+            try:
+                field = self.add_field()
+                field.ui.name.setText(i["name"])
+                field.ui.area.setValue(i["area"])
+                table = field.ui.coefficients
+                table.removeRow(0)
+                for row in i["coefficients"]:
+                    table.insertRow(table.rowCount())
+                    resource = QtWidgets.QTableWidgetItem(row)
+                    quantity = QtWidgets.QTableWidgetItem(str(i["coefficients"][row]))
+                    table.setItem(table.rowCount() - 1, 0, resource)
+                    table.setItem(table.rowCount() - 1, 1, quantity)
+            except:
+                pass
+            else:
+                valid += 1
+        # if valid:
+        #     self.ui.tabWidgetFields.removeTab(0)
+        return valid
 
     def load_resources(self, resources_list):
         data = resources_list
@@ -489,22 +543,36 @@ class MainWindow(QMainWindow):
         period_resources = self.ui.periodResources
         daily_resources.removeRow(0)
         period_resources.removeRow(0)
+        valid = 0
 
-        for row in data["daily_resources"]:
-            table = daily_resources
-            table.insertRow(table.rowCount())
-            resource = QtWidgets.QTableWidgetItem(row)
-            quantity = QtWidgets.QTableWidgetItem(str(data["daily_resources"][row]))
-            table.setItem(table.rowCount() - 1, 0, resource)
-            table.setItem(table.rowCount() - 1, 1, quantity)
+        if "daily_resources" in data:
+            for row in data["daily_resources"]:
+                try:
+                    table = daily_resources
+                    table.insertRow(table.rowCount())
+                    resource = QtWidgets.QTableWidgetItem(row)
+                    quantity = QtWidgets.QTableWidgetItem(str(data["daily_resources"][row]))
+                    table.setItem(table.rowCount() - 1, 0, resource)
+                    table.setItem(table.rowCount() - 1, 1, quantity)
+                except:
+                    pass
+                else:
+                    valid += 1
 
-        for row in data["entire_period_resources"]:
-            table = period_resources
-            table.insertRow(table.rowCount())
-            resource = QtWidgets.QTableWidgetItem(row)
-            quantity = QtWidgets.QTableWidgetItem(str(data["entire_period_resources"][row]))
-            table.setItem(table.rowCount() - 1, 0, resource)
-            table.setItem(table.rowCount() - 1, 1, quantity)
+        if "entire_period_resources" in data:
+            for row in data["entire_period_resources"]:
+                try:
+                    table = period_resources
+                    table.insertRow(table.rowCount())
+                    resource = QtWidgets.QTableWidgetItem(row)
+                    quantity = QtWidgets.QTableWidgetItem(str(data["entire_period_resources"][row]))
+                    table.setItem(table.rowCount() - 1, 0, resource)
+                    table.setItem(table.rowCount() - 1, 1, quantity)
+                except:
+                    pass
+                else:
+                    valid += 1
+        return valid
 
     def fix_resources(self):
         entire_period_resources_needed = set()
@@ -544,11 +612,25 @@ class MainWindow(QMainWindow):
         if missing_period_resources or missing_daily_resources:
             dlg = QMessageBox(self)
             dlg.setWindowTitle("Missing resources")
-            dlg.setText(f"""There are resources needed for cultivation types which are not present in resources tab
-                            Daily resources - {missing_daily_resources}
-                            Entire period resources - {missing_period_resources}
-                            Those resources have been added with quantity 0""")
+            period_text = ''
+            if missing_period_resources:
+                period_text = f"Entire period resources - {missing_period_resources}"
+            dlg.setText(f"""There are resources needed for cultivation types which are not present in resources tab\n
+            Daily resources - {missing_daily_resources}""" + period_text + "\nThose resources have been added with quantity 0")
             button = dlg.exec_()
+
+        for missing_period_resource in missing_period_resources:
+            table = self.ui.periodResources
+            table.insertRow(table.rowCount())
+            table.setItem(table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(missing_period_resource))
+            table.setItem(table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(str(0)))
+
+        for missing_daily_resource in missing_daily_resources:
+            table = self.ui.dailyResources
+            table.insertRow(table.rowCount())
+            table.setItem(table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(missing_daily_resource))
+            table.setItem(table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(str(0)))
+
 
     def fix_coefficients(self):
         coefficients_needed = set()
@@ -617,7 +699,7 @@ class MainWindow(QMainWindow):
 
             #start_date_raw = tab.startDate.date().toPython() - timedelta(days=tab.plusMinus.value())
             start_date_raw = tab.startDate.date().toPython()
-            print(start_date_raw.year)
+
             start_date = {
                 "year": start_date_raw.year,
                 "month": start_date_raw.month,
@@ -722,11 +804,9 @@ class MainWindow(QMainWindow):
 
 
 
-def get_data_sets():
-    return next(os.walk('data'))[1]
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
+    app.setApplicationName("Modeling and Optimization of Agricultural Production")
     widget = MainWindow()
     widget.show()
     sys.exit(app.exec())

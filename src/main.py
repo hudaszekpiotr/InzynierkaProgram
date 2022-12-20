@@ -7,7 +7,7 @@ from src.utils import parse_resources, load_files
 def main():
     resources, fields, cultivation_types = load_files()
     optimization = Optimization(resources, fields, cultivation_types)
-    optimization.evolution_algorithm()
+    optimization.run_algorithm()
 
 
 if __name__ == "__main__":

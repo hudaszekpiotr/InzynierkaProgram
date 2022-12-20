@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'form.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.4.0
+## Created by: Qt User Interface Compiler version 6.4.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -27,12 +27,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(1110, 468)
+        MainWindow.resize(1135, 468)
         sizePolicy = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.MinimumExpanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(MainWindow.sizePolicy().hasHeightForWidth())
         MainWindow.setSizePolicy(sizePolicy)
+        MainWindow.setLocale(QLocale(QLocale.English, QLocale.UnitedStates))
         MainWindow.setTabShape(QTabWidget.Triangular)
         self.actionlast_used = QAction(MainWindow)
         self.actionlast_used.setObjectName(u"actionlast_used")
@@ -99,14 +100,14 @@ class Ui_MainWindow(object):
         sizePolicy3.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
         self.label_4.setSizePolicy(sizePolicy3)
 
-        self.gridLayout_9.addWidget(self.label_4, 1, 0, 1, 2)
+        self.gridLayout_9.addWidget(self.label_4, 2, 0, 1, 2)
 
         self.crossoverType = QComboBox(self.groupBox_3)
         self.crossoverType.addItem("")
         self.crossoverType.addItem("")
         self.crossoverType.setObjectName(u"crossoverType")
 
-        self.gridLayout_9.addWidget(self.crossoverType, 1, 2, 1, 1)
+        self.gridLayout_9.addWidget(self.crossoverType, 2, 2, 1, 1)
 
         self.label_10 = QLabel(self.groupBox_3)
         self.label_10.setObjectName(u"label_10")
@@ -115,10 +116,25 @@ class Ui_MainWindow(object):
 
         self.gridLayout_9.addWidget(self.label_10, 0, 0, 1, 1)
 
+        self.label_13 = QLabel(self.groupBox_3)
+        self.label_13.setObjectName(u"label_13")
+
+        self.gridLayout_9.addWidget(self.label_13, 1, 0, 1, 1)
+
+        self.mutationType = QComboBox(self.groupBox_3)
+        self.mutationType.addItem("")
+        self.mutationType.addItem("")
+        self.mutationType.setObjectName(u"mutationType")
+        sizePolicy3.setHeightForWidth(self.mutationType.sizePolicy().hasHeightForWidth())
+        self.mutationType.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_9.addWidget(self.mutationType, 1, 1, 1, 2)
+
         self.mutationProbability = QDoubleSpinBox(self.groupBox_3)
         self.mutationProbability.setObjectName(u"mutationProbability")
         self.mutationProbability.setMaximum(1.000000000000000)
-        self.mutationProbability.setValue(0.100000000000000)
+        self.mutationProbability.setSingleStep(0.050000000000000)
+        self.mutationProbability.setValue(0.400000000000000)
 
         self.gridLayout_9.addWidget(self.mutationProbability, 0, 2, 1, 1)
 
@@ -172,7 +188,7 @@ class Ui_MainWindow(object):
 
         self.startDate = QDateEdit(self.groupBox_2)
         self.startDate.setObjectName(u"startDate")
-        self.startDate.setDate(QDate(2022, 5, 1))
+        self.startDate.setDate(QDate(2022, 4, 1))
 
         self.gridLayout_8.addWidget(self.startDate, 0, 1, 1, 1)
 
@@ -275,7 +291,7 @@ class Ui_MainWindow(object):
         self.maxIter.setSizePolicy(sizePolicy4)
         self.maxIter.setMinimum(1)
         self.maxIter.setMaximum(9999999)
-        self.maxIter.setValue(50)
+        self.maxIter.setValue(400)
 
         self.gridLayout.addWidget(self.maxIter, 0, 1, 1, 1)
 
@@ -340,7 +356,7 @@ class Ui_MainWindow(object):
         self.gridLayout_13.setObjectName(u"gridLayout_13")
         self.penaltyMultiplierLast = QDoubleSpinBox(self.penaltyBox)
         self.penaltyMultiplierLast.setObjectName(u"penaltyMultiplierLast")
-        self.penaltyMultiplierLast.setValue(1.000000000000000)
+        self.penaltyMultiplierLast.setValue(3.000000000000000)
 
         self.gridLayout_13.addWidget(self.penaltyMultiplierLast, 2, 1, 1, 1)
 
@@ -555,7 +571,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 1110, 22))
+        self.menubar.setGeometry(QRect(0, 0, 1135, 22))
         self.menuinfo = QMenu(self.menubar)
         self.menuinfo.setObjectName(u"menuinfo")
         MainWindow.setMenuBar(self.menubar)
@@ -587,6 +603,10 @@ class Ui_MainWindow(object):
         self.crossoverType.setItemText(1, QCoreApplication.translate("MainWindow", u"days", None))
 
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Mutation probability", None))
+        self.label_13.setText(QCoreApplication.translate("MainWindow", u"Mutation type ", None))
+        self.mutationType.setItemText(0, QCoreApplication.translate("MainWindow", u"only adding", None))
+        self.mutationType.setItemText(1, QCoreApplication.translate("MainWindow", u"removing/adding", None))
+
         self.groupBox_4.setTitle(QCoreApplication.translate("MainWindow", u"Initial population", None))
         self.label_14.setText(QCoreApplication.translate("MainWindow", u"Type", None))
         self.initialPopulationType.setItemText(0, QCoreApplication.translate("MainWindow", u"empty solutions", None))
@@ -602,9 +622,9 @@ class Ui_MainWindow(object):
         self.label_16.setText(QCoreApplication.translate("MainWindow", u"Elite size", None))
         self.label_18.setText(QCoreApplication.translate("MainWindow", u"% of all", None))
         self.label_19.setText(QCoreApplication.translate("MainWindow", u"% of all", None))
-        self.selectionType.setItemText(0, QCoreApplication.translate("MainWindow", u"roulette wheel", None))
-        self.selectionType.setItemText(1, QCoreApplication.translate("MainWindow", u"tournament", None))
-        self.selectionType.setItemText(2, QCoreApplication.translate("MainWindow", u"ranking", None))
+        self.selectionType.setItemText(0, QCoreApplication.translate("MainWindow", u"ranking", None))
+        self.selectionType.setItemText(1, QCoreApplication.translate("MainWindow", u"roulette wheel", None))
+        self.selectionType.setItemText(2, QCoreApplication.translate("MainWindow", u"tournament", None))
 
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Stop conditions", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Max number of iterations", None))

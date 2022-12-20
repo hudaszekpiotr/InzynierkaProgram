@@ -250,7 +250,11 @@
           </widget>
          </item>
          <item>
-          <widget class="QSpinBox" name="plusMinus"/>
+          <widget class="QSpinBox" name="plusMinus">
+           <property name="maximum">
+            <number>360</number>
+           </property>
+          </widget>
          </item>
          <item>
           <widget class="QLabel" name="label_8">

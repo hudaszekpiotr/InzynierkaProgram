@@ -8,7 +8,7 @@ import pandas as pd
 
 
 
-def get_used_resources(solution, cultivation_types):
+def get_used_resources(solution, cultivation_types, fields):
     daily_resources_list = [{} for i in range(solution.num_days)]
     period_dict = {}
 
@@ -17,41 +17,49 @@ def get_used_resources(solution, cultivation_types):
             iter_resources = cultivation_types[crop[0]]["entire_period_resources"]
             for key in iter_resources:
                 if key in period_dict:
-                    period_dict[key] += iter_resources[key]
+                    period_dict[key] += iter_resources[key] * fields[field_index]["area"]
                 else:
-                    period_dict[key] = iter_resources[key]
+                    period_dict[key] = iter_resources[key] * fields[field_index]["area"]
             resources_list = cultivation_types[crop[0]]["daily_resources"]
             for day, daily_dict in enumerate(resources_list):
                 for key in daily_dict:
                     if key in daily_resources_list[day + crop[1]]:
-                        daily_resources_list[day + crop[1]][key] += daily_dict[key]
+                        daily_resources_list[day + crop[1]][key] += daily_dict[key] * fields[field_index]["area"]
                     else:
-                        daily_resources_list[day + crop[1]][key] = daily_dict[key]
+                        daily_resources_list[day + crop[1]][key] = daily_dict[key] * fields[field_index]["area"]
     return daily_resources_list, period_dict
 
 
-def penalty(solution, cultivation_types, resources, multiplier):
+def penalty(solution, cultivation_types, resources, multiplier, fields):
     penalty_val = 0
-    daily_resources_list, period_dict = get_used_resources(solution, cultivation_types)
+    daily_resources_list, period_dict = get_used_resources(solution, cultivation_types, fields)
     for daily_dict in daily_resources_list:
         for key in daily_dict:
             if key not in resources["daily_resources"]:
                 raise ValueError
             diff = resources["daily_resources"][key] - daily_dict[key]
             if diff < 0:
-                penalty_val += abs(diff)/resources["daily_resources"][key] * 100 * multiplier
+                available = resources["daily_resources"][key]
+                if available:
+                    penalty_val += abs(diff)/available * 100 * multiplier
+                else:
+                    penalty_val += abs(diff) * 1000 * multiplier
 
     for key in period_dict:
         if key not in resources["entire_period_resources"]:
             raise ValueError(str(key))
         diff = resources["entire_period_resources"][key] - period_dict[key]
         if diff < 0:
-            penalty_val += abs(diff) / resources["entire_period_resources"][key] * 100 * multiplier
+            available = resources["entire_period_resources"][key]
+            if available:
+                penalty_val += abs(diff) / available * 100 * multiplier
+            else:
+                penalty_val += abs(diff) * 1000 * multiplier
     return penalty_val
 
 
-def resources_percent(solution, cultivation_types, resources):
-    df, period_df = resources_df(solution, cultivation_types)
+def resources_percent(solution, cultivation_types, resources, fields):
+    df, period_df = resources_df(solution, cultivation_types, fields)
     for key in period_df:
         period_df[key] = (period_df[key]/resources['entire_period_resources'][key])*100
     #print(df)
@@ -59,14 +67,18 @@ def resources_percent(solution, cultivation_types, resources):
         for row in df.index:
             if math.isnan(df[column][row]):
                 df[column][row] = 0.0
-            df[column][row] = (df[column][row]/resources['daily_resources'][row])*100
+            available = resources['daily_resources'][row]
+            if available:
+                df[column][row] = (df[column][row]/available)*100
+            else:
+                df[column][row] = df[column][row] * 1000
     df = df.transpose()
     return df, period_df
 
-def resources_df(solution, cultivation_types):
+def resources_df(solution, cultivation_types, fields):
     df = pd.DataFrame()
     data = {}
-    daily_resources_list, period_dict = get_used_resources(solution, cultivation_types)
+    daily_resources_list, period_dict = get_used_resources(solution, cultivation_types, fields)
     for count, daily_dict in enumerate(daily_resources_list):
         data[count+1] = pd.Series(daily_dict, dtype='float64')
     df = pd.DataFrame(data=data)
@@ -111,8 +123,8 @@ def remove_resources_from_list(daily_resources_list, period_dict, day, daily_res
 
 
 
-def fixup(solution, cultivation_types, resources):
-    daily_resources_list, period_dict = get_used_resources(solution, cultivation_types)
+def fixup(solution, cultivation_types, resources, fields):
+    daily_resources_list, period_dict = get_used_resources(solution, cultivation_types, fields)
 
     for day, daily_dict in enumerate(daily_resources_list):
         for key in daily_dict:
@@ -146,7 +158,8 @@ def fixup(solution, cultivation_types, resources):
             fields_shuffled_num = list(range(solution.num_fields))
             random.shuffle(fields_shuffled_num)
             for field_index in fields_shuffled_num:
-                indexes_shuffled = copy.deepcopy(solution.data[field_index])
+                indexes_shuffled = list(range(len(solution.data[field_index])))
+                #indexes_shuffled = copy.deepcopy(solution.data[field_index])
                 random.shuffle(indexes_shuffled)
                 for index in indexes_shuffled:
                     crop_type = solution.data[field_index][index][0]

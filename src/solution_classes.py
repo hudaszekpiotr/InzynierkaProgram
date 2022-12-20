@@ -19,6 +19,7 @@ class Solution:
             txt += "pole"+str(field_index) + str(field)
         return txt
     def to_dataframe(self, cultivation_types):
+
         matrix = np.full((self.num_fields, self.num_days), "", dtype=object)
         for field_index, field in enumerate(self.data):
             for crop in field:

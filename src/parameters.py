@@ -12,6 +12,7 @@ class Parameters:
     num_days: int
     #_____________________
     mutation_probability: float
+    mutation_type: Literal["only adding", "removing/adding"]
     crossover_type: Literal["days", "fields"]
     #______________________________________
     initial_population_type: Literal["empty solutions", "partially filled solutions"]
