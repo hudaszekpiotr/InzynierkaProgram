@@ -15,7 +15,7 @@ parameters = Parameters(max_iter=0, max_iter_no_progress=100000, start_date=date
                         initial_population_type="partially filled solutions", population_size=100,
                         unacceptable_fix_type="fixup", penalty_multiplier_first=1,
                         penalty_multiplier_last=1, selection_type="ranking",
-                        mating_pool_size=40, elite_size=0, tournament_size=2,
+                        mating_pool_percent=40, elite_percent=0, tournament_size=2,
                         mutation_type="only adding")
 
 optimization = Optimization('dataset-large.json')

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 9.0.1, 2022-12-20T11:08:41. -->
+<!-- Written by QtCreator 9.0.1, 2022-12-27T21:13:42. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -144,12 +144,10 @@
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">widget.py</value>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/hudaszek/Desktop/inzynierka/InzynierkaProgram/gui/widget.py</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/hudaszek/Desktop/inzynierka/InzynierkaProgram/gui/widget.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\hudaszek\Desktop\inzynierka\InzynierkaProgram\gui\widget.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/hudaszek/Desktop/inzynierka/InzynierkaProgram/gui</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

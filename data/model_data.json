@@ -12,13 +12,7 @@
         "ziemniaki": 1.0,
         "poplony": 1.0,
         "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
+        "sa\u0142ata": 1.0
       }
     },
     {
@@ -33,13 +27,7 @@
         "ziemniaki": 1.0,
         "poplony": 1.0,
         "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
+        "sa\u0142ata": 3.0
       }
     },
     {
@@ -54,13 +42,7 @@
         "ziemniaki": 1.0,
         "poplony": 1.0,
         "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
+        "sa\u0142ata": 1.0
       }
     },
     {
@@ -75,13 +57,7 @@
         "ziemniaki": 1.0,
         "poplony": 1.0,
         "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
+        "sa\u0142ata": 1.0
       }
     },
     {
@@ -96,13 +72,7 @@
         "ziemniaki": 1.0,
         "poplony": 1.0,
         "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
+        "sa\u0142ata": 1.0
       }
     },
     {
@@ -117,13 +87,7 @@
         "ziemniaki": 1.0,
         "poplony": 1.0,
         "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
+        "sa\u0142ata": 1.0
       }
     },
     {
@@ -138,13 +102,7 @@
         "ziemniaki": 4.0,
         "poplony": 0.2,
         "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
+        "sa\u0142ata": 0.2
       }
     },
     {
@@ -159,490 +117,20 @@
         "pietruszka": 1.0,
         "truskawki": 1.0,
         "szczypiorek": 1.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "field_1",
-      "area": 3,
-      "coefficients": {
-        "truskawki": 1.5,
-        "truskawki pod folia": 1.3,
-        "szczypiorek": 1.0,
-        "cebula": 1.0,
-        "pietruszka": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "field_2",
-      "area": 2,
-      "coefficients": {
-        "truskawki": 1.0,
-        "truskawki pod folia": 2.0,
-        "szczypiorek": 1.0,
-        "cebula": 1.0,
-        "pietruszka": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "field_2",
-      "area": 1,
-      "coefficients": {
-        "truskawki": 2.0,
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 3.0,
-        "cebula": 3.0,
-        "pietruszka": 3.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 2,
-      "coefficients": {
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 1.0,
-        "pietruszka": 3.0,
-        "cebula": 3.0,
-        "truskawki": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 2,
-      "coefficients": {
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 1.0,
-        "pietruszka": 1.0,
-        "cebula": 1.0,
-        "truskawki": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 2,
-      "coefficients": {
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 1.0,
-        "pietruszka": 1.0,
-        "cebula": 1.0,
-        "truskawki": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 4,
-      "coefficients": {
-        "truskawki pod folia": 0.2,
-        "szczypiorek": 0.2,
-        "pietruszka": 0.2,
-        "cebula": 0.2,
-        "truskawki": 0.2,
-        "ziemniaki": 4.0,
-        "poplony": 0.2,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "szklarnia",
-      "area": 1,
-      "coefficients": {
-        "rukola_szklarnia": 2.0,
-        "cebula": 1.0,
-        "poplony": 1.0,
-        "truskawki pod folia": 1.0,
-        "ziemniaki": 1.0,
-        "pietruszka": 1.0,
-        "truskawki": 1.0,
-        "szczypiorek": 1.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 2,
-      "coefficients": {
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 1.0,
-        "pietruszka": 1.0,
-        "cebula": 1.0,
-        "truskawki": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 2,
-      "coefficients": {
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 1.0,
-        "pietruszka": 1.0,
-        "cebula": 1.0,
-        "truskawki": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 4,
-      "coefficients": {
-        "truskawki pod folia": 0.2,
-        "szczypiorek": 0.2,
-        "pietruszka": 0.2,
-        "cebula": 0.2,
-        "truskawki": 0.2,
-        "ziemniaki": 4.0,
-        "poplony": 0.2,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "szklarnia",
-      "area": 1,
-      "coefficients": {
-        "rukola_szklarnia": 2.0,
-        "cebula": 1.0,
-        "poplony": 1.0,
-        "truskawki pod folia": 1.0,
-        "ziemniaki": 1.0,
-        "pietruszka": 1.0,
-        "truskawki": 1.0,
-        "szczypiorek": 1.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "field_1",
-      "area": 3,
-      "coefficients": {
-        "truskawki": 1.5,
-        "truskawki pod folia": 1.3,
-        "szczypiorek": 1.0,
-        "cebula": 1.0,
-        "pietruszka": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "field_2",
-      "area": 2,
-      "coefficients": {
-        "truskawki": 1.0,
-        "truskawki pod folia": 2.0,
-        "szczypiorek": 1.0,
-        "cebula": 1.0,
-        "pietruszka": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "field_2",
-      "area": 1,
-      "coefficients": {
-        "truskawki": 2.0,
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 3.0,
-        "cebula": 3.0,
-        "pietruszka": 3.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 2,
-      "coefficients": {
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 1.0,
-        "pietruszka": 3.0,
-        "cebula": 3.0,
-        "truskawki": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 2,
-      "coefficients": {
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 1.0,
-        "pietruszka": 1.0,
-        "cebula": 1.0,
-        "truskawki": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 2,
-      "coefficients": {
-        "truskawki pod folia": 1.0,
-        "szczypiorek": 1.0,
-        "pietruszka": 1.0,
-        "cebula": 1.0,
-        "truskawki": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "",
-      "area": 4,
-      "coefficients": {
-        "truskawki pod folia": 0.2,
-        "szczypiorek": 0.2,
-        "pietruszka": 0.2,
-        "cebula": 0.2,
-        "truskawki": 0.2,
-        "ziemniaki": 4.0,
-        "poplony": 0.2,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "szklarnia",
-      "area": 1,
-      "coefficients": {
-        "rukola_szklarnia": 2.0,
-        "cebula": 1.0,
-        "poplony": 1.0,
-        "truskawki pod folia": 1.0,
-        "ziemniaki": 1.0,
-        "pietruszka": 1.0,
-        "truskawki": 1.0,
-        "szczypiorek": 1.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "field_1",
-      "area": 3,
-      "coefficients": {
-        "truskawki": 1.5,
-        "truskawki pod folia": 1.3,
-        "szczypiorek": 1.0,
-        "cebula": 1.0,
-        "pietruszka": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
-      }
-    },
-    {
-      "name": "field_2",
-      "area": 2,
-      "coefficients": {
-        "truskawki": 1.0,
-        "truskawki pod folia": 2.0,
-        "szczypiorek": 1.0,
-        "cebula": 1.0,
-        "pietruszka": 1.0,
-        "ziemniaki": 1.0,
-        "poplony": 1.0,
-        "rukola_szklarnia": 0.0,
-        "groszek": 1.0,
-        "sds": 1.0,
-        "winogrona": 1.0,
-        "ziemniaki2": 1.0,
-        "kapusta": 1.0,
-        "poplony2": 1.0,
-        "fasola": 1.0
+        "sa\u0142ata": 1.0
       }
     }
   ],
   "resources": {
     "daily_resources": {
-      "work_hours": 300,
+      "work_hours": 200,
       "machine_1": 20,
-      "machine_2": 60,
-      "water": 200,
+      "machine_2": 20,
+      "water": 150,
       "nawoz2": 20,
       "machine_5": 20,
-      "nawoz1": 12,
-      "machine_3": 10,
-      "machine_4": 5,
-      "srodek ochrony 1": 20
+      "nawoz1": 10,
+      "machine_3": 5
     },
     "entire_period_resources": {
       "money": 3000,
@@ -656,7 +144,7 @@
       "duration": 20,
       "start_date": {
         "year": 2022,
-        "month": 5,
+        "month": 4,
         "day": 1,
         "plus_minus_days": 10
       },
@@ -696,7 +184,7 @@
     },
     {
       "name": "truskawki pod folia",
-      "profit": 15,
+      "profit": 13,
       "duration": 12,
       "start_date": {
         "year": 2022,
@@ -729,52 +217,9 @@
       ]
     },
     {
-      "name": "ziemniaki",
-      "profit": 5,
-      "duration": 80,
-      "start_date": {
-        "year": 2000,
-        "month": 4,
-        "day": 1,
-        "plus_minus_days": 20
-      },
-      "entire_period_resources": {
-        "money": 10,
-        "warehouse": 30
-      },
-      "daily_resources": [
-        {
-          "name": "sadzenie",
-          "duration": 5,
-          "values": {
-            "machine_2": 3,
-            "work_hours": 10
-          }
-        },
-        {
-          "name": "uprawa",
-          "duration": 70,
-          "values": {
-            "nawoz1": 2,
-            "nawoz2": 5,
-            "work_hours": 3,
-            "machine_3": 1
-          }
-        },
-        {
-          "name": "zbiory",
-          "duration": 5,
-          "values": {
-            "work_hours": 10,
-            "machine_2": 2
-          }
-        }
-      ]
-    },
-    {
       "name": "szczypiorek",
-      "profit": 6,
-      "duration": 12,
+      "profit": 8,
+      "duration": 6,
       "start_date": {
         "year": 2000,
         "month": 5,
@@ -787,7 +232,7 @@
       "daily_resources": [
         {
           "name": "uprawa",
-          "duration": 12,
+          "duration": 6,
           "values": {
             "work_hours": 4,
             "nawoz1": 1
@@ -797,13 +242,13 @@
     },
     {
       "name": "pietruszka",
-      "profit": 9,
+      "profit": 11,
       "duration": 14,
       "start_date": {
         "year": 2000,
         "month": 4,
-        "day": 1,
-        "plus_minus_days": 10
+        "day": 15,
+        "plus_minus_days": 6
       },
       "entire_period_resources": {
         "money": 5,
@@ -838,7 +283,7 @@
     },
     {
       "name": "cebula",
-      "profit": 13,
+      "profit": 16,
       "duration": 21,
       "start_date": {
         "year": 2000,
@@ -864,7 +309,7 @@
           "duration": 15,
           "values": {
             "water": 10,
-            "nawoz1": 5,
+            "nawoz1": 3,
             "work_hours": 2
           }
         },
@@ -879,14 +324,14 @@
       ]
     },
     {
-      "name": "poplony",
-      "profit": 5,
-      "duration": 17,
+      "name": "sa\u0142ata",
+      "profit": 15,
+      "duration": 11,
       "start_date": {
         "year": 2000,
-        "month": 8,
+        "month": 5,
         "day": 10,
-        "plus_minus_days": 20
+        "plus_minus_days": 15
       },
       "entire_period_resources": {
         "money": 2
@@ -902,7 +347,7 @@
         },
         {
           "name": "",
-          "duration": 15,
+          "duration": 9,
           "values": {
             "work_hours": 1
           }
@@ -917,7 +362,7 @@
         "year": 2000,
         "month": 5,
         "day": 1,
-        "plus_minus_days": 99
+        "plus_minus_days": 60
       },
       "entire_period_resources": {
         "money": 4
@@ -929,268 +374,6 @@
           "values": {
             "work_hours": 8,
             "water": 3
-          }
-        }
-      ]
-    },
-    {
-      "name": "winogrona",
-      "profit": 20,
-      "duration": 60,
-      "start_date": {
-        "year": 2022,
-        "month": 5,
-        "day": 1,
-        "plus_minus_days": 10
-      },
-      "entire_period_resources": {
-        "money": 40,
-        "warehouse": 10
-      },
-      "daily_resources": [
-        {
-          "name": "dsds",
-          "duration": 4,
-          "values": {
-            "work_hours": 5,
-            "water": 8,
-            "machine_1": 1,
-            "machine_2": 1,
-            "srodek ochrony 1": 2
-          }
-        },
-        {
-          "name": "dsds",
-          "duration": 50,
-          "values": {
-            "work_hours": 3,
-            "water": 10
-          }
-        },
-        {
-          "name": "dsds",
-          "duration": 6,
-          "values": {
-            "work_hours": 10,
-            "water": 5,
-            "machine_5": 1,
-            "machine_4": 2
-          }
-        }
-      ]
-    },
-    {
-      "name": "groszek",
-      "profit": 20,
-      "duration": 12,
-      "start_date": {
-        "year": 2022,
-        "month": 5,
-        "day": 10,
-        "plus_minus_days": 12
-      },
-      "entire_period_resources": {
-        "money": 40,
-        "warehouse": 10
-      },
-      "daily_resources": [
-        {
-          "name": "dsds",
-          "duration": 4,
-          "values": {
-            "work_hours": 15,
-            "water": 15,
-            "machine_2": 1
-          }
-        },
-        {
-          "name": "dsds",
-          "duration": 8,
-          "values": {
-            "work_hours": 10,
-            "water": 5
-          }
-        }
-      ]
-    },
-    {
-      "name": "ziemniaki2",
-      "profit": 5,
-      "duration": 80,
-      "start_date": {
-        "year": 2000,
-        "month": 4,
-        "day": 1,
-        "plus_minus_days": 20
-      },
-      "entire_period_resources": {
-        "money": 10,
-        "warehouse": 30
-      },
-      "daily_resources": [
-        {
-          "name": "sadzenie",
-          "duration": 5,
-          "values": {
-            "machine_2": 3,
-            "work_hours": 10
-          }
-        },
-        {
-          "name": "uprawa",
-          "duration": 70,
-          "values": {
-            "nawoz1": 4,
-            "nawoz2": 5,
-            "work_hours": 3,
-            "machine_3": 1
-          }
-        },
-        {
-          "name": "zbiory",
-          "duration": 5,
-          "values": {
-            "work_hours": 5,
-            "machine_2": 2,
-            "machine_3": 1
-          }
-        }
-      ]
-    },
-    {
-      "name": "sds",
-      "profit": 6,
-      "duration": 12,
-      "start_date": {
-        "year": 2000,
-        "month": 5,
-        "day": 1,
-        "plus_minus_days": 60
-      },
-      "entire_period_resources": {
-        "money": 3
-      },
-      "daily_resources": [
-        {
-          "name": "uprawa",
-          "duration": 12,
-          "values": {
-            "work_hours": 4,
-            "nawoz1": 1
-          }
-        }
-      ]
-    },
-    {
-      "name": "kapusta",
-      "profit": 11,
-      "duration": 19,
-      "start_date": {
-        "year": 2000,
-        "month": 4,
-        "day": 1,
-        "plus_minus_days": 10
-      },
-      "entire_period_resources": {
-        "money": 5,
-        "warehouse": 5
-      },
-      "daily_resources": [
-        {
-          "name": "sadzenie",
-          "duration": 2,
-          "values": {
-            "machine_2": 1,
-            "work_hours": 5
-          }
-        },
-        {
-          "name": "uprawa",
-          "duration": 15,
-          "values": {
-            "work_hours": 6,
-            "water": 3
-          }
-        },
-        {
-          "name": "zbiory",
-          "duration": 2,
-          "values": {
-            "work_hours": 15,
-            "machine_3": 2
-          }
-        }
-      ]
-    },
-    {
-      "name": "fasola",
-      "profit": 14,
-      "duration": 21,
-      "start_date": {
-        "year": 2000,
-        "month": 4,
-        "day": 1,
-        "plus_minus_days": 10
-      },
-      "entire_period_resources": {
-        "money": 5,
-        "warehouse": 5
-      },
-      "daily_resources": [
-        {
-          "name": "sadzenie",
-          "duration": 3,
-          "values": {
-            "machine_2": 2,
-            "work_hours": 3
-          }
-        },
-        {
-          "name": "uprawa",
-          "duration": 15,
-          "values": {
-            "water": 10,
-            "nawoz1": 5,
-            "work_hours": 2
-          }
-        },
-        {
-          "name": "zbiory",
-          "duration": 3,
-          "values": {
-            "work_hours": 10,
-            "machine_3": 1
-          }
-        }
-      ]
-    },
-    {
-      "name": "poplony2",
-      "profit": 10,
-      "duration": 32,
-      "start_date": {
-        "year": 2000,
-        "month": 6,
-        "day": 10,
-        "plus_minus_days": 10
-      },
-      "entire_period_resources": {
-        "money": 2
-      },
-      "daily_resources": [
-        {
-          "name": "",
-          "duration": 2,
-          "values": {
-            "work_hours": 7,
-            "machine_1": 1
-          }
-        },
-        {
-          "name": "",
-          "duration": 30,
-          "values": {
-            "work_hours": 1
           }
         }
       ]

@@ -572,14 +572,14 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 1135, 22))
-        self.menuinfo = QMenu(self.menubar)
-        self.menuinfo.setObjectName(u"menuinfo")
+        #self.menuinfo = QMenu(self.menubar)
+        #self.menuinfo.setObjectName(u"menuinfo")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
 
-        self.menubar.addAction(self.menuinfo.menuAction())
+        #self.menubar.addAction(self.menuinfo.menuAction())
 
         self.retranslateUi(MainWindow)
 
@@ -664,6 +664,6 @@ class Ui_MainWindow(object):
         self.addPeriodResources.setText(QCoreApplication.translate("MainWindow", u"Add", None))
         self.removePeriodResources.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.resources), QCoreApplication.translate("MainWindow", u"Resources", None))
-        self.menuinfo.setTitle(QCoreApplication.translate("MainWindow", u"info", None))
+#        self.menuinfo.setTitle(QCoreApplication.translate("MainWindow", u"info", None))
     # retranslateUi
 

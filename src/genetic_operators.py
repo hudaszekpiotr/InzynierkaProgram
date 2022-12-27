@@ -7,34 +7,28 @@ from src.solution_classes import Solution
 import copy
 
 
-
 def mutate_solution(solution, mutation_consider_fit, mutation_type, cultivation_types, fields):
-
-    def mutation_force_fit(solution):
-        remove = False
-        if mutation_type == "removing/adding":
-            remove = random.choice([True, False])
-        if remove:
-            remove_random_from_solution(solution)
-        else:
-            crop_type = random.randint(0, len(cultivation_types) - 1)
-            if mutation_consider_fit:
-                crop_name = cultivation_types[crop_type]["name"]
-                fields_indexes = list(range(num_fields))
-                weights = [fields[elem]["coefficients"][crop_name] for elem in fields_indexes]
-                field = random.choices(fields_indexes, weights=weights)[0]
-                pass
-            else:
-                field = random.randint(0, num_fields - 1)
-            day = random.randint(*cultivation_types[crop_type]["start_date"])
-            duration = cultivation_types[crop_type]["duration"]
-
-            clear_slot(solution, day, duration, field, cultivation_types)
-            add_to_solution(solution, day, field, crop_type)
-
-
+    remove = False
     num_fields = solution.num_fields
-    mutation_force_fit(solution)
+
+    if mutation_type == "removing/adding":
+        remove = random.choice([True, False])
+    if remove:
+        remove_random_cultivation_from_solution(solution)
+    else:
+        crop_type = random.randint(0, len(cultivation_types) - 1)
+        if mutation_consider_fit:
+            crop_name = cultivation_types[crop_type]["name"]
+            fields_indexes = list(range(num_fields))
+            weights = [fields[elem]["coefficients"][crop_name] for elem in fields_indexes]
+            field = random.choices(fields_indexes, weights=weights)[0]
+        else:
+            field = random.randint(0, num_fields - 1)
+        day = random.randint(*cultivation_types[crop_type]["start_date"])
+        duration = cultivation_types[crop_type]["duration"]
+
+        clear_slot(solution, day, duration, field, cultivation_types)
+        add_to_solution(solution, day, field, crop_type)
 
 
 def selection(population, mating_pool_size, selection_type, tournament_size, is_sorted):
@@ -54,7 +48,9 @@ def selection(population, mating_pool_size, selection_type, tournament_size, is_
 
         mating_pool = []
         for i in range(mating_pool_size):
-            mating_pool.append(population[np.random.choice(len(population), p=selection_probs)])
+            mating_pool.append(population[random.choices(range(len(population)), weights=selection_probs)[0]])
+            #mating_pool.append(population[np.random.choice(len(population), p=selection_probs)])
+
         return mating_pool
 
     def rank_selection(population, mating_pool_size, is_sorted):
@@ -66,7 +62,6 @@ def selection(population, mating_pool_size, selection_type, tournament_size, is_
         mating_pool = []
         population_size = len(population)
         for i in range(mating_pool_size):
-            # <todo> tournament_size > population size
             tournament = random.sample(range(0, population_size - 1), tournament_size)
             solution = max(tournament, key=lambda k: population[k].fitness)
             mating_pool.append(population[solution])
@@ -81,48 +76,45 @@ def selection(population, mating_pool_size, selection_type, tournament_size, is_
     else:
         raise ValueError()
 
-def crossover(solution1: Solution, solution2: Solution, method, cultivation_types, have_to_copy):
-    def crossover_days(sol1, sol2):
-        #child = copy.deepcopy(sol1)
 
+def crossover(solution1: Solution, solution2: Solution, method, cultivation_types):
+    def crossover_days(sol1, sol2):
         num_days = sol1.num_days
         num_fields = sol1.num_fields
         child = Solution(num_fields, num_days)
         for field_index in range(num_fields):
-            #print("a")
             edge = None
-            field_left = child.data[field_index]
-            field_right = sol2.data[field_index]
+
+            sol1_field_crops = sol1.data[field_index]
 
             for index in range(len(sol1.data[field_index])):
-                #print('b')
-                if sol1.data[field_index][index][1] + cultivation_types[sol1.data[field_index][index][0]]["duration"] > num_days//2:
-                #if sol1.data[field_index][index][1] > num_days//2:
-                    child.data[field_index] = copy.deepcopy(sol1.data[field_index][:index+1])
-                    #if len(child.data[field_index]):
+                if sol1_field_crops[index][1] > num_days // 2:
+                    child.data[field_index] = copy.deepcopy(sol1_field_crops[:index])
+                    edge = child.data[field_index][-1][1] + cultivation_types[child.data[field_index][-1][0]][
+                        "duration"]
+                    break
+                if sol1_field_crops[index][1] + cultivation_types[sol1_field_crops[index][0]]["duration"] > num_days // 2:
+                    child.data[field_index] = copy.deepcopy(sol1_field_crops[:index + 1])
                     edge = child.data[field_index][-1][1] + cultivation_types[child.data[field_index][-1][0]]["duration"]
-                    # else:
-                    #     edge = None
                     break
             if edge is None:
-                edge = num_days//2
+                edge = num_days // 2
             for index2 in range(len(sol2.data[field_index])):
                 if sol2.data[field_index][index2][1] > edge:
-                    child.data[field_index] = copy.deepcopy(sol2.data[field_index][index2:])
+                    child.data[field_index].extend(copy.deepcopy(sol2.data[field_index][index2:]))
+                    break
         return child
 
     def crossover_fields(sol1, sol2):
-        child1 = copy.deepcopy(sol1)
-        child2 = copy.deepcopy(sol2)
-        num_days = sol1.num_days
+        child1_crossing = copy.deepcopy(sol1)
+        child2_crossing = copy.deepcopy(sol2)
         num_fields = sol1.num_fields
 
         for field in range(num_fields):
             if field % 2 == 0:
-                child1.data[field] = copy.deepcopy(sol2.data[field])
-            else:
-                child2.data[field] = copy.deepcopy(sol1.data[field])
-        return child1, child2
+                child1_crossing.data[field] = copy.deepcopy(sol2.data[field])
+                child2_crossing.data[field] = copy.deepcopy(sol1.data[field])
+        return child1_crossing, child2_crossing
 
     if method == "days":
         child1 = crossover_days(solution1, solution2)
@@ -130,6 +122,7 @@ def crossover(solution1: Solution, solution2: Solution, method, cultivation_type
         return child1, child2
     else:
         return crossover_fields(solution1, solution2)
+
 
 def add_to_solution(solution, day, field, crop_type):
     inserted = False
@@ -141,13 +134,14 @@ def add_to_solution(solution, day, field, crop_type):
     if not inserted:
         solution.data[field].append((crop_type, day))
 
+
 def clear_slot(solution, start_day, duration, field, cultivation_types):
     index = 0
     end_day = start_day + duration
     while index < len(solution.data[field]):
         crop = solution.data[field][index]
         if start_day <= crop[1] + cultivation_types[crop[0]]["duration"] <= end_day \
-                or start_day <= crop[1] <= end_day\
+                or start_day <= crop[1] <= end_day \
                 or (crop[1] < start_day and crop[1] + cultivation_types[crop[0]]["duration"] > end_day):
             del crop
             solution.data[field].pop(index)
@@ -156,7 +150,8 @@ def clear_slot(solution, start_day, duration, field, cultivation_types):
 
     return True
 
-def remove_random_from_solution(solution):
+
+def remove_random_cultivation_from_solution(solution):
     all_crops = []
     for field_index, field in enumerate(solution.data):
         for index, crop in enumerate(field):
