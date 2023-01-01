@@ -1,13 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#import cProfile
+
 import copy
-from datetime import date
 
 from src.exceptions import NoValidCultivationTypesException
 from src.genetic_operators import crossover, selection, add_to_solution, mutate_solution
 from src.solution_classes import Solution, SolutionAndFitness
-from src.resources_calculations import resources_df, penalty, resources_percent, fixup
+from src.resources_calculations import penalty, resources_percent, fixup
 
 import random
 

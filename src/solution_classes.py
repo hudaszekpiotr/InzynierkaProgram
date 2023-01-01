@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 
-import numpy as np
+
+
 import pandas as pd
 
 
@@ -13,11 +14,13 @@ class Solution:
         self.num_fields = num_fields
 
     def to_dataframe(self, cultivation_types):
-        matrix = np.full((self.num_fields, self.num_days), "", dtype=object)
+        matrix = [['' for i in range(self.num_days)] for k in range(self.num_fields)]
+        #matrix = np.full((self.num_fields, self.num_days), "", dtype=object)
         for field_index, field in enumerate(self.data):
             for crop in field:
                 duration = cultivation_types[crop[0]]["duration"]
-                matrix[field_index, crop[1]:crop[1] + duration] = str(crop[0])
+                matrix[field_index][crop[1] : crop[1] + duration] = [str(crop[0])] * duration
+                #matrix[field_index, crop[1]:crop[1] + duration] = str(crop[0])
 
         df = pd.DataFrame(data=matrix)
         pd.set_option("display.max_rows", 500)

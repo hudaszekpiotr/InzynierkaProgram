@@ -5,8 +5,8 @@ import sys
 
 from PySide6.QtCore import QRect, QDate
 from PySide6.QtGui import QIntValidator, QAction
-from PySide6.QtWidgets import QApplication, QMainWindow, QStyledItemDelegate, QLineEdit, QFileDialog, QMessageBox
-from PySide6 import QtWidgets
+from PySide6.QtWidgets import QApplication, QMainWindow, QStyledItemDelegate, QLineEdit, QFileDialog, QMessageBox, \
+    QTableWidgetItem
 
 
 from gui.class_cult_type_tab import CultTypeTab
@@ -16,7 +16,7 @@ from src.exceptions import NoValidCultivationTypesException
 from src.optimization import Optimization
 from src.parameters import Parameters
 from gui.ui_form import Ui_MainWindow
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
 
@@ -214,8 +214,8 @@ class MainWindow(QMainWindow):
                 table.removeRow(0)
                 for row in i["entire_period_resources"]:
                     table.insertRow(table.rowCount())
-                    resource = QtWidgets.QTableWidgetItem(row)
-                    quantity = QtWidgets.QTableWidgetItem(str(i["entire_period_resources"][row]))
+                    resource = QTableWidgetItem(row)
+                    quantity = QTableWidgetItem(str(i["entire_period_resources"][row]))
                     table.setItem(table.rowCount() - 1, 0, resource)
                     table.setItem(table.rowCount() - 1, 1, quantity)
 
@@ -228,8 +228,8 @@ class MainWindow(QMainWindow):
                     table.removeRow(0)
                     for row in stage["values"]:
                         table.insertRow(table.rowCount())
-                        resource = QtWidgets.QTableWidgetItem(row)
-                        quantity = QtWidgets.QTableWidgetItem(str(stage["values"][row]))
+                        resource = QTableWidgetItem(row)
+                        quantity = QTableWidgetItem(str(stage["values"][row]))
                         table.setItem(table.rowCount() - 1, 0, resource)
                         table.setItem(table.rowCount() - 1, 1, quantity)
             except Exception as e:
@@ -251,8 +251,8 @@ class MainWindow(QMainWindow):
                 table.removeRow(0)
                 for row in i["coefficients"]:
                     table.insertRow(table.rowCount())
-                    resource = QtWidgets.QTableWidgetItem(row)
-                    quantity = QtWidgets.QTableWidgetItem(str(i["coefficients"][row]))
+                    resource = QTableWidgetItem(row)
+                    quantity = QTableWidgetItem(str(i["coefficients"][row]))
                     table.setItem(table.rowCount() - 1, 0, resource)
                     table.setItem(table.rowCount() - 1, 1, quantity)
             except Exception as e:
@@ -274,8 +274,8 @@ class MainWindow(QMainWindow):
                 try:
                     table = daily_resources
                     table.insertRow(table.rowCount())
-                    resource = QtWidgets.QTableWidgetItem(row)
-                    quantity = QtWidgets.QTableWidgetItem(str(data["daily_resources"][row]))
+                    resource = QTableWidgetItem(row)
+                    quantity = QTableWidgetItem(str(data["daily_resources"][row]))
                     table.setItem(table.rowCount() - 1, 0, resource)
                     table.setItem(table.rowCount() - 1, 1, quantity)
                 except Exception as e:
@@ -288,8 +288,8 @@ class MainWindow(QMainWindow):
                 try:
                     table = period_resources
                     table.insertRow(table.rowCount())
-                    resource = QtWidgets.QTableWidgetItem(row)
-                    quantity = QtWidgets.QTableWidgetItem(str(data["entire_period_resources"][row]))
+                    resource = QTableWidgetItem(row)
+                    quantity = QTableWidgetItem(str(data["entire_period_resources"][row]))
                     table.setItem(table.rowCount() - 1, 0, resource)
                     table.setItem(table.rowCount() - 1, 1, quantity)
                 except Exception as e:
@@ -346,14 +346,14 @@ class MainWindow(QMainWindow):
         for missing_period_resource in missing_period_resources:
             table = self.ui.periodResources
             table.insertRow(table.rowCount())
-            table.setItem(table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(missing_period_resource))
-            table.setItem(table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(str(0)))
+            table.setItem(table.rowCount() - 1, 0, QTableWidgetItem(missing_period_resource))
+            table.setItem(table.rowCount() - 1, 1, QTableWidgetItem(str(0)))
 
         for missing_daily_resource in missing_daily_resources:
             table = self.ui.dailyResources
             table.insertRow(table.rowCount())
-            table.setItem(table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(missing_daily_resource))
-            table.setItem(table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(str(0)))
+            table.setItem(table.rowCount() - 1, 0, QTableWidgetItem(missing_daily_resource))
+            table.setItem(table.rowCount() - 1, 1, QTableWidgetItem(str(0)))
 
     def fix_coefficients(self):
         coefficients_needed = set()
@@ -384,8 +384,8 @@ class MainWindow(QMainWindow):
             table = tab.coefficients
             for coefficient in field:
                 table.insertRow(table.rowCount())
-                table.setItem(table.rowCount() - 1, 0, QtWidgets.QTableWidgetItem(coefficient))
-                table.setItem(table.rowCount() - 1, 1, QtWidgets.QTableWidgetItem(str(1)))
+                table.setItem(table.rowCount() - 1, 0, QTableWidgetItem(coefficient))
+                table.setItem(table.rowCount() - 1, 1, QTableWidgetItem(str(1)))
 
     def save_cultivation_types(self):
         cultivation_types = []

@@ -1,9 +1,9 @@
-from PySide6 import QtCore, QtWidgets
+
 from PySide6.QtGui import QBrush, QColor
-from PySide6.QtWidgets import QWidget, QCheckBox
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QWidget, QCheckBox, QTableView, QTableWidgetItem
+from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex
 from distinctipy import distinctipy
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg
+from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
 from matplotlib.figure import Figure
 
 from gui import ui_result
@@ -16,7 +16,7 @@ class MplCanvas(FigureCanvasQTAgg):
         super(MplCanvas, self).__init__(fig)
 
 
-class TableModel(QtCore.QAbstractTableModel):
+class TableModel(QAbstractTableModel):
     def __init__(self, data):
         super(TableModel, self).__init__()
         self._data = data
@@ -30,11 +30,11 @@ class TableModel(QtCore.QAbstractTableModel):
             if color is not None:
                 return color
 
-    def rowCount(self, parent=QtCore.QModelIndex()):
+    def rowCount(self, parent=QModelIndex()):
 
         return len(self._data)
 
-    def columnCount(self, parent=QtCore.QModelIndex()):
+    def columnCount(self, parent=QModelIndex()):
         return len(self._data[0])
 
     def change_color(self, row, column, color):
@@ -49,7 +49,7 @@ class Result(QWidget):
         self.ui = ui_result.Ui_Form()
         self.ui.setupUi(self)
         self.setWindowTitle("Result window")
-        self.table = QtWidgets.QTableView()
+        self.table = QTableView()
         self.df = df
         self.cultivation_types = cultivation_types
         self.df_resources = df_resources
@@ -115,8 +115,8 @@ class Result(QWidget):
         table = self.ui.legend
         for value in values_list:
             table.insertRow(table.rowCount())
-            item1 = QtWidgets.QTableWidgetItem(value)
-            item2 = QtWidgets.QTableWidgetItem(self.cultivation_types[int(value)]["name"])
+            item1 = QTableWidgetItem(value)
+            item2 = QTableWidgetItem(self.cultivation_types[int(value)]["name"])
             table.setItem(table.rowCount() - 1, 0, item1)
             table.setItem(table.rowCount() - 1, 1, item2)
         table.resizeColumnsToContents()

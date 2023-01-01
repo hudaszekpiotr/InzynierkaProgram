@@ -1,7 +1,5 @@
 import random
 
-import numpy as np
-
 from src.solution_classes import Solution
 
 import copy

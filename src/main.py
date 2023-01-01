@@ -1,7 +1,7 @@
 
 
 from src.optimization import Optimization
-from src.model_data_operations import parse_resources, load_files
+from src.model_data_operations import load_files
 
 
 def main():
