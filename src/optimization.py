@@ -185,9 +185,13 @@ class Optimization:
             iteration += 1
         #pr.print_stats()
         if verbose:
+            print("Best result in each iteration:")
             print(best_results)
+            print("\nBest result profit:")
             print(best_solution.fitness)
+            print("\nBest result solution:")
             print(best_solution.solution.data)
+            print("\nBest result solution table:")
             print(best_solution.solution.to_dataframe(self.cultivation_types))
 
         df = best_solution.solution.to_dataframe(self.cultivation_types)

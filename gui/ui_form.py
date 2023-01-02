@@ -9,13 +9,19 @@
 ################################################################################
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QRect, Qt)
-from PySide6.QtGui import (QAction, QFont)
-from PySide6.QtWidgets import (QComboBox, QDateEdit, QDoubleSpinBox,
-    QFrame, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
-    QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
-    QSpinBox, QStatusBar, QTabWidget, QTableWidget,
-    QTableWidgetItem, QVBoxLayout, QWidget)
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
+    QCursor, QFont, QFontDatabase, QGradient,
+    QIcon, QImage, QKeySequence, QLinearGradient,
+    QPainter, QPalette, QPixmap, QRadialGradient,
+    QTransform)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDateEdit, QDoubleSpinBox,
+    QFrame, QGridLayout, QGroupBox, QHBoxLayout,
+    QHeaderView, QLabel, QMainWindow, QMenuBar,
+    QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
+    QStatusBar, QTabWidget, QTableWidget, QTableWidgetItem,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -566,14 +572,10 @@ class Ui_MainWindow(object):
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
         self.menubar.setGeometry(QRect(0, 0, 1135, 22))
-        #self.menuinfo = QMenu(self.menubar)
-        #self.menuinfo.setObjectName(u"menuinfo")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-
-        #self.menubar.addAction(self.menuinfo.menuAction())
 
         self.retranslateUi(MainWindow)
 
@@ -658,6 +660,5 @@ class Ui_MainWindow(object):
         self.addPeriodResources.setText(QCoreApplication.translate("MainWindow", u"Add", None))
         self.removePeriodResources.setText(QCoreApplication.translate("MainWindow", u"Remove", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.resources), QCoreApplication.translate("MainWindow", u"Resources", None))
-#        self.menuinfo.setTitle(QCoreApplication.translate("MainWindow", u"info", None))
     # retranslateUi
 
