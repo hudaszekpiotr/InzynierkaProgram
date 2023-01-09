@@ -16,13 +16,10 @@ parameters = Parameters(max_iter=max_iter, max_iter_no_progress=100000, start_da
                         mating_pool_percent=40, elite_percent=0, tournament_size=2,
                         mutation_type="only adding")
 
-#df, df_resources, period_df, best_results = optimization.run_algorithm(parameters)
-
 
 #selection_types = ["tournament"]
 selection_types = ["ranking"]
 
-#df = DataFrame()
 data = {}
 average = []
 
@@ -40,10 +37,4 @@ plt.ylabel("zysk")
 plt.legend()
 plt.title("Różnorodność populacji dla selekcji rankingowej")
 plt.show()
-# data[max_iter] = pd.Series(average, dtype='float64')
-#
-# df = pd.DataFrame(data=data)
-#
-# print(df)
-
 

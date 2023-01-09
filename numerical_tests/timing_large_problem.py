@@ -17,7 +17,6 @@ parameters = Parameters(max_iter=0, max_iter_no_progress=100000, start_date=date
                         mating_pool_percent=40, elite_percent=0, tournament_size=2,
                         mutation_type="only adding")
 
-#df, df_resources, period_df, best_results = optimization.run_algorithm(parameters)
 
 max_iter_list = [100, 250, 500, 1000, 2000]
 repeat_times = 10
@@ -32,9 +31,9 @@ for max_iter in max_iter_list:
     times = []
     print(max_iter)
     for i in range(repeat_times):
-        t0 = time.time()
+        t0 = time.perf_counter()
         _, _, _, best_results = optimization.run_algorithm(parameters, False)
-        t1 = time.time()
+        t1 = time.perf_counter()
         times.append(t1 - t0)
         results.append(max(best_results))
     average_result.append(sum(results) / len(results))

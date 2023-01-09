@@ -3,9 +3,6 @@ from matplotlib import pyplot as plt
 
 import datetime
 
-import pandas as pd
-from pandas import DataFrame
-
 from src.optimization import Optimization
 from src.parameters import Parameters
 

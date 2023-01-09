@@ -85,20 +85,21 @@ def crossover(solution1: Solution, solution2: Solution, method, cultivation_type
 
             sol1_field_crops = sol1.data[field_index]
 
-            for index in range(len(sol1.data[field_index])):
-                if sol1_field_crops[index][1] > num_days // 2:
-                    child.data[field_index] = copy.deepcopy(sol1_field_crops[:index])
-                    edge = child.data[field_index][-1][1] + cultivation_types[child.data[field_index][-1][0]][
-                        "duration"]
+            for index, crop in enumerate(sol1_field_crops):
+                if crop[1] > num_days // 2:
+                    if index:
+                        child.data[field_index] = copy.deepcopy(sol1_field_crops[:index])
+                        edge = child.data[field_index][-1][1] + cultivation_types[child.data[field_index][-1][0]]["duration"]
                     break
-                if sol1_field_crops[index][1] + cultivation_types[sol1_field_crops[index][0]]["duration"] > num_days // 2:
-                    child.data[field_index] = copy.deepcopy(sol1_field_crops[:index + 1])
-                    edge = child.data[field_index][-1][1] + cultivation_types[child.data[field_index][-1][0]]["duration"]
+                if crop[1] + cultivation_types[crop[0]]["duration"] > num_days // 2:
+                    if index:
+                        child.data[field_index] = copy.deepcopy(sol1_field_crops[:index + 1])
+                        edge = child.data[field_index][-1][1] + cultivation_types[child.data[field_index][-1][0]]["duration"]
                     break
             if edge is None:
                 edge = num_days // 2
-            for index2 in range(len(sol2.data[field_index])):
-                if sol2.data[field_index][index2][1] > edge:
+            for index2, crop2 in enumerate(sol2.data[field_index]):
+                if crop2[1] > edge:
                     child.data[field_index].extend(copy.deepcopy(sol2.data[field_index][index2:]))
                     break
         return child
@@ -124,8 +125,8 @@ def crossover(solution1: Solution, solution2: Solution, method, cultivation_type
 
 def add_to_solution(solution, day, field, crop_type):
     inserted = False
-    for index in range(len(solution.data[field])):
-        if day < solution.data[field][index][1]:
+    for index, crop in enumerate(solution.data[field]):
+        if day < crop[1]:
             solution.data[field].insert(index, (crop_type, day))
             inserted = True
             break
@@ -134,6 +135,9 @@ def add_to_solution(solution, day, field, crop_type):
 
 
 def clear_slot(solution, start_day, duration, field, cultivation_types):
+    """
+    removes any crop from solution from specified field within interval (start_day, start_day + duration)
+    """
     index = 0
     end_day = start_day + duration
     while index < len(solution.data[field]):
@@ -145,8 +149,6 @@ def clear_slot(solution, start_day, duration, field, cultivation_types):
             solution.data[field].pop(index)
         else:
             index += 1
-
-    return True
 
 
 def remove_random_cultivation_from_solution(solution):

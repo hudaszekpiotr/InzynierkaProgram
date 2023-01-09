@@ -92,7 +92,7 @@ def resources_used_day_field(solution, field, day, cultivation_types):
                 raise RuntimeError
             if day-crop[1] >= len(cultivation_types[crop[0]]["daily_resources"]):
                 raise RuntimeError
-            resources_crop = cultivation_types[crop[0]]["daily_resources"][day - crop[1]]
+            resources_crop = list(cultivation_types[crop[0]]["daily_resources"][day - crop[1]].keys())
             return resources_crop, index
     return None, None
 
@@ -127,8 +127,11 @@ def fixup(solution, cultivation_types, resources, fields):
                     else:
                         crop_type = solution.data[field_index][index][0]
                         crop_start_day = solution.data[field_index][index][1]
-                        daily_resources_to_del = cultivation_types[crop_type]["daily_resources"]
-                        period_resources_to_del = cultivation_types[crop_type]["entire_period_resources"]
+                        to_del = cultivation_types[crop_type]["daily_resources"]
+                        daily_resources_to_del = [{k: fields[field_index]["area"] * v for k, v in elem.items()} for elem in to_del]
+                        to_del = cultivation_types[crop_type]["entire_period_resources"]
+                        period_resources_to_del = {k: fields[field_index]["area"] * v for k, v in to_del.items()}
+
                         solution.data[field_index].pop(index)
                         remove_resources_from_list(daily_resources_list, period_dict, crop_start_day, daily_resources_to_del,
                                                    period_resources_to_del)

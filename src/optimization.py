@@ -26,9 +26,9 @@ class Optimization:
     def generate_initial_population(self, num_days, population_size, method):
         def remove_impossible_cult_types():
             valid_cult_types = []
-            for i in range(len(self.cultivation_types)):
-                begin, end = self.cultivation_types[i]["start_date"]
-                duration = self.cultivation_types[i]["duration"]
+            for cultivation_type in self.cultivation_types:
+                begin, end = cultivation_type["start_date"]
+                duration = cultivation_type["duration"]
                 if begin > end: raise ValueError()
                 if end < 0 or begin > num_days:
                     continue
@@ -42,8 +42,8 @@ class Optimization:
                 if latest_possible_end < end:
                     end = latest_possible_end
 
-                self.cultivation_types[i]["start_date"] = [begin, end]
-                valid_cult_types.append(self.cultivation_types[i])
+                cultivation_type["start_date"] = [begin, end]
+                valid_cult_types.append(cultivation_type)
             if len(valid_cult_types) == 0:
                 raise NoValidCultivationTypesException
             self.cultivation_types = valid_cult_types
@@ -79,7 +79,6 @@ class Optimization:
                 profit += crop_type["profit"] * field_type["coefficients"][crop_type["name"]] * field_type["area"]
 
         if do_penalty:
-            pass
             profit -= penalty(solution, self.cultivation_types, self.resources, multiplier, self.fields)
         return profit
 
@@ -185,14 +184,10 @@ class Optimization:
             iteration += 1
         #pr.print_stats()
         if verbose:
-            print("Best result in each iteration:")
-            print(best_results)
-            print("\nBest result profit:")
-            print(best_solution.fitness)
-            print("\nBest result solution:")
-            print(best_solution.solution.data)
-            print("\nBest result solution table:")
-            print(best_solution.solution.to_dataframe(self.cultivation_types))
+            print(f"Best result in each iteration:\n{best_results}")
+            print(f"\nBest result profit:\n{best_solution.fitness}")
+            print(f"\nBest result solution:\n{best_solution.solution.data}")
+            print(f"\nBest result solution table:\n{best_solution.solution.to_dataframe(self.cultivation_types)}")
 
         df = best_solution.solution.to_dataframe(self.cultivation_types)
         df_resources, period_df = resources_percent(best_solution.solution, self.cultivation_types, self.resources, self.fields)

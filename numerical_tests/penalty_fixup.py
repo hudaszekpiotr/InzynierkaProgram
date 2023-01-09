@@ -16,7 +16,6 @@ parameters = Parameters(max_iter=1000, max_iter_no_progress=100000, start_date=d
                         mating_pool_percent=40, elite_percent=0, tournament_size=2,
                         mutation_type="removing/adding")
 
-#"only adding", "removing/adding"
 
 #filenames = ["dataset-few-resources.json", "dataset-standard-amount-resources.json", "dataset-many-resources.json"]
 filenames = ["dataset-few-resources.json", "dataset-standard-amount-resources.json"]
@@ -42,15 +41,15 @@ for filename in filenames:
             parameters.mutation_type = "only adding"
         optimization = Optimization(filename)
         results = []
-        print(str(unacceptable_fix_type)+ " "+ filename)
+        print(f"{unacceptable_fix_type} {filename}")
         for i in range(repeat_times):
             _, df_resources, period_df, best_results = optimization.run_algorithm(parameters, False)
             df_resources = df_resources > 100
             period_df = period_df > 100
             if df_resources.any(axis=None):
-                print("unnacceptable daily resources")
+                print("unacceptable daily resources")
             if period_df.any(axis=None):
-                print("unnacceptable period resources")
+                print("unacceptable period resources")
             results.append(max(best_results))
         average.append(sum(results) / len(results))
 

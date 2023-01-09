@@ -3,8 +3,8 @@ from datetime import date
 
 
 def parse_resources(list_of_dicts):
-    for cultivation in range(len(list_of_dicts)):
-        resources = list_of_dicts[cultivation]["daily_resources"]
+    for cultivation in list_of_dicts:
+        resources = cultivation["daily_resources"]
         i = 0
         while i < len(resources):
             if "duration" in resources[i]:
@@ -17,7 +17,7 @@ def parse_resources(list_of_dicts):
                 i -= 1
             i += 1
 
-        while i < list_of_dicts[cultivation]["duration"]:
+        while i < cultivation["duration"]:
             resources.append({})
             i += 1
 
@@ -39,9 +39,8 @@ def elite_and_mating_sizes(mating_pool_percent, elite_percent, population_size):
 
 
 def load_files(file_name):
-    json_model_data = open(file_name)
-    model_data = json.load(json_model_data)
-    json_model_data.close()
+    with open(file_name) as file:
+        model_data = json.load(file)
     cultivation_types = model_data["cultivation_types"]
     resources = model_data["resources"]
     fields = model_data["fields"]
